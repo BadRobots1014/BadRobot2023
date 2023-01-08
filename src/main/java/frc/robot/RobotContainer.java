@@ -43,8 +43,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //Run climbers up when holding the start button
-    final JoystickButton runClimberButton = new JoystickButton(this.controller, XboxController.Button.kStart.value);
-    runClimberButton.whileHeld(this.climbUpCommand);
+    final JoystickButton climbUpButton = new JoystickButton(this.controller, XboxController.Button.kStart.value);
+    climbUpButton.whileHeld(this.climbUpCommand);
 
     //Run climbers down when holding the select button
     /*Code here*/
