@@ -12,4 +12,18 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+
+public final class Constants {
+    
+    public static final class ClimberConstants {
+
+        //Ports for climbers
+        public static final int kLeftClimberPort = 35;
+        public static final int kRightClimberPort = 34;
+
+        //Climber movement speed
+        public static final double upClimbSpeed = .3;
+        /*Code here*/
+    }
+
+}
