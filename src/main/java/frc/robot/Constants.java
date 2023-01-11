@@ -22,7 +22,7 @@ public final class Constants {
         public static final int kRightClimberPort = 34;
 
         //Climber movement speed
-        public static final double upClimbSpeed = .3;
+        public static final double climberUpSpeed = .3;
         /*Code here*/
     }
 

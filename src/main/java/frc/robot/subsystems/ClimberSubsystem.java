@@ -19,8 +19,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void climbUp() {
     //Sets motor power to climb speed
-    m_left.set(ControlMode.PercentOutput, ClimberConstants.upClimbSpeed);
-    m_right.set(ControlMode.PercentOutput, ClimberConstants.upClimbSpeed);
+    m_left.set(ControlMode.PercentOutput, ClimberConstants.climberUpSpeed);
+    m_right.set(ControlMode.PercentOutput, ClimberConstants.climberUpSpeed);
   }
 
   public void climbDown() {

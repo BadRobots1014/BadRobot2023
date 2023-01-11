@@ -6,7 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ClimbUpCommand;
+import frc.robot.commands.ClimberUpCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,7 +25,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
-  private final ClimbUpCommand climbUpCommand = new ClimbUpCommand(climberSubsystem);
+  private final ClimberUpCommand climberUpCommand = new ClimberUpCommand(climberSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,7 +44,7 @@ public class RobotContainer {
 
     //Run climbers up when holding the start button
     final JoystickButton climbUpButton = new JoystickButton(this.controller, XboxController.Button.kStart.value);
-    climbUpButton.whileHeld(this.climbUpCommand);
+    climbUpButton.whileHeld(this.climberUpCommand);
 
     //Run climbers down when holding the select button
     /*Code here*/
