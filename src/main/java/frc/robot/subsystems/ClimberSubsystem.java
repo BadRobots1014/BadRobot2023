@@ -33,9 +33,4 @@ public class ClimberSubsystem extends SubsystemBase {
     m_left.set(ControlMode.PercentOutput, 0);
     m_right.set(ControlMode.PercentOutput, 0);
   }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run.
-  }
 }
