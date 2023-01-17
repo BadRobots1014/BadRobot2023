@@ -24,8 +24,10 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void climbDown() {
+    m_left.set(ControlMode.PercentOutput, -ClimberConstants.climberUpSpeed);
+    m_right.set(ControlMode.PercentOutput, -ClimberConstants.climberUpSpeed);
     //Sets motor power to negative climb speed
-    /*Code here*/
+    /*Cvzlxkcvjzxlkre*/
   }
 
   public void stop() {
