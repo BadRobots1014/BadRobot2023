@@ -7,8 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.AutoCommand;
 import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.ShootCommand;
@@ -24,6 +26,9 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class RobotContainer {
 
+  // The controller use to control the robot for this demo
+  private final XboxController controller;
+
   //Get triggers (they're analog)
   private static final double TRIGGER_THRESHOLD = 0.3;
   private boolean getLeftTrigger() {
@@ -33,8 +38,8 @@ public class RobotContainer {
     return this.controller.getRightTriggerAxis() > TRIGGER_THRESHOLD;
   }
 
-  // The controller use to control the robot for this demo
-  private final XboxController controller;
+  //Useless blank auto command so the robot stops yelling at me
+  private final AutoCommand autoCommand = new AutoCommand();
 
   // The robot's subsystems and commands are defined here...
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
@@ -91,6 +96,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return autoCommand;
   }
 }
