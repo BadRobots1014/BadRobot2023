@@ -4,11 +4,17 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,8 +28,33 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private DriveCommand teleopDriveCmd;
+
+  private DrivetrainSubsystem drivetrainSubsystem;
+  
+  private Joystick rightJoystick;
+  private Joystick leftJoystick;
+
+  public double getRightY() {
+    return rightJoystick.getY();
+  }
+
+  public double getLeftY() {
+    return leftJoystick.getY();
+  }
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    this.drivetrainSubsystem = new DrivetrainSubsystem();
+
+    this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
+    this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
+    
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY);
+
+    this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+
     // Configure the button bindings
     configureButtonBindings();
   }
