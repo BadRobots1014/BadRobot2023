@@ -18,6 +18,11 @@ public final class Constants {
 
         public final static int kRightJoystickPort = 0;
         public final static int kLeftJoystickPort = 1;
+
+        public final static double kMaxThrottle = 1.0;
+        public final static double kSlowThrottle = 0.3;
+        
+        public final static int kThrottleButton = 2;
         
     }
 
@@ -25,6 +30,12 @@ public final class Constants {
 
         public final static int kRightPort = 2;
         public final static int kLeftPort = 3;
+
+    }
+
+    public final class LightsConstants {
+
+        public final static int kLightPort = 0;
 
     }
 
