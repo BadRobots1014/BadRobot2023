@@ -36,11 +36,11 @@ public class RobotContainer {
   private Joystick leftJoystick;
 
   public double getRightY() {
-    return rightJoystick.getY();
+    return -rightJoystick.getY();
   }
 
   public double getLeftY() {
-    return leftJoystick.getY();
+    return -leftJoystick.getY();
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

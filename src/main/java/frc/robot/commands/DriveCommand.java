@@ -29,7 +29,8 @@ public class DriveCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
 
-
+    m_leftSpeed = leftSpeed;
+    m_rightSpeed = rightSpeed;
   }
 
   // Called when the command is initially scheduled.
