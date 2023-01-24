@@ -14,10 +14,23 @@ public class BlinkinSubsystem extends SubsystemBase {
 
   private final Spark revSpark = new Spark(0);
 
+  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void setOcean(){
     revSpark.set(-0.95);
+  }
+
+  public void setRainbow(){
+    revSpark.set(-0.99);
+  }
+
+  public void setBlue(){
+    revSpark.set(0.87);
   }
 
   @Override
