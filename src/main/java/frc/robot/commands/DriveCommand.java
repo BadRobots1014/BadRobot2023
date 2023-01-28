@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.Constants.BlinkinPatternConstants;
+import frc.robot.Constants.MovementConstants;
 import frc.robot.subsystems.BlinkinSubsystem;
 
 import java.util.function.DoubleSupplier;
@@ -48,8 +50,8 @@ public class DriveCommand extends CommandBase {
     m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
 
     String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
-    if(lightDirection == "Stationary"){
-      m_ledSubsystem.setWhite();
+    if(lightDirection == MovementConstants.kStationary){
+      m_ledSubsystem.set(BlinkinPatternConstants.blueWave);
     }
     else if(lightDirection == "Forward"){
       m_ledSubsystem.setGreen();

@@ -39,4 +39,13 @@ public final class Constants {
 
     }
 
+    public final static class MovementConstants {
+        public final static String kStationary = "Stationary";
+        public final static String kPivotingOffOfRight = "Pivoting off of right";
+    }
+
+    public final static class BlinkinPatternConstants {
+        public final static double blueWave = 0.2; //Fix, is wrong        
+    }
+
 }

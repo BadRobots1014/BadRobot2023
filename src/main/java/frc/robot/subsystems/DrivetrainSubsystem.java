@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.MovementConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -42,11 +43,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public String getDirection(double leftSpeed, double rightSpeed){
 
         if (leftSpeed == 0 && rightSpeed == 0){ // If both motors arent moving
-            return "Stationary";
+            return MovementConstants.kStationary;
         }
 
         else if (rightSpeed == 0){ // If the right motor isnt moving but the left one is(because the above conditional was false)
-            return "Pivoting off of right";
+            return MovementConstants.kPivotingOffOfRight;
         }
         
         else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
