@@ -39,6 +39,35 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_driveTrain.tankDrive(clampPower(leftSpeed), clampPower(rightSpeed), true);
     }
 
+    public String getDirection(double leftSpeed, double rightSpeed){
+
+        /* 
+        If L * R are both 0 then it is stationary
+        If L > R then it is turning right
+        If R > L then it is turning left
+        */
+        if (rightSpeed == 0){ // If the left motor isnt moving
+            if (leftSpeed == 0){
+                return "Stationary";
+            }
+            else{
+                return "Pivoting off of right";
+            }
+        }
+        
+        if (leftSpeed == 0){ // If the left motor isnt moving
+            if (rightSpeed != 0){
+                return "Pivoting off of left";
+            }
+        }
+
+        else{
+            double ratio = leftSpeed / rightSpeed;
+            
+        }
+        return "Error";
+    }
+
     private static double clampPower(double power) {
         return MathUtil.clamp(power, -1.0, 1.0);
     }
