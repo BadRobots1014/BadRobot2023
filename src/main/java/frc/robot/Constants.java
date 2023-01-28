@@ -23,19 +23,26 @@ public final class Constants {
         public final static double kSlowThrottle = 0.5;
         
         public final static int kThrottleButton = 2;
+
+        public final static int kShootButton = 1;
         
     }
 
     public final class DriveConstants {
 
-        public final static int kRightPort = 2;
-        public final static int kLeftPort = 3;
+        public final static int kRightPort = 10;
+        public final static int kSecondRightPort = 11;
+        public final static int kLeftPort = 13;
+        public final static int kSecondLeftPort = 14;
 
     }
 
-    public final class LightsConstants {
+    public final class ShooterConstants {
 
-        public final static int kLightPort = 0;
+        public final static int kFrontPort = 12;
+        public final static int kBackPort = 21;
+        public final static int kFlipperPort = 22;
+        public final static int kWinchPort = 23;
 
     }
 

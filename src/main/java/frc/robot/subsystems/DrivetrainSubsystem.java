@@ -11,27 +11,37 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    private final CANSparkMax m_left = new CANSparkMax(DriveConstants.kLeftPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax m_right = new CANSparkMax(DriveConstants.kRightPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final WPI_TalonSRX m_left = new WPI_TalonSRX(DriveConstants.kLeftPort);
+    private final WPI_TalonSRX m_left2 = new WPI_TalonSRX(DriveConstants.kSecondLeftPort);
+    private final WPI_TalonSRX m_right = new WPI_TalonSRX(DriveConstants.kRightPort);
+    private final WPI_TalonSRX m_right2 = new WPI_TalonSRX(DriveConstants.kSecondRightPort);
 
-    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
+    private final DifferentialDrive m_driveTrain;
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
 
     public DrivetrainSubsystem() {
-        m_left.setInverted(false);
-        m_right.setInverted(true);
+        m_left.setInverted(true);
+        m_left2.setInverted(true);
+        m_right.setInverted(false);
+        m_right2.setInverted(false);
 
-        m_left.setIdleMode(IdleMode.kBrake);
-        m_right.setIdleMode(IdleMode.kBrake);
+        m_left.setNeutralMode(NeutralMode.Brake);
+        m_right.setNeutralMode(NeutralMode.Brake);
+        m_left2.setNeutralMode(NeutralMode.Brake);
+        m_right2.setNeutralMode(NeutralMode.Brake);
+
+        m_left2.follow(m_left);
+        m_right2.follow(m_right);
 
         m_tab.addNumber("Left Power", m_left::get);
         m_tab.addNumber("Right Power", m_right::get);
+
+        m_driveTrain = new DifferentialDrive(m_left, m_right);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
