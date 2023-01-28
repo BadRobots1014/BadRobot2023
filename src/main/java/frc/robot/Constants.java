@@ -52,7 +52,12 @@ public final class Constants {
     }
 
     public final static class BlinkinPatternConstants {
-        public final static double blueWave = 0.2; //Fix, is wrong        
+        public final static double solidRed = 0.61; 
+        public final static double solidBlue = 0.87; 
+        public final static double solidWhite = 0.93; 
+        public final static double strobeRed = -0.11;
+        public final static double strobeBlue = -0.09;
+
     }
 
 }

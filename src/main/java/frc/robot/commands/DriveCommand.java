@@ -61,10 +61,10 @@ public class DriveCommand extends CommandBase {
     directionEntry.setString(lightDirection);
     
     if(lightDirection == MovementConstants.kStationary){
-      m_ledSubsystem.set(BlinkinPatternConstants.blueWave);
+      m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
     }
     else if(lightDirection == MovementConstants.kForward){
-      m_ledSubsystem.setGreen();
+      m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
     }
   }
 
