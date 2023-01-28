@@ -51,37 +51,37 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
         
         else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
-            return "Pivoting off of left";
+            return MovementConstants.kPivotingOffOfLeft;
         }
 
         else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
-            return "Spinning in place";
+            return MovementConstants.kSpinningInPlace;
         }
 
         else if (rightSpeed < 0){ // If the right motor is moving backward
             if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
-                return "Backward";
+                return MovementConstants.kBackward;
             }
             else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
-                return "Turning Counterclockwise";
+                return MovementConstants.kTurningCounterclockwise;
             }
             else{ // If the right motor is moving backwards faster than the left motor
-                return "Turning Clockwise";
+                return MovementConstants.kTurningClockwise;
             }
         }
 
         else if (rightSpeed > 0){ // If the right motor is moving forwards
             if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
-                return "Forward";
+                return MovementConstants.kForward;
             }
             else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
-                return "Turning counterclockwise";
+                return MovementConstants.kTurningCounterclockwise;
             }
             else{ // If the left motor is going forward faster than the right motor
-                return "Turning clockwise";
+                return MovementConstants.kTurningClockwise;
             }
         }
-        return "getDirection edge case";
+        return MovementConstants.kGetDirectionEdgeCase;
     }
 
     private static double clampPower(double power) {
