@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.BlinkinSubsystem;
 
 import java.util.function.DoubleSupplier;
 
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DrivetrainSubsystem m_subsystem;
+  private final BlinkinSubsystem m_ledSubsystem;
   private DoubleSupplier m_rightSpeed;
   private DoubleSupplier m_leftSpeed;
   private DoubleSupplier m_throttle;
@@ -23,10 +25,13 @@ public class DriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DrivetrainSubsystem subsystem, DoubleSupplier rightSpeed, DoubleSupplier leftSpeed, DoubleSupplier throttle) {
+  public DriveCommand(DrivetrainSubsystem subsystem, DoubleSupplier rightSpeed, DoubleSupplier leftSpeed, DoubleSupplier throttle, BlinkinSubsystem lightSubsystem) {
     m_subsystem = subsystem;
+    m_ledSubsystem = lightSubsystem;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    addRequirements(lightSubsystem);
 
     m_leftSpeed = leftSpeed;
     m_rightSpeed = rightSpeed;
@@ -41,6 +46,14 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
+
+    String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
+    if(lightDirection == "Stationary"){
+      m_ledSubsystem.setWhite();
+    }
+    else if(lightDirection == "Forward"){
+      m_ledSubsystem.setGreen();
+    }
   }
 
   // Called once the command ends or is interrupted.

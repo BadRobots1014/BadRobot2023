@@ -61,9 +61,10 @@ public class RobotContainer {
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
 
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+
 
     // Configure the button bindings
     configureButtonBindings();
