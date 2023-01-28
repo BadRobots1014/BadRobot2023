@@ -33,19 +33,16 @@ public class RobotContainer {
   private Joystick rightJoystick;
   private Joystick leftJoystick;
 
-  public double throttleScale;
-
   public double getRightY() {
-    return -rightJoystick.getY() * throttleScale;
+    return -rightJoystick.getY() * getThrottle();
   }
 
   public double getLeftY() {
-    return -leftJoystick.getY() * throttleScale;
+    return -leftJoystick.getY() * getThrottle();
   }
 
   private double getThrottle() {
-    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton)
-        ? ControllerConstants.kMaxThrottle : ControllerConstants.kSlowThrottle;
+    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kMaxThrottle : ControllerConstants.kSlowThrottle;
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
