@@ -53,11 +53,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
             return "Pivoting off of left";
         }
 
-        if (rightSpeed < 0){ // If the right motor is moving backward
+        else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
+            return "Spinning in place";
+        }
+
+        else if (rightSpeed < 0){ // If the right motor is moving backward
             if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
                 return "Backward";
             }
-            if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
+            else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
                 return "Turning Counterclockwise";
             }
             else{ // If the right motor is moving backwards faster than the left motor
@@ -65,7 +69,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             }
         }
 
-        if (rightSpeed > 0){ // If the right motor is moving forwards
+        else if (rightSpeed > 0){ // If the right motor is moving forwards
             if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
                 return "Forward";
             }
