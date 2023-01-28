@@ -51,10 +51,10 @@ public class DriveCommand extends CommandBase {
 
     String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
     if(lightDirection == MovementConstants.kStationary){
-      m_ledSubsystem.set(BlinkinPatternConstants.blueWave);
+      m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
     }
     else if(lightDirection == MovementConstants.kForward){
-      m_ledSubsystem.setGreen();
+      m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
     }
   }
 
