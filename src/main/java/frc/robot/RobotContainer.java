@@ -5,10 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.SensorConstants;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ColorSensorCommand;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,8 +29,46 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private DriveCommand teleopDriveCmd;
+
+  private DrivetrainSubsystem drivetrainSubsystem;
+
+  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem(SensorConstants.ColorSensorPort);
+
+  private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
+  
+  private Joystick rightJoystick;
+  private Joystick leftJoystick;
+
+  public double throttleScale;
+
+  public double getRightY() {
+    return -rightJoystick.getY() * throttleScale;
+  }
+
+  public double getLeftY() {
+    return -leftJoystick.getY() * throttleScale;
+  }
+
+  private double getThrottle() {
+    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton)
+        ? ControllerConstants.kMaxThrottle : ControllerConstants.kSlowThrottle;
+  }
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    this.drivetrainSubsystem = new DrivetrainSubsystem();
+
+    this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
+    this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
+    
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
+
+    this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+
+    this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);
+
     // Configure the button bindings
     configureButtonBindings();
   }
