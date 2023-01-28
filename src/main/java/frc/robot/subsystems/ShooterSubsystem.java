@@ -38,7 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void setFlywheelSpeed(float speed) {
+  public void setFlywheelSpeed(double speed) {
     m_front.set(speed);
   }
 
