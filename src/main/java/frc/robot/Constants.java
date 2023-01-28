@@ -39,4 +39,20 @@ public final class Constants {
 
     }
 
+    public final static class MovementConstants {
+        public final static String kStationary = "Stationary";
+        public final static String kPivotingOffOfRight = "Pivoting off of right";
+        public final static String kPivotingOffOfLeft = "Pivoting off of left";
+        public final static String kBackward = "Backward";
+        public final static String kTurningCounterclockwise = "Turning Counterclockwise";
+        public final static String kTurningClockwise = "Turning Clockwise";
+        public final static String kForward = "Forward";
+        public final static String kSpinningInPlace = "Spinning in place";
+        public final static String kGetDirectionEdgeCase = "getDirection edge case";
+    }
+
+    public final static class BlinkinPatternConstants {
+        public final static double blueWave = 0.2; //Fix, is wrong        
+    }
+
 }
