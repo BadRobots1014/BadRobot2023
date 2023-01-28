@@ -33,6 +33,18 @@ public class BlinkinSubsystem extends SubsystemBase {
     revSpark.set(0.87);
   }
 
+  public void setGreen(){
+    revSpark.set(0.77);
+  }
+
+  public void setRed(){
+    revSpark.set(0.61);
+  }
+
+  public void setWhite(){
+    revSpark.set(0.93);
+  }
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
