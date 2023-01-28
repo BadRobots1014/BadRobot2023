@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.Constants.BlinkinPatternConstants;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.MovementConstants;
 import frc.robot.subsystems.BlinkinSubsystem;
 
@@ -50,12 +52,31 @@ public class DriveCommand extends CommandBase {
     m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
 
     String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
-    if(lightDirection == MovementConstants.kStationary){
-      m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+    
+    switch(lightDirection) {
+      case(MovementConstants.kStationary):
+        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        break;
+      case(MovementConstants.kForward):
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.strobeBlue);
+        } else {
+          m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
+        }
+        break;
+      case(MovementConstants.kBackward):
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.strobeRed);
+        } else {
+          m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
+        }
+        break;
+      default:
+        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        break;
     }
-    else if(lightDirection == MovementConstants.kForward){
-      m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
-    }
+    
+    
   }
 
   // Called once the command ends or is interrupted.
