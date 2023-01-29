@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.function.DoubleSupplier;
 
 public class ColorSensorSubsystem extends SubsystemBase {
 protected final static int CMD = 0x80;
@@ -37,8 +36,6 @@ public final ShuffleboardTab m_tab = Shuffleboard.getTab("ColorSensors");
 
 public static int SensorStatus = 0;
 
-DoubleSupplier Status = () -> status();
-
 private I2C sensor;
 
 private ByteBuffer buffy = ByteBuffer.allocate(8);
@@ -53,10 +50,13 @@ public ColorSensorSubsystem(I2C.Port port) {
     
     sensor.write(CMD | 0x01, (int) (256-integrationTime/2.38)); //configures the integration time (time for updating color data)
     sensor.write(CMD | 0x0E, 0b1111);
-
-    m_tab.addNumber("Sensors", Status);
     
 }
+
+    public String getColorAsString()
+    {
+        return red + " " + green + " " + blue;
+    }
 
 public void read() {
 	buffy.clear();
