@@ -47,7 +47,7 @@ public class RobotContainer {
   }
 
   public double getRightZ() {
-    return -rightJoystick.getZ();
+    return (rightJoystick.getZ() + 1) / 2;
   }
 
   private double getThrottle() {
@@ -64,7 +64,7 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
-    this.shootCommand = new ShootCommand(this.shooterSubsystem, .5);
+    this.shootCommand = new ShootCommand(this.shooterSubsystem, this::getRightZ);
 
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 

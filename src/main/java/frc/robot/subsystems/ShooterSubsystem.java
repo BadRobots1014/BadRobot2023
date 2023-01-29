@@ -21,8 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
     m_front.setNeutralMode(NeutralMode.Coast);
     m_back.setNeutralMode(NeutralMode.Coast);
 
-    m_front.setInverted(true);
-    m_back.setInverted(true);
+    m_front.setInverted(false);
+    m_back.setInverted(false);
 
     m_back.follow(m_front);
 
