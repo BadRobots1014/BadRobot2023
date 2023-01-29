@@ -19,6 +19,8 @@ permissions:
 jobs:
   build:
 
+    name: Build and Package
+
     runs-on: ubuntu-latest
 
     steps:
@@ -37,4 +39,6 @@ jobs:
     - name: Package
       uses: actions/upload-artifact@v3
       with:
+        name: robot
         path: build/libs
+        if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
