@@ -33,9 +33,9 @@ public final class Constants {
 
     }
 
-    public final class LightsConstants {
+    public final class BlinkinConstants {
 
-        public final static int kLightPort = 0;
+        public final static int kBlinkinPort = 0;
 
     }
 

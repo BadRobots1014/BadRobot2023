@@ -6,13 +6,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.BlinkinConstants;
 
 
 public class BlinkinSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public BlinkinSubsystem() {}
 
-  private final Spark revSpark = new Spark(0);
+  private final Spark blinkin = new Spark(BlinkinConstants.kBlinkinPort);
 
   
 
@@ -26,27 +27,27 @@ public class BlinkinSubsystem extends SubsystemBase {
   }
 
   public void setOcean(){
-    revSpark.set(-0.95);
+    blinkin.set(-0.95);
   }
 
   public void setRainbow(){
-    revSpark.set(-0.99);
+    blinkin.set(-0.99);
   }
 
   public void setBlue(){
-    revSpark.set(0.87);
+    blinkin.set(0.87);
   }
 
   public void setGreen(){
-    revSpark.set(0.77);
+    blinkin.set(0.77);
   }
 
   public void setRed(){
-    revSpark.set(0.61);
+    blinkin.set(0.61);
   }
 
   public void setWhite(){
-    revSpark.set(0.93);
+    blinkin.set(0.93);
   }
 
   @Override
