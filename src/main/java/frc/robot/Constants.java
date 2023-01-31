@@ -61,7 +61,7 @@ public final class Constants {
         public final static double solidWhite = 0.93; 
         public final static double breatheRed = -0.17;
         public final static double breatheBlue = -0.15;
-
+        public final static double confetti = -0.87;
 
     }
 

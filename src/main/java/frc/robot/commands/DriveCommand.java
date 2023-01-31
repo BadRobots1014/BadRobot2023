@@ -84,21 +84,26 @@ public class DriveCommand extends CommandBase {
         break;
       // Color 1 If Turning Counterclockwise
       case(MovementConstants.kTurningCounterclockwise):
-      if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-        m_ledSubsystem.set(BlinkinPatternConstants.breatheColor1);
-      } else {
-        m_ledSubsystem.set(BlinkinPatternConstants.solidGreen);
-      }
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheColor1);
+        } else {
+          m_ledSubsystem.set(BlinkinPatternConstants.solidGreen);
+        }
+        break;
       // Color 2 If Turning Clockwise.
       case(MovementConstants.kTurningClockwise):
-      if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-        m_ledSubsystem.set(BlinkinPatternConstants.breatheColor2);
-      } else {
-        m_ledSubsystem.set(BlinkinPatternConstants.solidOrange);
-      }
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheColor2);
+        } else {
+          m_ledSubsystem.set(BlinkinPatternConstants.solidOrange);
+        }
+        break;
+      // Confetti When Spinning in Place
+      case(MovementConstants.kSpinningInPlace):
+        m_ledSubsystem.set(BlinkinPatternConstants.confetti);
+        break;
       default:
         m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
-        break;
     }
 
     
