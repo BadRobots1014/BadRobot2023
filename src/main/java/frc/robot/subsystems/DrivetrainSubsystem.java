@@ -59,7 +59,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         else if (rightSpeed < 0){ // If the right motor is moving backward
-            if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
+            if (Math.abs(leftSpeed-rightSpeed) < 0.2){ // If the left motor is moving backward at about the same rate
                 return MovementConstants.kBackward;
             }
             else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
@@ -71,7 +71,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         else if (rightSpeed > 0){ // If the right motor is moving forwards
-            if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
+            if (Math.abs(leftSpeed-rightSpeed) < 0.2){ // If the left motor is moving forwards at about the same rate
                 return MovementConstants.kForward;
             }
             else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
