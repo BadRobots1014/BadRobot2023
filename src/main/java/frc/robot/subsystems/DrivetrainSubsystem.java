@@ -25,10 +25,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
 
     public DrivetrainSubsystem() {
-        m_left.setInverted(true);
-        m_left2.setInverted(true);
-        m_right.setInverted(false);
-        m_right2.setInverted(false);
+        m_left.setInverted(false);
+        m_left2.setInverted(false);
+        m_right.setInverted(true);
+        m_right2.setInverted(true);
 
         m_left.setNeutralMode(NeutralMode.Brake);
         m_right.setNeutralMode(NeutralMode.Brake);

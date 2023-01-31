@@ -10,11 +10,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ShootCommand;
+import frc.robot.commands.FlipperCommand;
+import frc.robot.commands.SpinUpCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -36,7 +39,10 @@ public class RobotContainer {
   private Joystick leftJoystick;
 
   private ShooterSubsystem shooterSubsystem;
-  private ShootCommand shootCommand;
+  private SpinUpCommand shootCommand;
+
+  private FlipperCommand flipperCommand;
+  private FlipperSubsystem flipperSubsystem;
 
   public double getRightY() {
     return -rightJoystick.getY();
@@ -47,7 +53,7 @@ public class RobotContainer {
   }
 
   public double getRightZ() {
-    return (rightJoystick.getZ() + 1) / 2;
+    return -((rightJoystick.getZ() - 1) / 2);
   }
 
   private double getThrottle() {
@@ -59,12 +65,14 @@ public class RobotContainer {
 
     this.drivetrainSubsystem = new DrivetrainSubsystem();
     this.shooterSubsystem = new ShooterSubsystem();
+    this.flipperSubsystem = new FlipperSubsystem();
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
-    this.shootCommand = new ShootCommand(this.shooterSubsystem, this::getRightZ);
+    this.shootCommand = new SpinUpCommand(this.shooterSubsystem, this::getRightZ);
+    this.flipperCommand = new FlipperCommand(this.flipperSubsystem, ShooterConstants.kFlipperPower);
 
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
@@ -80,8 +88,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    JoystickButton shootButton = new JoystickButton(this.rightJoystick, ControllerConstants.kShootButton);
-    shootButton.whileHeld(this.shootCommand);
+    JoystickButton spinUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kSpinUpButton);
+    spinUpButton.whileHeld(this.shootCommand);
+
+    JoystickButton shootButton = new JoystickButton(this.leftJoystick, ControllerConstants.kShootButton);
+    shootButton.whileHeld(this.flipperCommand);
 
   }
 

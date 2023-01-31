@@ -4,25 +4,23 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.FlipperSubsystem;
 
-/** An example command that uses an example subsystem. */
-public class ShootCommand extends CommandBase {
+/** Controls the flipper thingy. */
+public class FlipperCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ShooterSubsystem m_subsystem;
-  private final DoubleSupplier m_speed;
+  private final FlipperSubsystem m_subsystem;
+  private final double m_power;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootCommand(ShooterSubsystem subsystem, DoubleSupplier speed) {
+  public FlipperCommand(FlipperSubsystem subsystem, double power) {
     m_subsystem = subsystem;
-    m_speed = speed;
+    m_power = power;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -34,13 +32,13 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setFlywheelSpeed(m_speed.getAsDouble());
+    m_subsystem.flip(m_power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.stopFlywheel();
+    m_subsystem.stopFlipper();
   }
 
   // Returns true when the command should end.
