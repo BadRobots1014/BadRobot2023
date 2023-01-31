@@ -54,9 +54,14 @@ public final class Constants {
     public final static class BlinkinPatternConstants {
         public final static double solidRed = 0.61; 
         public final static double solidBlue = 0.87; 
+        public final static double solidGreen = 0.77;
+        public final static double solidOrange = 0.65;
+        public final static double strobeColor1 = 0.15; //Color1 and 2 have to be physically set. Color1 is green
+        public final static double strobeColor2 = 0.35; //Color2 is orange
         public final static double solidWhite = 0.93; 
         public final static double strobeRed = -0.11;
         public final static double strobeBlue = -0.09;
+
 
     }
 
