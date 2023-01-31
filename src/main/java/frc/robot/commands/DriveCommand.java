@@ -57,27 +57,45 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
-
+    //Grabs light direction signifier
     String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
     directionEntry.setString(lightDirection);
+    //Switch Case, sets colors based on the lightdirection signifier
     switch(lightDirection) {
+      // White if Stationary
       case(MovementConstants.kStationary):
         m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
+      // Blue if Forward
       case(MovementConstants.kForward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.strobeBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheBlue);
         } else {
           m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
         }
         break;
+      // Red if Backwards
       case(MovementConstants.kBackward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.strobeRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheRed);
         } else {
           m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
         }
         break;
+      // Color 1 If Turning Counterclockwise
+      case(MovementConstants.kTurningCounterclockwise):
+      if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+        m_ledSubsystem.set(BlinkinPatternConstants.breatheColor1);
+      } else {
+        m_ledSubsystem.set(BlinkinPatternConstants.solidGreen);
+      }
+      // Color 2 If Turning Clockwise.
+      case(MovementConstants.kTurningClockwise):
+      if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+        m_ledSubsystem.set(BlinkinPatternConstants.breatheColor2);
+      } else {
+        m_ledSubsystem.set(BlinkinPatternConstants.solidOrange);
+      }
       default:
         m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
