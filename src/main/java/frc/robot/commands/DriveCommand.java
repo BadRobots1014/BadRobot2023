@@ -29,8 +29,12 @@ public class DriveCommand extends CommandBase {
   private DoubleSupplier m_throttle;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
   private GenericEntry directionEntry =
-       m_tab.add("Direction", "")
-          .getEntry();
+       m_tab.add("Direction", "").getEntry();
+  private GenericEntry patternInput =
+       m_tab.add("Pattern Input", "").getEntry();
+      
+  
+  
   /**
    * Creates a new ExampleCommand.
    *
@@ -62,9 +66,14 @@ public class DriveCommand extends CommandBase {
     directionEntry.setString(lightDirection);
     //Switch Case, sets colors based on the lightdirection signifier
     switch(lightDirection) {
-      // White if Stationary
+      // White if Stationary 
+      // Light Test Mode, Default Should be white, is currently commented, if not testing switch commented status
       case(MovementConstants.kStationary):
-        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        //Testing, default should be fire large pattern
+        double testPatternCode = patternInput.getDouble(-0.57); 
+        m_ledSubsystem.set(testPatternCode);
+        //Not Testing
+        //m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
       // Blue if Forward
       case(MovementConstants.kForward):
