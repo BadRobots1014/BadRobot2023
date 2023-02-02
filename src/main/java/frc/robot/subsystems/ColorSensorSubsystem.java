@@ -1,90 +1,91 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import java.util.function.DoubleSupplier;
+
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+
+import frc.robot.Constants;
+import frc.robot.Constants.SensorConstants;
 
 public class ColorSensorSubsystem extends SubsystemBase {
-protected final static int CMD = 0x80;
-protected final static int MULTI_BYTE_BIT = 0x20;
+    public ColorSensorV3 sensor = new ColorSensorV3(SensorConstants.ColorSensorPort);
+    public double ir;
+    public Color detectedColor = Color.kBlack;
+    public ColorMatch matcher = new ColorMatch();
+    public ColorMatchResult result;
 
-protected final static int ENABLE_REGISTER  = 0x00;
-protected final static int ATIME_REGISTER   = 0x01;
-protected final static int PPULSE_REGISTER  = 0x0E;
+    String colorString = "";
 
-protected final static int ID_REGISTER     = 0x12;
-protected final static int CDATA_REGISTER  = 0x14;
-protected final static int RDATA_REGISTER  = 0x16;
-protected final static int GDATA_REGISTER  = 0x18;
-protected final static int BDATA_REGISTER  = 0x1A;
-protected final static int PDATA_REGISTER  = 0x1C;
 
-protected final static int PON   = 0b00000001;
-protected final static int AEN   = 0b00000010;
-protected final static int PEN   = 0b00000100;
-protected final static int WEN   = 0b00001000;
-protected final static int AIEN  = 0b00010000;
-protected final static int PIEN  = 0b00100000;
+    public ShuffleboardTab mtab = Shuffleboard.getTab("ColorSensor");
 
-private final double integrationTime = 10;
-
-public final ShuffleboardTab m_tab = Shuffleboard.getTab("ColorSensors");
-
-public static int SensorStatus = 0;
-
-private I2C sensor;
-
-private ByteBuffer buffy = ByteBuffer.allocate(8);
-
-public short red = 0, green = 0, blue = 0, prox = 0;
-
-public ColorSensorSubsystem(I2C.Port port) {
-	buffy.order(ByteOrder.LITTLE_ENDIAN);
-    sensor = new I2C(port, 0x39); //0x39 is the address of the Vex ColorSensor V2
-    
-    sensor.write(CMD | 0x00, PON | AEN | PEN);
-    
-    sensor.write(CMD | 0x01, (int) (256-integrationTime/2.38)); //configures the integration time (time for updating color data)
-    sensor.write(CMD | 0x0E, 0b1111);
-    
-}
-
-    public String getColorAsString()
+    public ColorSensorSubsystem()
     {
-        return red + " " + green + " " + blue;
+        mtab.addNumber("Blue", this::getBlue);
+        mtab.addNumber("Green", this::getGreen);
+        mtab.addNumber("Red", this::getRed);
+        mtab.addString("Color", this::getColorString);
+
+        matcher.addColorMatch(kBlueTarget);
+        matcher.addColorMatch(kGreenTarget);
+        matcher.addColorMatch(kRedTarget);
+        matcher.addColorMatch(kYellowTarget);
     }
 
-public void read() {
-	buffy.clear();
-    sensor.read(CMD | MULTI_BYTE_BIT | RDATA_REGISTER, 8, buffy);
-    
-    red = buffy.getShort(0);
-    if(red < 0) { red += 0b10000000000000000; }
-    
-    green = buffy.getShort(2);
-    if(green < 0) { green += 0b10000000000000000; }
-    
-    blue = buffy.getShort(4); 
-    if(blue < 0) { blue += 0b10000000000000000; }
-    
-    prox = buffy.getShort(6); 
-    if(prox < 0) { prox += 0b10000000000000000; }
-    
-}
+    private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
+    private final Color kGreenTarget = new Color(0.197, 0.561, 0.240);
+    private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+    private final Color kYellowTarget = new Color(0.361, 0.524, 0.113);
 
-public int status() {
-	buffy.clear();
-	sensor.read(CMD | 0x13, 1, buffy);
-	return buffy.get(0);
-}
+    public Color getColor()
+    {
+        detectedColor = sensor.getColor();
+        ir = sensor.getIR();
 
-public void close() {
-	sensor.close();
-}
+        result = matcher.matchClosestColor(detectedColor);
 
-}
+        
+        if (result.color == kBlueTarget) {
+            colorString = "Blue";
+          } else if (result.color == kRedTarget) {
+            colorString = "Red";
+          } else if (result.color == kGreenTarget) {
+            colorString = "Green";
+          } else if (result.color == kYellowTarget) {
+            colorString = "Yellow";
+          } else {
+            colorString = "Unknown";
+          }
 
+        return detectedColor;
+    }
+
+    public double getBlue()
+    {
+        return detectedColor.blue;
+    }
+
+    public double getRed()
+    {
+        return detectedColor.red;
+    }
+
+    public double getGreen()
+    {
+        return detectedColor.green;
+    }
+
+    public String getColorString()
+    {
+        return colorString;
+    }
+}

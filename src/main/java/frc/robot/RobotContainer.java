@@ -33,7 +33,7 @@ public class RobotContainer {
 
   private DrivetrainSubsystem drivetrainSubsystem;
 
-  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem(SensorConstants.ColorSensorPort);
+  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
 
   private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
   
