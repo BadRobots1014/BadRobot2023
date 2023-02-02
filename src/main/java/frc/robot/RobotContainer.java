@@ -40,11 +40,11 @@ public class RobotContainer {
   private Joystick leftJoystick;
 
   public double getRightY() {
-    return -rightJoystick.getY();
+    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
   }
 
   public double getLeftY() {
-    return -leftJoystick.getY();
+    return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
   }
 
   private double getThrottle() {
