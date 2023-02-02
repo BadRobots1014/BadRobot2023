@@ -16,7 +16,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-public class DrivetrainSubsystem extends SubsystemBase {
+public class DriveTrainSubsystem extends SubsystemBase {
     private final CANSparkMax m_left = new CANSparkMax(DriveConstants.kLeftPort, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax m_right = new CANSparkMax(DriveConstants.kRightPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -24,7 +24,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
 
-    public DrivetrainSubsystem () {
+    public DriveTrainSubsystem(){
         m_left.setInverted(false);
         m_right.setInverted(true);
         m_right.set(0);
@@ -34,6 +34,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         m_tab.addNumber("Left Power", m_left::get);
         m_tab.addNumber("Right Power", m_right::get);
+        //camera add
+        m_tab.addCamera("CameraTest", "limelight", "10.10.14.15:5802");
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
