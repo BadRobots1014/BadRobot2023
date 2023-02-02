@@ -19,6 +19,8 @@ public final class Constants {
         public final static int kRightJoystickPort = 0;
         public final static int kLeftJoystickPort = 1;
 
+        public final static double kDeadZoneRadius = .1;
+
         public final static double kMaxThrottle = 1.0;
         public final static double kSlowThrottle = 0.5;
         
