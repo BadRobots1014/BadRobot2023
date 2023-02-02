@@ -64,8 +64,10 @@ public class DriveCommand extends CommandBase {
     //Grabs light direction signifier
     String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
     directionEntry.setString(lightDirection);
+    
     //Switch Case, sets colors based on the lightdirection signifier
     switch(lightDirection) {
+      
       // White if Stationary 
       // Light Test Mode, Default Should be white, is currently commented, if not testing switch commented status
       case(MovementConstants.kStationary):
@@ -75,7 +77,8 @@ public class DriveCommand extends CommandBase {
         //Not Testing
         //m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
-      // Blue if Forward
+      
+        // Blue if Forward
       case(MovementConstants.kForward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
           m_ledSubsystem.set(BlinkinPatternConstants.breatheBlue);
@@ -83,6 +86,7 @@ public class DriveCommand extends CommandBase {
           m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
         }
         break;
+      
       // Red if Backwards
       case(MovementConstants.kBackward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
@@ -91,6 +95,7 @@ public class DriveCommand extends CommandBase {
           m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
         }
         break;
+      
       // Color 1 If Turning Counterclockwise
       case(MovementConstants.kTurningCounterclockwise):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
@@ -99,7 +104,8 @@ public class DriveCommand extends CommandBase {
           m_ledSubsystem.set(BlinkinPatternConstants.solidGreen);
         }
         break;
-      // Color 2 If Turning Clockwise.
+      
+        // Color 2 If Turning Clockwise.
       case(MovementConstants.kTurningClockwise):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
           m_ledSubsystem.set(BlinkinPatternConstants.breatheColor2);
@@ -107,7 +113,8 @@ public class DriveCommand extends CommandBase {
           m_ledSubsystem.set(BlinkinPatternConstants.solidOrange);
         }
         break;
-      // Confetti When Spinning in Place
+      
+        // Confetti When Spinning in Place
       case(MovementConstants.kSpinningInPlace):
         m_ledSubsystem.set(BlinkinPatternConstants.confetti);
         break;
