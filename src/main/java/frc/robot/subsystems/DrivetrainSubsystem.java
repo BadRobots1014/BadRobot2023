@@ -46,40 +46,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
             return MovementConstants.kStationary;
         }
 
-        else if (rightSpeed == 0){ // If the right motor isnt moving but the left one is(because the above conditional was false)
-            return MovementConstants.kPivotingOffOfRight;
-        }
-        
-        else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
-            return MovementConstants.kPivotingOffOfLeft;
-        }
-
         else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
             return MovementConstants.kSpinningInPlace;
         }
 
-        else if (rightSpeed < 0){ // If the right motor is moving backward
-            if (Math.abs(leftSpeed-rightSpeed) < 0.2){ // If the left motor is moving backward at about the same rate
-                return MovementConstants.kBackward;
-            }
-            else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
-                return MovementConstants.kTurningCounterclockwise;
-            }
-            else{ // If the right motor is moving backwards faster than the left motor
-                return MovementConstants.kTurningClockwise;
-            }
+        else if (Math.abs(leftSpeed-rightSpeed) < 0.2){ // If the left motor is moving backward at about the same rate
+            if(leftSpeed > 0 && rightSpeed > 0) return MovementConstants.kForward;
+            if(leftSpeed < 0 && rightSpeed < 0) return MovementConstants.kBackward;
         }
 
-        else if (rightSpeed > 0){ // If the right motor is moving forwards
-            if (Math.abs(leftSpeed-rightSpeed) < 0.2){ // If the left motor is moving forwards at about the same rate
-                return MovementConstants.kForward;
-            }
-            else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
-                return MovementConstants.kTurningCounterclockwise;
-            }
-            else{ // If the left motor is going forward faster than the right motor
-                return MovementConstants.kTurningClockwise;
-            }
+        else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
+            return MovementConstants.kTurningCounterclockwise;
+        }
+        
+        else if (leftSpeed > rightSpeed){ // If the right motor is moving backwards faster than the left motor
+            return MovementConstants.kTurningClockwise;
         }
         return MovementConstants.kGetDirectionEdgeCase;
     }
