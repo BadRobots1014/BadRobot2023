@@ -62,6 +62,8 @@ public final class Constants {
         public final static double breatheRed = -0.17;
         public final static double breatheBlue = -0.15;
         public final static double confetti = -0.87;
+        public final static double solidBlack = 0.99; // Primarily For Errors, when something goes boom with the lights
+        
 
     }
 
