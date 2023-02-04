@@ -66,10 +66,13 @@ public class DriveCommand extends CommandBase {
     // Switch Case, sets colors based on the lightdirection signifier
     switch (lightDirection) {
 
+      
       // White if Stationary
       // Light Test Mode, Default Should be white, is currently commented, if not testing switch commented status
       case (MovementConstants.kStationary):
-        // Testing, default should be fire large pattern, Comment when in normal Operations
+      
+      // Testing, default should be fire large pattern, Comment when in normal Operations
+        /*
         double testPatternCode; // Initialized Here So can be used in Try Catch
         // When inputting from shuffle board, if line is cleared instead of digits replaced, throws NumberFormatException, robot shuts off
         try {
@@ -92,18 +95,20 @@ public class DriveCommand extends CommandBase {
             throw new NumberFormatException(); //Handles in Try Catch, sets to Black
           }
 
+          
           m_ledSubsystem.set(testPatternCode);
         } 
         // Prevents things from messing up when inputting codes
         catch (NumberFormatException e) {
             // Sets it to black
             testPatternCode = BlinkinPatternConstants.solidBlack;
-            System.out.println(testPatternCode);
+            
             m_ledSubsystem.set(testPatternCode);
         }
-          
-        // Not Testing/When Actually Using the Robot
-        // m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        */   
+
+        // When Actually Using the Robot, stationary is solid white
+        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
 
       // Blue if Forward
