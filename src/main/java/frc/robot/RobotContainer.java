@@ -43,6 +43,7 @@ public class RobotContainer {
 
   private final BlinkinCommand m_blinkinCommand = new BlinkinCommand(m_blinkinSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
@@ -75,6 +76,9 @@ public class RobotContainer {
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
+    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
+
+
   
 
 
@@ -90,7 +94,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, 1);
-    lightButton.whileTrue(this.m_blinkinCommand);
+    lightButton.whileTrue(this.m_balancecommand);
+
     
   }
 
