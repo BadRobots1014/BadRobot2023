@@ -50,12 +50,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
             return MovementConstants.kSpinningInPlace;
         }
 
-        else if (Math.abs(leftSpeed-rightSpeed) < 0.2 && leftSpeed > 0 && rightSpeed > 0){ //If both motors are moving fowards at a similar speed
-            return MovementConstants.kForward;
-        }
-
-        else if (Math.abs(leftSpeed-rightSpeed) < 0.2 && leftSpeed < 0 && rightSpeed < 0){ //If both motors are moving backwards at a similar speed
-            return MovementConstants.kBackward;
+        else if (Math.abs(leftSpeed-rightSpeed) < 0.2){ // If the left motor is moving backward at about the same rate
+            if(leftSpeed > 0 && rightSpeed > 0) return MovementConstants.kForward;
+            if(leftSpeed < 0 && rightSpeed < 0) return MovementConstants.kBackward;
         }
 
         else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
