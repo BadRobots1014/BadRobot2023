@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DriveCommand;
@@ -18,6 +19,16 @@ import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
+
+import com.kauailabs.navx.*;
+
+
+
+
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,6 +49,8 @@ public class RobotContainer {
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
+
+  private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
   public double getRightY() {
     return -rightJoystick.getY();
@@ -61,6 +74,8 @@ public class RobotContainer {
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+
+  
 
 
     // Configure the button bindings

@@ -23,6 +23,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
+    
 
     public DrivetrainSubsystem() {
         m_left.setInverted(false);
@@ -69,7 +70,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return MovementConstants.kTurningClockwise;
             }
         }
-
+        
         else if (rightSpeed > 0){ // If the right motor is moving forwards
             if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
                 return MovementConstants.kForward;
