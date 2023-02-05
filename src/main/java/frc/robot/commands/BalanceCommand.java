@@ -41,7 +41,17 @@ public class BalanceCommand extends CommandBase {
   public void execute() {
     double angle = m_subsystem.getRoll();
     double speed = 0;
-    if(angle >= 5 && angle < 10){
+    if(Math.abs(angle) >= 5) {
+        // the formula that Noirit used, condensed down
+        speed = angle/40*.35;
+        m_ledsubsystem.setRed();
+        m_drivesubsystem.tankDrive(speed, speed);
+    }
+    else {
+        m_drivesubsystem.stop();
+        m_ledsubsystem.setGreen();
+    }
+    /*if(angle >= 5 && angle < 10){
         speed = 0.10;
     }
     else if(angle >= 10 && angle < 15){
@@ -76,7 +86,7 @@ public class BalanceCommand extends CommandBase {
     else{
         m_drivesubsystem.stop();
         m_ledsubsystem.setGreen();
-    }
+    }*/
   }
 
   // Called once the command ends or is interrupted.
