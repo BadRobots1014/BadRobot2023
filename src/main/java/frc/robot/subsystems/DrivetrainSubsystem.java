@@ -16,7 +16,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-public class DriveTrainSubsystem extends SubsystemBase {
+public class DrivetrainSubsystem extends SubsystemBase {
     private final CANSparkMax m_left = new CANSparkMax(DriveConstants.kLeftPort, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax m_right = new CANSparkMax(DriveConstants.kRightPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -24,7 +24,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
 
-    public DriveTrainSubsystem(){
+    public DrivetrainSubsystem(){
         m_left.setInverted(false);
         m_right.setInverted(true);
         m_right.set(0);
