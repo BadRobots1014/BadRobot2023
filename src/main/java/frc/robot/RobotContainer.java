@@ -7,17 +7,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LimelightCommand;
 import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,9 +32,12 @@ public class RobotContainer {
 
   private final BlinkinCommand m_blinkinCommand = new BlinkinCommand(m_blinkinSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
+  
+  private LimelightSubsystem limelightSubsystem;
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -60,8 +63,10 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
+    this.limelightSubsystem = new LimelightSubsystem();
 
     // Configure the button bindings
     configureButtonBindings();
