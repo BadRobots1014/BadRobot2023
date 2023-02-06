@@ -41,7 +41,7 @@ public class BalanceCommand extends CommandBase {
   @Override
   public void execute() {
     double angle = m_subsystem.getRoll();
-    double speed = 0;
+    double speed;
     if(Math.abs(angle) >= GyroConstants.kBalanceThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         speed = angle * GyroConstants.kBalanceSpeed;
