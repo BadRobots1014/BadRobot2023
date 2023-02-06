@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.GyroConstants;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -41,9 +42,9 @@ public class BalanceCommand extends CommandBase {
   public void execute() {
     double angle = m_subsystem.getRoll();
     double speed = 0;
-    if(Math.abs(angle) >= 5) {
-        // the formula that Noirit used, condensed down
-        speed = angle/40*.35;
+    if(Math.abs(angle) >= GyroConstants.kBalanceThreshold) {
+        // the formula that Noirit used, condensed down (even more now)
+        speed = angle * GyroConstants.kBalanceSpeed;
         m_ledsubsystem.setRed();
         m_drivesubsystem.tankDrive(speed, speed);
     }
