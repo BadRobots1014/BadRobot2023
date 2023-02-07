@@ -23,6 +23,8 @@ public final class Constants {
         public final static double kSlowThrottle = 0.5;
         
         public final static int kThrottleButton = 2;
+
+        public final static int kBalanceButton = 1; //Second joystick
         
     }
 
@@ -60,7 +62,6 @@ public final class Constants {
         public final static double kSolidWhite = 0.93; 
         public final static double kStrobeRed = -0.11;
         public final static double kStrobeBlue = -0.09;
-
 
     }
 

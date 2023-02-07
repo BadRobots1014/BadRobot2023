@@ -82,7 +82,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton lightButton = new JoystickButton(this.leftJoystick, 1);
+    JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
     lightButton.whileTrue(this.m_balancecommand);
 
     
