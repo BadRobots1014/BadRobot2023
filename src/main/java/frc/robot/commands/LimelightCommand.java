@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,17 +12,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class LimelightCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final LimelightSubsystem m_subsystem;
+  private final LimelightSubsystem m_subsystem_vision;
+  private final DrivetrainSubsystem m_subsystem_drivetrain;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public LimelightCommand(LimelightSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public LimelightCommand(LimelightSubsystem l_subsystem, DrivetrainSubsystem d_subsystem) {
+    m_subsystem_vision = l_subsystem;
+    m_subsystem_drivetrain = d_subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    //addRequirements(subsystem);
+    addRequirements(l_subsystem, d_subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +33,10 @@ public class LimelightCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    double angle = m_subsystem_vision.getTableX();
+    m_subsystem_drivetrain.tankDrive(, );
+  }
 
   // Called once the command ends or is interrupted.
   @Override

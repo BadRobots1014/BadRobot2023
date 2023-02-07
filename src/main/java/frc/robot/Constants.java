@@ -28,6 +28,11 @@ public final class Constants {
         
     }
 
+    public final class LimelightConstants {
+
+        public final static int kLineUpMaxSpeed = .2;
+    }
+
     public final class DriveConstants {
 
         public final static int kRightPort = 2;
