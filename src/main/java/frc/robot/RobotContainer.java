@@ -12,12 +12,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.LimelightCommand;
 import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.commands.ConeLineUpCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,7 +37,8 @@ public class RobotContainer {
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
-  private LimelightSubsystem limelightSubsystem;
+  private LimelightSubsystem m_limelightSubsystem;
+  private ConeLineUpCommand m_coneLineUpCommand;
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -66,7 +67,8 @@ public class RobotContainer {
 
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
-    this.limelightSubsystem = new LimelightSubsystem();
+    this.m_limelightSubsystem = new LimelightSubsystem();
+    this.m_coneLineUpCommand = new ConeLineUpCommand(m_limelightSubsystem, drivetrainSubsystem);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -81,6 +83,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, 1);
     lightButton.whileTrue(this.m_blinkinCommand);
+
+    JoystickButton lineUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kLineUpButton);
+    lineUpButton.whileTrue(this.m_coneLineUpCommand);
     
   }
 

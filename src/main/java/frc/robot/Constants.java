@@ -25,12 +25,14 @@ public final class Constants {
         public final static double kSlowThrottle = 0.5;
         
         public final static int kThrottleButton = 2;
+
+        public final static int kLineUpButton = 3;
         
     }
 
     public final class LimelightConstants {
 
-        public final static int kLineUpMaxSpeed = .2;
+        public final static double kLineUpMaxSpeed = .5;
     }
 
     public final class DriveConstants {

@@ -46,4 +46,8 @@ public class LimelightSubsystem extends SubsystemBase{
     public double getTableY() {
         return ty.getDouble(0.0);
     }
+
+    public double getTableA() {
+        return ta.getDouble(0.0);
+    }
 }

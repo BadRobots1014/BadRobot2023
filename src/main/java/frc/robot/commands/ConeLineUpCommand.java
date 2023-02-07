@@ -4,23 +4,27 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class LimelightCommand extends CommandBase {
+public class ConeLineUpCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final LimelightSubsystem m_subsystem_vision;
   private final DrivetrainSubsystem m_subsystem_drivetrain;
+  private final Constants constants = new Constants();
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public LimelightCommand(LimelightSubsystem l_subsystem, DrivetrainSubsystem d_subsystem) {
+  public ConeLineUpCommand(LimelightSubsystem l_subsystem, DrivetrainSubsystem d_subsystem) {
     m_subsystem_vision = l_subsystem;
     m_subsystem_drivetrain = d_subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,8 +38,11 @@ public class LimelightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double angle = m_subsystem_vision.getTableX();
-    m_subsystem_drivetrain.tankDrive(, );
+    //double angle = m_subsystem_vision.getTableX();
+    //double speed = angle/30 * LimelightConstants.kLineUpMaxSpeed;
+    //m_subsystem_drivetrain.tankDrive(speed, -1 * speed);
+    double area_speed = -1 * (m_subsystem_vision.getTableA() - 10)/10 * (LimelightConstants.kLineUpMaxSpeed/2);
+    m_subsystem_drivetrain.tankDrive(area_speed, area_speed);
   }
 
   // Called once the command ends or is interrupted.
