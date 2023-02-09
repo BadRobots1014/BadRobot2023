@@ -26,6 +26,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public DrivetrainSubsystem() {
         m_left.setInverted(false);
         m_right.setInverted(true);
+        m_right.set(0);
 
         m_left.setIdleMode(IdleMode.kBrake);
         m_right.setIdleMode(IdleMode.kBrake);
@@ -36,6 +37,50 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
         m_driveTrain.tankDrive(clampPower(leftSpeed), clampPower(rightSpeed), true);
+    }
+
+    public String getDirection(double leftSpeed, double rightSpeed){
+
+        if (leftSpeed == 0 && rightSpeed == 0){ // If both motors arent moving
+            return "Stationary";
+        }
+
+        else if (rightSpeed == 0){ // If the right motor isnt moving but the left one is(because the above conditional was false)
+            return "Pivoting off of right";
+        }
+        
+        else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
+            return "Pivoting off of left";
+        }
+
+        else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
+            return "Spinning in place";
+        }
+
+        else if (rightSpeed < 0){ // If the right motor is moving backward
+            if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
+                return "Backward";
+            }
+            else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
+                return "Turning Counterclockwise";
+            }
+            else{ // If the right motor is moving backwards faster than the left motor
+                return "Turning Clockwise";
+            }
+        }
+
+        else if (rightSpeed > 0){ // If the right motor is moving forwards
+            if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
+                return "Forward";
+            }
+            else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
+                return "Turning counterclockwise";
+            }
+            else{ // If the left motor is going forward faster than the right motor
+                return "Turning clockwise";
+            }
+        }
+        return "getDirection edge case";
     }
 
     private static double clampPower(double power) {
