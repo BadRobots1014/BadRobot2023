@@ -48,10 +48,10 @@ public class DriveCommand extends CommandBase {
     m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
 
     String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
-    if(lightDirection == "Stationary"){
+    if(lightDirection.equals("Stationary")){
       m_ledSubsystem.setWhite();
     }
-    else if(lightDirection == "Forward"){
+    else if(lightDirection.equals("Forward")){
       m_ledSubsystem.setGreen();
     }
   }
