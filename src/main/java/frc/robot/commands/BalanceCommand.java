@@ -79,10 +79,47 @@ public class BalanceCommand extends CommandBase {
         m_drivesubsystem.tankDrive(speed, speed);
         m_ledsubsystem.setRed();
     }
-    else if(m_subsystem.getRoll() < -25){
-        m_drivesubsystem.tankDrive(-0.5 * 0.5, -0.5 * 0.5);
-        m_ledsubsystem.setRed();
+    else if(angle >= 40 && angle < 45){
+      speed = 0.40;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+  }
+    else if(angle <=-5 && angle > -10){
+      speed = -0.10;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
     }
+    else if(angle <=-10 && angle > -15){
+      speed = -0.15;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+    }
+    else if(angle <=-15 && angle > -20){
+      speed = -0.20;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+    }
+    else if(angle <=-20 && angle > -25){
+      speed = -0.25;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+    }
+    else if(angle <=-25 && angle > -30){
+      speed = -0.30;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+    }
+    else if(angle <=-30 && angle > -35){
+      speed = -0.35;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+    }
+    else if(angle <=-35 && angle > -40){
+      speed = -0.40;
+      m_drivesubsystem.tankDrive(speed, speed);
+      m_ledsubsystem.setRed();
+    }
+    
     else{
         m_drivesubsystem.stop();
         m_ledsubsystem.setGreen();
