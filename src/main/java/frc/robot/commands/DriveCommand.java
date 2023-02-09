@@ -62,24 +62,24 @@ public class DriveCommand extends CommandBase {
     directionEntry.setString(lightDirection);
     switch(lightDirection) {
       case(MovementConstants.kStationary):
-        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
         break;
       case(MovementConstants.kForward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.strobeBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeBlue);
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
         }
         break;
       case(MovementConstants.kBackward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.strobeRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
         }
         break;
       default:
-        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
         break;
     }
 
