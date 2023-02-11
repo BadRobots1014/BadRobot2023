@@ -21,7 +21,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
 
-    private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
+    public static final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
 
     public DrivetrainSubsystem() {
         m_left.setInverted(false);

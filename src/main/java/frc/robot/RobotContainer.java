@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriverPresetNextCommand;
+import frc.robot.commands.DriverPresetPreviousCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ColorSensorCommand;
 import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.DriverPresetsSubsystem;
 import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -29,9 +32,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final DriverPresetsSubsystem m_DriverPresetsSubsystem = new DriverPresetsSubsystem();
 
   private final BlinkinCommand m_blinkinCommand = new BlinkinCommand(m_blinkinSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final DriverPresetNextCommand m_DriverPresetNextCommand = new DriverPresetNextCommand(m_DriverPresetsSubsystem);
+  private final DriverPresetPreviousCommand m_DriverPresetPreviousCommand = new DriverPresetPreviousCommand(m_DriverPresetsSubsystem);
+
 
   private DriveCommand teleopDriveCmd;
 
@@ -53,7 +60,7 @@ public class RobotContainer {
   }
 
   private double getThrottle() {
-    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    return this.rightJoystick.getRawButton(DriverPresetsSubsystem.getkThrottleButton()) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -83,6 +90,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, 1);
     lightButton.whileTrue(this.m_blinkinCommand);
+    JoystickButton Button6 = new JoystickButton(leftJoystick, 6);
+    Button6.whenReleased(m_DriverPresetNextCommand);
+    JoystickButton Button7 = new JoystickButton(leftJoystick, 6);
+    Button7.whenReleased(m_DriverPresetPreviousCommand);
     
   }
 
