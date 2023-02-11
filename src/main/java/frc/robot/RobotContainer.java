@@ -14,6 +14,9 @@ import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.BlinkinCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ColorSensorCommand;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -36,6 +39,10 @@ public class RobotContainer {
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
+
+  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
+
+  private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -43,11 +50,11 @@ public class RobotContainer {
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
   public double getRightY() {
-    return -rightJoystick.getY();
+    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
   }
 
   public double getLeftY() {
-    return -leftJoystick.getY();
+    return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
   }
 
   private double getThrottle() {
@@ -66,10 +73,7 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
-
-
-  
-
+    this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);
 
     // Configure the button bindings
     configureButtonBindings();
