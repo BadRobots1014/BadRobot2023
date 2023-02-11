@@ -17,9 +17,6 @@ import edu.wpi.first.wpilibj.I2C;
 public final class Constants {
 
     public final class ControllerConstants {
-        
-        public final static int kThrottleButton = 2;
-        public final static int kBalanceButton = 1; //Second joystick
 
         // For Joystick
         public final static int kRightJoystickPort = 0;
@@ -30,9 +27,14 @@ public final class Constants {
         public final static double kMaxThrottle = 1.0;
         public final static double kSlowThrottle = 0.5;
         
+        public final static int kThrottleButton = 2;
+        public final static int kBalanceButton = 1; //Second joystick
+        
         // For Xbox
-        public final static int kXboxControllerPort = 0;
+        public final static int kXboxControllerPort = 2;
         public final static double kXboxDeadZoneRadius = .1;
+
+        //Xbox buttons in RobotContainer
     }
 
     public final class DriveConstants {

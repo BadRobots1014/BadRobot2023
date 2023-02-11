@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -43,7 +44,7 @@ public class RobotContainer {
   private XboxController xboxController;
 
   public double getRightY() {
-    if (xboxController == null) {
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
     }
     else {
@@ -52,7 +53,7 @@ public class RobotContainer {
   }
 
   public double getLeftY() {
-    if (xboxController == null) {
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
     }
     else {
@@ -90,10 +91,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
-    lightButton.whileTrue(this.m_balancecommand);
-
-    
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+      balanceButton.whileTrue(this.m_balancecommand);
+    }
+    else {
+      JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
+      balanceButton.whileTrue(this.m_balancecommand);
+    }
   }
 
   /**
