@@ -17,24 +17,32 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    private final CANSparkMax m_left = new CANSparkMax(DriveConstants.kLeftPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax m_right = new CANSparkMax(DriveConstants.kRightPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_leftA = new CANSparkMax(DriveConstants.kLeftAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_leftB = new CANSparkMax(DriveConstants.kLeftBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightA = new CANSparkMax(DriveConstants.kRightAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightB = new CANSparkMax(DriveConstants.kRightBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
+    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
     
 
     public DrivetrainSubsystem() {
-        m_left.setInverted(false);
-        m_right.setInverted(true);
-        m_right.set(0);
+        m_leftA.setInverted(false);
+        m_leftB.setInverted(true);
+        m_rightA.setInverted(true);
+        m_rightB.setInverted(false);
 
-        m_left.setIdleMode(IdleMode.kBrake);
-        m_right.setIdleMode(IdleMode.kBrake);
+        m_leftA.setIdleMode(IdleMode.kBrake);
+        m_leftB.setIdleMode(IdleMode.kBrake);
+        m_rightA.setIdleMode(IdleMode.kBrake);
+        m_rightB.setIdleMode(IdleMode.kBrake);
 
-        m_tab.addNumber("Left Power", m_left::get);
-        m_tab.addNumber("Right Power", m_right::get);
+        m_leftB.follow(m_leftA);
+        m_rightB.follow(m_rightA);
+
+        m_tab.addNumber("Left Power", m_leftA::get);
+        m_tab.addNumber("Right Power", m_rightA::get);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
