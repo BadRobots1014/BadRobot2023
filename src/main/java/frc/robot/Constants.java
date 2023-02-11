@@ -42,7 +42,7 @@ public final class Constants {
     }
 
     public final static class SensorConstants {
-        public final static I2C.Port ColorSensorPort = I2C.Port.kMXP;
+        public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
     }
 
 }
