@@ -1,19 +1,14 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import frc.robot.Constants;
 import frc.robot.Constants.SensorConstants;
 
 public class ColorSensorSubsystem extends SubsystemBase {
