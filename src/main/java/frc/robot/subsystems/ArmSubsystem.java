@@ -12,6 +12,9 @@ public class ArmSubsystem extends SubsystemBase {
   public final int /*change to motor class later */ wristMotor = 0;
   public int shoulderTicks;
   public int wristTicks;
+  public enum ARMPOSITIONS{
+    LOW, MIDDLE, HIGH
+  }
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {}
@@ -19,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+
     this.shoulderTicks = 0;//read ticks from shaft encoder
     this.wristTicks = 0;
 
@@ -31,4 +34,12 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+  public void IK(){
+    //inverse kinematics stuff goes here
+  }
+  public void setPresetPosition(ARMPOSITIONS armPos){
+    //preset position stuff goes here
+  }
+
 }
