@@ -14,8 +14,6 @@ import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.BlinkinCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ColorSensorCommand;
-import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -39,22 +37,30 @@ public class RobotContainer {
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
-
-  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
-
-  private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
 
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
+  private XboxController xboxController;
+
   public double getRightY() {
-    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
+    if (xboxController == null) {
+      return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
+    }
   }
 
   public double getLeftY() {
-    return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
+    if (xboxController == null) {
+      return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
+    }
   }
 
   private double getThrottle() {
@@ -68,6 +74,7 @@ public class RobotContainer {
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
+    this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
