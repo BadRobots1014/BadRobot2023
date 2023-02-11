@@ -91,9 +91,9 @@ public class RobotContainer {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, 1);
     lightButton.whileTrue(this.m_blinkinCommand);
     JoystickButton Button6 = new JoystickButton(leftJoystick, 6);
-    Button6.whenReleased(m_DriverPresetNextCommand);
-    JoystickButton Button7 = new JoystickButton(leftJoystick, 6);
-    Button7.whenReleased(m_DriverPresetPreviousCommand);
+    Button6.whileTrue(m_DriverPresetNextCommand);
+    JoystickButton Button7 = new JoystickButton(leftJoystick, 7);
+    Button7.whileTrue(m_DriverPresetPreviousCommand);
     
   }
 
