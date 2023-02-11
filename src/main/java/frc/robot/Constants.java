@@ -16,14 +16,9 @@ import edu.wpi.first.wpilibj.I2C;
  */
 public final class Constants {
 
-    public final class XBoxConstants {
-        public final static int XBoxPort = 0;
-    }
-
     public final class ControllerConstants {
 
-
-
+        // For Joystick
         public final static int kRightJoystickPort = 0;
         public final static int kLeftJoystickPort = 1;
 
@@ -33,8 +28,10 @@ public final class Constants {
         public final static double kSlowThrottle = 0.5;
         
         public final static int kThrottleButton = 2;
-        public final static int KPresetNext = -1;
-        public final static int KPresetPrevious = -1;
+
+        // For Xbox
+        public final static int kXboxControllerPort = 0;
+        public final static double kXboxDeadZoneRadius = .1;
     }
 
     public final class DriveConstants {
@@ -51,7 +48,9 @@ public final class Constants {
     }
 
     public final static class SensorConstants {
-        public final static I2C.Port ColorSensorPort = I2C.Port.kMXP;
+
+        public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
+
     }
 
 }

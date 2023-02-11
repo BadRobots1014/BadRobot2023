@@ -45,7 +45,7 @@ public class RobotContainer {
       return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
     }
     else {
-      return Math.abs(xboxController.getRightY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getRightY() : 0;
+      return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
     }
   }
 
@@ -69,7 +69,7 @@ public class RobotContainer {
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
-    this.xboxController = new XboxController(Constants.XBoxConstants.XBoxPort);
+    this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
 
