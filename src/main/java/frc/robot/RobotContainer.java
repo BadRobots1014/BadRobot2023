@@ -7,16 +7,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ColorSensorCommand;
+import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.NavXGyroSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,12 +31,19 @@ public class RobotContainer {
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
+
+  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
+
+  private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
+
+  private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
   public double getRightY() {
     return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
@@ -59,6 +68,8 @@ public class RobotContainer {
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
+    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
+    this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -71,6 +82,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
+    lightButton.whileTrue(this.m_balancecommand);
+
 
     
   }

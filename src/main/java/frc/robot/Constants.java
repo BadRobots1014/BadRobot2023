@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -25,6 +27,8 @@ public final class Constants {
         public final static double kSlowThrottle = 0.5;
         
         public final static int kThrottleButton = 2;
+
+        public final static int kBalanceButton = 1; //Second joystick
         
     }
 
@@ -41,7 +45,12 @@ public final class Constants {
 
     }
 
+    public final static class SensorConstants {
+        public final static I2C.Port ColorSensorPort = I2C.Port.kMXP;
+    }
+
     public final static class MovementConstants {
+
         public final static String kStationary = "Stationary";
         public final static String kForward = "Forward";
         public final static String kBackward = "Backward";
@@ -49,9 +58,11 @@ public final class Constants {
         public final static String kTurningClockwise = "Turning Clockwise";
         public final static String kSpinningInPlace = "Spinning in place";
         public final static String kGetDirectionEdgeCase = "getDirection edge case";
+
     }
 
     public final static class BlinkinPatternConstants {
+
         public final static double solidRed = 0.61; 
         public final static double solidBlue = 0.87; 
         public final static double solidGreen = 0.77;
@@ -63,7 +74,13 @@ public final class Constants {
         public final static double breatheBlue = -0.15;
         public final static double confetti = -0.87;
         public final static double solidBlack = 0.99; // Primarily For Errors, when something goes boom with the lights
-        
+    }
+
+    public final static class GyroConstants {
+
+        public final static double kBalanceThreshold = 5; //In degrees off of upright
+        public final static double kBalanceSpeed = 0.027;
+
 
     }
 

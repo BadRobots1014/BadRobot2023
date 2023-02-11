@@ -65,8 +65,7 @@ public class DriveCommand extends CommandBase {
 
     // Switch Case, sets colors based on the lightdirection signifier
     switch (lightDirection) {
-
-      
+     
       // White if Stationary
       // Light Test Mode, Default Should be white, is currently commented, if not testing switch commented status
       case (MovementConstants.kStationary):
@@ -110,22 +109,23 @@ public class DriveCommand extends CommandBase {
         // When Actually Using the Robot, stationary is solid white
         m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
+     
+      case(MovementConstants.kForward):
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeBlue);
 
-      // Blue if Forward
-      case (MovementConstants.kForward):
-        if (m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle) {
-          m_ledSubsystem.set(BlinkinPatternConstants.breatheBlue);
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
         }
         break;
 
       // Red if Backwards
-      case (MovementConstants.kBackward):
-        if (m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle) {
-          m_ledSubsystem.set(BlinkinPatternConstants.breatheRed);
+      case(MovementConstants.kBackward):
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
+
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
         }
         break;
 
@@ -153,6 +153,8 @@ public class DriveCommand extends CommandBase {
         break;
       default:
         m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        break;
+
     }
 
   }
