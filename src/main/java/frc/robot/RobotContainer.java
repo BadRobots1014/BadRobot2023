@@ -41,11 +41,21 @@ public class RobotContainer {
   private XboxController xboxController;
 
   public double getRightY() {
-    return Math.abs(rightJoystick.getY() + xboxController.getRightY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() + xboxController.getRightY() : 0;
+    if (xboxController == null) {
+      return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getRightY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getRightY() : 0;
+    }
   }
 
   public double getLeftY() {
-    return Math.abs(leftJoystick.getY() + xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() + xboxController.getLeftY() : 0;
+    if (xboxController == null) {
+      return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
+    }
   }
 
   private double getThrottle() {
