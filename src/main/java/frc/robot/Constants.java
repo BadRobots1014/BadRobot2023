@@ -29,7 +29,21 @@ public final class Constants {
         public final static int kThrottleButton = 2;
 
         public final static int kBalanceButton = 1; //Second joystick
+
+        public final static int kArmHighButton = 3;//left joystick middle top button
+        public final static int kArmMediumButton = 5;//left joystick top right button
+        public final static int kArmLowButton = 2;//left joystick middle bottom button
+        public final static int kArmStoreButton = 4;//left joystick top left button
+
         
+    }
+    public final class ArmConstants{
+        //set preset arm positions
+        public final static int kArmHighPos = 0;
+        public final static int kArmMiddlePos = 0;
+        public final static int kArmLowPos = 0;
+        public final static int kArmStoredPos = 0;
+
     }
 
     public final class DriveConstants {
