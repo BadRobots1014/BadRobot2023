@@ -92,9 +92,28 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
     lightButton.whileTrue(this.m_balancecommand);
+    JoystickButton ArmStoredButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmStoreButton);
+    ArmStoredButton.whileTrue(this.m_armCommand);
+    if(ArmStoredButton.getAsBoolean()){
+      m_setArm = 0;
+    }
+    JoystickButton ArmLowButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmLowButton);
+    ArmLowButton.whileTrue(this.m_armCommand);
+    if(ArmStoredButton.getAsBoolean()){
+      m_setArm = 1;
+    }
+    JoystickButton ArmMediumButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMediumButton);
+    ArmLowButton.whileTrue(this.m_armCommand);
+    if(ArmMediumButton.getAsBoolean()){
+      m_setArm = 2;
+    }
     JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armCommand);
-    ArmHighButton.whileTrue(m_setArm = 0);
+    if(!ArmHighButton.getAsBoolean()){
+      m_setArm = 3;
+      System.out.println("HIGHGHHG");
+    }
+    
   }
 
   /**

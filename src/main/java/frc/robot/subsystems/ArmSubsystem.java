@@ -21,7 +21,7 @@ public class ArmSubsystem extends SubsystemBase {
   public int shoulderTicks;
   public int wristTicks;
 
-  public String armPosition = "STORED";
+  public static String armPosition = "STORED";
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
