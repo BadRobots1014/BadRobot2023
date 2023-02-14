@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ExampleSubsystem;
+
+import java.util.function.IntSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -12,14 +15,16 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ArmCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+  private int m_setArm;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommand(ArmSubsystem subsystem) {
+  public ArmCommand(ArmSubsystem subsystem, int setArm) {
     m_armSubsystem = subsystem;
+    m_setArm = setArm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -32,7 +37,24 @@ public class ArmCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    switch (m_setArm){
+      case 0:
+      ArmSubsystem.armPosition = "STORED";
+      break;
+      case 1:
+      ArmSubsystem.armPosition = "LOW";
+      break;
+      case 2:
+      ArmSubsystem.armPosition = "MEDIUM";
+      break;
+      case 3:
+      ArmSubsystem.armPosition = "HIGH";
+      break;
+
+    }
+    ArmSubsystem.setPresetPosition(ArmSubsystem.armPosition);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

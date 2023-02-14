@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.IntSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -35,7 +37,8 @@ public class RobotContainer {
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  private int m_setArm;
+  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem, m_setArm);
   private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
 
@@ -89,6 +92,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
     lightButton.whileTrue(this.m_balancecommand);
+    JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
+    ArmHighButton.whileTrue(this.m_armCommand);
+    ArmHighButton.whileTrue(m_setArm = 0);
   }
 
   /**

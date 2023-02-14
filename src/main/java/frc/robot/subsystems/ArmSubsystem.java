@@ -13,7 +13,7 @@ public class ArmSubsystem extends SubsystemBase {
   public final int /*change to motor class later */ wristMotor = 0;
   public int shoulderTicks;
   public int wristTicks;
-  public String armPosition = "STORED";
+  public static String armPosition = "STORED";
   
 
   /** Creates a new ExampleSubsystem. */
@@ -44,12 +44,15 @@ public class ArmSubsystem extends SubsystemBase {
       System.out.println("ARM IS STORED");
       break;
       case "LOW":
+      armPosition = "LOW";
       System.out.println("ARM IS LOW");
       break;
       case "MEDIUM":
+      armPosition = "MEDIUM";
       System.out.println("ARM IS MEDIUM");
       break;
       case "HIGH":
+      armPosition = "HIGH";
       System.out.println("ARM IS HIGH");
       break;
 
