@@ -28,7 +28,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public DrivetrainSubsystem() {
         m_left.setInverted(false);
         m_right.setInverted(true);
-        m_right.set(0);
+        
 
         m_left.setIdleMode(IdleMode.kBrake);
         m_right.setIdleMode(IdleMode.kBrake);

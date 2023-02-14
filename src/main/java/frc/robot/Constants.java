@@ -44,6 +44,10 @@ public final class Constants {
         public final static int kArmLowPos = 0;
         public final static int kArmStoredPos = 0;
 
+        // motor ports
+        public final static int kGrabberPort = -1; // Has to be set 
+
+
     }
 
     public final class DriveConstants {

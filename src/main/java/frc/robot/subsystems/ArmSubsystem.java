@@ -4,20 +4,30 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+
 
 public class ArmSubsystem extends SubsystemBase {
 
   public final int/*change to motor class later */ shoulderMotor = 0;
   public final int /*change to motor class later */ wristMotor = 0;
+  private final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public int shoulderTicks;
   public int wristTicks;
   public String armPosition = "STORED";
-  
 
   /** Creates a new ExampleSubsystem. */
-  public ArmSubsystem() {}
+  public ArmSubsystem() {
+    m_grabber.setInverted(false); // Find out if needs to be T/F Later
+    m_grabber.setIdleMode(IdleMode.kCoast);
+
+  }
 
   @Override
   public void periodic() {
@@ -25,6 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     this.shoulderTicks = 0;//read ticks from shaft encoder
     this.wristTicks = 0;
+
   }
 
   @Override
@@ -52,8 +63,18 @@ public class ArmSubsystem extends SubsystemBase {
       case "HIGH":
       System.out.println("ARM IS HIGH");
       break;
-
     }
-    
   }
+
+  public void runGrabber(double power){
+    m_grabber.set(clampPower(power));
+  }
+
+  private static double clampPower(double power) {
+    return MathUtil.clamp(power, -1.0, 1.0);
+  } 
+
+  
+
+
 }
