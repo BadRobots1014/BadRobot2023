@@ -18,7 +18,7 @@ public class ArmCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ArmSubsystem subsystem) {
+  public ArmCommand(ArmSubsystem subsystem) {
     m_armSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -27,7 +27,7 @@ public class ArmCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ArmSubsystem.setPresetPosition(m_armSubsystem.currArmState = m_armSubsystem.ARMPOSITIONS.STORED)
+    ArmSubsystem.setPresetPosition("STORED");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

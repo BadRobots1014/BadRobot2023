@@ -13,10 +13,8 @@ public class ArmSubsystem extends SubsystemBase {
   public final int /*change to motor class later */ wristMotor = 0;
   public int shoulderTicks;
   public int wristTicks;
-  public enum ARMPOSITIONS{
-    STORED, LOW MIDDLE, HIGH
-  }
-  ARMPOSITIONS currArmState = ARMPOSITIONS.STORED;
+  public String armPosition = "STORED";
+  
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {}
@@ -27,10 +25,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     this.shoulderTicks = 0;//read ticks from shaft encoder
     this.wristTicks = 0;
-
-
-
-
   }
 
   @Override
@@ -41,11 +35,25 @@ public class ArmSubsystem extends SubsystemBase {
   public void IK(){
     //inverse kinematics stuff goes here
   }
-  public void setPresetPosition(ARMPOSITIONS armPos){
+  public static void setPresetPosition(String armPosition){
     //preset position stuff goes here
-    if(armPos = ARMPOSITIONS.STORED){
-      
-      System.out.println("ARM STORED")
-  }
 
+    switch (armPosition){
+      case "STORED":
+      armPosition = "STORED";
+      System.out.println("ARM IS STORED");
+      break;
+      case "LOW":
+      System.out.println("ARM IS LOW");
+      break;
+      case "MEDIUM":
+      System.out.println("ARM IS MEDIUM");
+      break;
+      case "HIGH":
+      System.out.println("ARM IS HIGH");
+      break;
+
+    }
+    
+  }
 }
