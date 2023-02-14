@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
@@ -13,8 +14,9 @@ public class ArmSubsystem extends SubsystemBase {
   public int shoulderTicks;
   public int wristTicks;
   public enum ARMPOSITIONS{
-    LOW, MIDDLE, HIGH
+    STORED, LOW MIDDLE, HIGH
   }
+  ARMPOSITIONS currArmState = ARMPOSITIONS.STORED;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {}
@@ -25,6 +27,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     this.shoulderTicks = 0;//read ticks from shaft encoder
     this.wristTicks = 0;
+
 
 
 
@@ -40,6 +43,9 @@ public class ArmSubsystem extends SubsystemBase {
   }
   public void setPresetPosition(ARMPOSITIONS armPos){
     //preset position stuff goes here
+    if(armPos = ARMPOSITIONS.STORED){
+      
+      System.out.println("ARM STORED")
   }
 
 }

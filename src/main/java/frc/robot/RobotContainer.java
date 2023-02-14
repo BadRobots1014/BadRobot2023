@@ -30,8 +30,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final ArmCommand m_armCommand = new m_ArmCommand(m_armSubsystem)
   private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
 
