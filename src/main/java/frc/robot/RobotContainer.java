@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
@@ -107,12 +108,13 @@ public class RobotContainer {
     if(ArmMediumButton.getAsBoolean()){
       m_setArm = 2;
     }
-    JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
+    Trigger ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armCommand);
-    if(!ArmHighButton.getAsBoolean()){
+    if(ArmHighButton.getAsBoolean()){
       m_setArm = 3;
       System.out.println("HIGHGHHG");
     }
+    
     
   }
 

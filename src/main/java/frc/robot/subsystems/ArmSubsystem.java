@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 
 
@@ -68,6 +69,14 @@ public class ArmSubsystem extends SubsystemBase {
       System.out.println("ARM IS HIGH");
       break;
     }
+  }
+
+  public void closeGrabber(){
+    m_grabber.set(clampPower(1));
+  }
+
+  public void openGrabber(){
+    m_grabber.set(clampPower(-1));
   }
 
   public void runGrabber(double power){
