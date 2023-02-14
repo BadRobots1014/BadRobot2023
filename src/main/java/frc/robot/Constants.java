@@ -29,10 +29,11 @@ public final class Constants {
 
         public final static double kMaxThrottle = 1.0;
         public final static double kSlowThrottle = 0.5;
+        public final static int kHeadingCorrectButton = 0;
+        public final static int kXboxControllerPort = 2;
+        public final static double kXboxDeadZoneRadius = 0.1;
+     
         
-        // For Xbox
-        public final static int kXboxControllerPort = 0;
-        public final static double kXboxDeadZoneRadius = .1;
     }
 
     public final class DriveConstants {

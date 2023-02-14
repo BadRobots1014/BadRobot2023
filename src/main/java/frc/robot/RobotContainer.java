@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.BalanceCommand;
+import frc.robot.commands.BlinkinCommand;
+import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
@@ -29,8 +31,10 @@ public class RobotContainer {
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  private final BlinkinCommand m_blinkinCommand = new BlinkinCommand(m_blinkinSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final BalanceCommand m_balancecommand;
+  private final DriveStraightCommand m_drivestraightcommand;
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
@@ -78,7 +82,7 @@ public class RobotContainer {
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
-
+    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -92,6 +96,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
     lightButton.whileTrue(this.m_balancecommand);
+    JoystickButton headingCorrect = new JoystickButton(this.rightJoystick, ControllerConstants.kHeadingCorrectButton);
+    headingCorrect.whileTrue(this.m_drivestraightcommand);
+    
 
     
   }
