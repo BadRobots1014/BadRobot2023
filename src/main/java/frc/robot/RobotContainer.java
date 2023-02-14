@@ -85,8 +85,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
     lightButton.whileTrue(this.m_balancecommand);
-
-    
   }
 
   /**

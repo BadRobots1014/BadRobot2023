@@ -15,8 +15,6 @@ public class BlinkinSubsystem extends SubsystemBase {
 
   private final Spark blinkin = new Spark(BlinkinConstants.kBlinkinPort);
 
-  
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
