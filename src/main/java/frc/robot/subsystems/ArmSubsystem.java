@@ -15,8 +15,8 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  public final int/*change to motor class later */ shoulderMotor = 0;
-  public final int /*change to motor class later */ wristMotor = 0;
+  public final int/*change to motor class later */ baseMotor = 0;
+  public final int /*change to motor class later */ forearmMotor = 0;
   private final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public int shoulderTicks;
   public int wristTicks;
@@ -73,8 +73,5 @@ public class ArmSubsystem extends SubsystemBase {
   private static double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);
   } 
-
-  
-
 
 }
