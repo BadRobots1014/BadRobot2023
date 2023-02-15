@@ -98,7 +98,7 @@ public class RobotContainer {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
-      JoystickButton driveStraightButton = new JoystickButton(leftJoystick, ControllerConstants.kDriveStraightButton);
+      JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
       driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
     }
     else {
