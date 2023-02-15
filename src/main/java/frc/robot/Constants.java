@@ -92,7 +92,9 @@ public final class Constants {
     public final static class GyroConstants {
 
         public final static double kBalanceThreshold = 5; //In degrees off of upright
+        public final static double kOffsetThreshold = 0.25;
         public final static double kBalanceSpeed = 0.027;
+        public final static double kOffsetSpeed = 0.027;
         
 
     }
