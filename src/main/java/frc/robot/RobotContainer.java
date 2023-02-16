@@ -4,20 +4,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.BlinkinCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.ConeLineUpCommand;
+import frc.robot.subsystems.NavXGyroSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,10 +32,11 @@ public class RobotContainer {
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  private final BlinkinCommand m_blinkinCommand = new BlinkinCommand(m_blinkinSubsystem);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private DriveCommand teleopDriveCmd;
+  private final BalanceCommand m_balancecommand;
+
+private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
@@ -43,12 +46,26 @@ public class RobotContainer {
   private Joystick rightJoystick;
   private Joystick leftJoystick;
 
+  private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
+
+  private XboxController xboxController;
+
   public double getRightY() {
-    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
+    }
   }
 
   public double getLeftY() {
-    return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
+    }
   }
 
   private double getThrottle() {
@@ -62,6 +79,7 @@ public class RobotContainer {
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
+    this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
 
@@ -69,6 +87,8 @@ public class RobotContainer {
 
     this.m_limelightSubsystem = new LimelightSubsystem();
     this.m_coneLineUpCommand = new ConeLineUpCommand(m_limelightSubsystem, drivetrainSubsystem);
+    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
+    // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     // Configure the button bindings
     configureButtonBindings();
@@ -87,6 +107,14 @@ public class RobotContainer {
     JoystickButton lineUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kLineUpButton);
     lineUpButton.whileTrue(this.m_coneLineUpCommand);
     
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+      balanceButton.whileTrue(this.m_balancecommand);
+    }
+    else {
+      JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
+      balanceButton.whileTrue(this.m_balancecommand);
+    }
   }
 
   /**

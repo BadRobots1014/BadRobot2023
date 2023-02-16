@@ -7,14 +7,12 @@ package frc.robot.commands;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.Constants.BlinkinPatternConstants;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.MovementConstants;
 import frc.robot.subsystems.BlinkinSubsystem;
 
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -63,64 +61,23 @@ public class DriveCommand extends CommandBase {
         m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
     directionEntry.setString(lightDirection);
 
-    // Switch Case, sets colors based on the lightdirection signifier
-    switch (lightDirection) {
-
-      // White if Stationary
-      // Light Test Mode, Default Should be white, is currently commented, if not testing switch commented status
-      case (MovementConstants.kStationary):
-        // Testing, default should be fire large pattern, Comment when in normal Operations
-        double testPatternCode; // Initialized Here So can be used in Try Catch
-        // When inputting from shuffle board, if line is cleared instead of digits replaced, throws NumberFormatException, robot shuts off
-        try {
-          //Gets raw patternCode Input
-          testPatternCode = Double.parseDouble(patternInput.getString("-0.57"));
-          //Prevents raw Input from breaking Stuff
-          // Funky Little Type Changing stuff
-          // Rounds Values to 2 decimal Places, makes int since has to be whole number to change to odd
-          int wholePatternCode = Math.round(Double.valueOf(testPatternCode).floatValue() * 100);
-          // Checks for Even Numbers
-          if (wholePatternCode % 2 == 0){ 
-            // Prevents Even Codes from being used, goes down 1
-            wholePatternCode = wholePatternCode - 1;
-          }
-          // Makes Double to Allow for division + Changes Back to decimal
-          testPatternCode = (double)wholePatternCode / 100;
-
-          //Bounds codes to -1 and 1
-          if(Math.abs(testPatternCode) >= 1){
-            throw new NumberFormatException(); //Handles in Try Catch, sets to Black
-          }
-
-          m_ledSubsystem.set(testPatternCode);
-        } 
-        // Prevents things from messing up when inputting codes
-        catch (NumberFormatException e) {
-            // Sets it to black
-            testPatternCode = BlinkinPatternConstants.solidBlack;
-            System.out.println(testPatternCode);
-            m_ledSubsystem.set(testPatternCode);
-        }
-          
-        // Not Testing/When Actually Using the Robot
-        // m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+    switch(lightDirection) {
+      case(MovementConstants.kStationary):
+        m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
         break;
-
-      // Blue if Forward
-      case (MovementConstants.kForward):
-        if (m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle) {
-          m_ledSubsystem.set(BlinkinPatternConstants.breatheBlue);
+      case(MovementConstants.kForward):
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeBlue);
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
         }
         break;
 
-      // Red if Backwards
-      case (MovementConstants.kBackward):
-        if (m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle) {
-          m_ledSubsystem.set(BlinkinPatternConstants.breatheRed);
+      case(MovementConstants.kBackward):
+        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
         }
         break;
 
@@ -147,7 +104,8 @@ public class DriveCommand extends CommandBase {
         m_ledSubsystem.set(BlinkinPatternConstants.confetti);
         break;
       default:
-        m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
+        m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
+        break;
     }
 
   }
