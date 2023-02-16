@@ -76,11 +76,11 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, m_blinkinSubsystem);
     
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
-    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem);
+    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, this::getLeftY);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     // Configure the button bindings
@@ -99,12 +99,8 @@ public class RobotContainer {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
       JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
-      if (driveStraightButton.getAsBoolean()){
-        driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
-      }else{
-        this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
-
-      }
+      driveStraightButton.whileTrue(this.m_drivestraightcommand); //drivestraight button
+      driveStraightButton.whileFalse(this.teleopDriveCmd);
 
     }
     else {
