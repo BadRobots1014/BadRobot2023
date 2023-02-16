@@ -41,6 +41,7 @@ public class DriveStraightCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_subsystem.reset();
     initial_yaw = m_subsystem.getYaw();
   }
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,12 +53,24 @@ public class DriveStraightCommand extends CommandBase {
     if(angle >= GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         double speed = angle * GyroConstants.kOffsetSpeed;
-        m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble(),m_driveSpeed.getAsDouble()+speed);
+        if(m_driveSpeed.getAsDouble()>0){
+          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble(),m_driveSpeed.getAsDouble()+speed);
+        }
+        if(m_driveSpeed.getAsDouble()<0){
+          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble(),m_driveSpeed.getAsDouble()-speed);
+        }
+        
+        
     }
     if(angle <= -1 * GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         double speed = angle * GyroConstants.kOffsetSpeed;
-        m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble()+speed,m_driveSpeed.getAsDouble());
+        if(m_driveSpeed.getAsDouble()>0){
+          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble()+speed,m_driveSpeed.getAsDouble());
+        }
+        if(m_driveSpeed.getAsDouble()<0){
+          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble()-speed,m_driveSpeed.getAsDouble());
+        }
     }
   }
 
