@@ -22,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
   public int shoulderTicks;
   public int wristTicks;
 
-  public static String armPosition = "STORED";
+  public static String armPosition = ArmConstants.kArmStored;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
@@ -52,20 +52,20 @@ public class ArmSubsystem extends SubsystemBase {
     //preset position stuff goes here
 
     switch (armPosition){
-      case "STORED":
-      armPosition = "STORED";
+      case ArmConstants.kArmStored:
+      armPosition = ArmConstants.kArmStored;
       System.out.println("ARM IS STORED");
       break;
-      case "LOW":
-      armPosition = "LOW";
+      case ArmConstants.kArmLow:
+      armPosition = ArmConstants.kArmLow;
       System.out.println("ARM IS LOW");
       break;
-      case "MEDIUM":
-      armPosition = "MEDIUM";
+      case ArmConstants.kArmMedium:
+      armPosition = ArmConstants.kArmMedium;
       System.out.println("ARM IS MEDIUM");
       break;
-      case "HIGH":
-      armPosition = "HIGH";
+      case ArmConstants.kArmHigh:
+      armPosition = ArmConstants.kArmHigh;
       System.out.println("ARM IS HIGH");
       break;
     }

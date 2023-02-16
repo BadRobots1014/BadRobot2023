@@ -39,10 +39,19 @@ public final class Constants {
     }
     public final class ArmConstants{
         //set preset arm positions
-        public final static int kArmHighPos = 0;
-        public final static int kArmMiddlePos = 0;
-        public final static int kArmLowPos = 0;
+        public final static int kArmHighPos = 3;
+        public final static String kArmHigh = "HIGH";
+
+        public final static int kArmMiddlePos = 2;
+        public final static String kArmMedium = "MEDIUM";
+        
+        public final static int kArmLowPos = 1;
+        public final static String kArmLow = "LOW";
+
         public final static int kArmStoredPos = 0;
+        public final static String kArmStored = "STORED";
+
+        
 
         // motor ports
         public final static int kGrabberPort = -1; // Has to be set 

@@ -9,6 +9,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import java.util.function.IntSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -32,24 +33,24 @@ public class ArmCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ArmSubsystem.setPresetPosition("STORED");
+    ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     switch (m_setArm){
-      case 0:
-      ArmSubsystem.armPosition = "STORED";
+      case ArmConstants.kArmStoredPos:
+      ArmSubsystem.armPosition = ArmConstants.kArmStored;
       break;
-      case 1:
-      ArmSubsystem.armPosition = "LOW";
+      case ArmConstants.kArmLowPos:
+      ArmSubsystem.armPosition = ArmConstants.kArmLow;
       break;
-      case 2:
-      ArmSubsystem.armPosition = "MEDIUM";
+      case ArmConstants.kArmMiddlePos:
+      ArmSubsystem.armPosition = ArmConstants.kArmMedium;
       break;
-      case 3:
-      ArmSubsystem.armPosition = "HIGH";
+      case ArmConstants.kArmHighPos:
+      ArmSubsystem.armPosition = ArmConstants.kArmHigh;
       break;
 
     }

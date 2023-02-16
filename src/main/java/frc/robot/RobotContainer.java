@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
@@ -93,25 +94,28 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
     lightButton.whileTrue(this.m_balancecommand);
+
+    // Arm Setting Button Bindings
+
     JoystickButton ArmStoredButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmStoreButton);
     ArmStoredButton.whileTrue(this.m_armCommand);
     if(ArmStoredButton.getAsBoolean()){
-      m_setArm = 0;
+      m_setArm = ArmConstants.kArmStoredPos;
     }
     JoystickButton ArmLowButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmLowButton);
     ArmLowButton.whileTrue(this.m_armCommand);
     if(ArmStoredButton.getAsBoolean()){
-      m_setArm = 1;
+      m_setArm = ArmConstants.kArmLowPos;
     }
     JoystickButton ArmMediumButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMediumButton);
     ArmLowButton.whileTrue(this.m_armCommand);
     if(ArmMediumButton.getAsBoolean()){
-      m_setArm = 2;
+      m_setArm = ArmConstants.kArmMiddlePos;
     }
     Trigger ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armCommand);
     if(ArmHighButton.getAsBoolean()){
-      m_setArm = 3;
+      m_setArm = ArmConstants.kArmHighPos;
       System.out.println("HIGHGHHG");
     }
     
