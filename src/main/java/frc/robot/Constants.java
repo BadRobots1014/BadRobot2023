@@ -54,7 +54,9 @@ public final class Constants {
         
 
         // motor ports
-        public final static int kGrabberPort = -1; // Has to be set 
+        public final static int kGrabberPort = 7; 
+        public final static int kExtenderPort = 5; 
+        public final static int kWinchPort = 6; 
 
 
     }

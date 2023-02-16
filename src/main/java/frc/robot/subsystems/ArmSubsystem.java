@@ -16,8 +16,8 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  public final int/*change to motor class later */ baseMotor = 0;
-  public final int /*change to motor class later */ forearmMotor = 0;
+  private final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
+  private final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public int shoulderTicks;
   public int wristTicks;
@@ -29,6 +29,12 @@ public class ArmSubsystem extends SubsystemBase {
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kCoast);
 
+    m_winch.setInverted(false); // Find out if needs to be T/F
+    m_winch.setIdleMode(IdleMode.kBrake);
+
+    m_extender.setInverted(false); // Find out if needs to be T/F
+    m_extender.setIdleMode(IdleMode.kBrake);
+    
   }
 
   @Override
@@ -81,6 +87,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void runGrabber(double power){
     m_grabber.set(clampPower(power));
+  }
+
+  public void runExtender(double power){
+    m_extender.set(clampPower(power));
+  }
+
+  public void runWinch(double power){
+    m_winch.set(clampPower(power));
   }
 
   private static double clampPower(double power) {

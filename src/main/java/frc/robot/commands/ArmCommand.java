@@ -26,6 +26,7 @@ public class ArmCommand extends CommandBase {
   public ArmCommand(ArmSubsystem subsystem, int setArm) {
     m_armSubsystem = subsystem;
     m_setArm = setArm;
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
