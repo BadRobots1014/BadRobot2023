@@ -58,6 +58,11 @@ public final class Constants {
 
     }
 
+    public final class LimelightConstants {
+
+        public final static double kLineUpMaxSpeed = .5;
+    }
+
     public final static class MovementConstants {
 
         public final static String kStationary = "Stationary";
