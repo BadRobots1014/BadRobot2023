@@ -77,6 +77,7 @@ public class RobotContainer {
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
@@ -97,20 +98,20 @@ public class RobotContainer {
   
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
-      
+      balanceButton.whileTrue(this.m_balancecommand);
       JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
      
       driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
       
-      //driveStraightButton.whileFalse(this.teleopDriveCmd);
-      //balanceButton.whileTrue(this.m_balancecommand);
+      driveStraightButton.whileFalse(this.teleopDriveCmd);
+      balanceButton.whileTrue(this.m_balancecommand);
 
       
 
     }
     else {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
-      //balanceButton.whileTrue(this.m_balancecommand);
+      balanceButton.whileTrue(this.m_balancecommand);
     }
   }
 
