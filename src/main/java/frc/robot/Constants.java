@@ -26,8 +26,10 @@ public final class Constants {
 
         public final static double kMaxThrottle = 1.0;
         public final static double kSlowThrottle = 0.5;
-        
         public final static int kThrottleButton = 2;
+        
+        public final static int kLineUpButton = 3;
+        
         public final static int kBalanceButton = 1; //Second joystick
         
         // For Xbox
@@ -35,6 +37,11 @@ public final class Constants {
         public final static double kXboxDeadZoneRadius = .1;
 
         //Xbox buttons in RobotContainer
+    }
+
+    public final class LimelightConstants {
+
+        public final static double kLineUpMaxSpeed = .5;
     }
 
     public final class DriveConstants {
@@ -52,6 +59,7 @@ public final class Constants {
 
     }
 
+
     public final static class SensorConstants {
 
         public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
@@ -61,12 +69,10 @@ public final class Constants {
     public final static class MovementConstants {
 
         public final static String kStationary = "Stationary";
-        public final static String kPivotingOffOfRight = "Pivoting off of right";
-        public final static String kPivotingOffOfLeft = "Pivoting off of left";
+        public final static String kForward = "Forward";
         public final static String kBackward = "Backward";
         public final static String kTurningCounterclockwise = "Turning Counterclockwise";
         public final static String kTurningClockwise = "Turning Clockwise";
-        public final static String kForward = "Forward";
         public final static String kSpinningInPlace = "Spinning in place";
         public final static String kGetDirectionEdgeCase = "getDirection edge case";
 

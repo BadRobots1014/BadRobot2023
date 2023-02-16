@@ -17,6 +17,8 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.commands.ConeLineUpCommand;
 import frc.robot.subsystems.NavXGyroSubsystem;
 
 /**
@@ -31,10 +33,15 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
   private final BalanceCommand m_balancecommand;
-  private DriveCommand teleopDriveCmd;
+
+private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
+  
+  private LimelightSubsystem m_limelightSubsystem;
+  private ConeLineUpCommand m_coneLineUpCommand;
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -75,8 +82,11 @@ public class RobotContainer {
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
+    this.m_limelightSubsystem = new LimelightSubsystem();
+    this.m_coneLineUpCommand = new ConeLineUpCommand(m_limelightSubsystem, drivetrainSubsystem);
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
@@ -91,6 +101,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    JoystickButton lightButton = new JoystickButton(this.leftJoystick, 1);
+    lightButton.whileTrue(this.m_blinkinCommand);
+
+    JoystickButton lineUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kLineUpButton);
+    lineUpButton.whileTrue(this.m_coneLineUpCommand);
+    
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);

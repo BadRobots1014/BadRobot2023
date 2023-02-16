@@ -19,19 +19,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DrivetrainSubsystem m_subsystem;
   private final BlinkinSubsystem m_ledSubsystem;
   private DoubleSupplier m_rightSpeed;
   private DoubleSupplier m_leftSpeed;
   private DoubleSupplier m_throttle;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
-  private GenericEntry directionEntry =
-       m_tab.add("Direction", "")
-          .getEntry();
+  private GenericEntry directionEntry = m_tab.add("Direction", "").getEntry();
+  private GenericEntry patternInput = m_tab.add("Pattern Input", "-0.57").getEntry();
+
   /**
    * Creates a new ExampleCommand.
-   *
+   *3
    * @param subsystem The subsystem used by this command.
    */
   public DriveCommand(DrivetrainSubsystem subsystem, DoubleSupplier rightSpeed, DoubleSupplier leftSpeed, DoubleSupplier throttle, BlinkinSubsystem lightSubsystem) {
@@ -54,10 +54,13 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
-
-    String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
+    m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(),
+        m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
+    // Grabs light direction signifier
+    String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(),
+        m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
     directionEntry.setString(lightDirection);
+
     switch(lightDirection) {
       case(MovementConstants.kStationary):
         m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
@@ -69,6 +72,7 @@ public class DriveCommand extends CommandBase {
           m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
         }
         break;
+
       case(MovementConstants.kBackward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
           m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
@@ -76,17 +80,40 @@ public class DriveCommand extends CommandBase {
           m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
         }
         break;
+
+      // Color 1 If Turning Counterclockwise
+      case (MovementConstants.kTurningCounterclockwise):
+        if (m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle) {
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheColor1);
+        } else {
+          m_ledSubsystem.set(BlinkinPatternConstants.solidGreen);
+        }
+        break;
+
+      // Color 2 If Turning Clockwise.
+      case (MovementConstants.kTurningClockwise):
+        if (m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle) {
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheColor2);
+        } else {
+          m_ledSubsystem.set(BlinkinPatternConstants.solidOrange);
+        }
+        break;
+
+      // Confetti When Spinning in Place
+      case (MovementConstants.kSpinningInPlace):
+        m_ledSubsystem.set(BlinkinPatternConstants.confetti);
+        break;
       default:
         m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
         break;
     }
 
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
