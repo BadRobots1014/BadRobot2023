@@ -22,7 +22,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final CANSparkMax m_rightA = new CANSparkMax(DriveConstants.kRightAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax m_rightB = new CANSparkMax(DriveConstants.kRightBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
+    // private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
     
@@ -46,7 +46,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        m_driveTrain.tankDrive(clampPower(leftSpeed), clampPower(rightSpeed), true);
+        // m_driveTrain.tankDrive(clampPower(leftSpeed), clampPower(rightSpeed), true);
     }
 
     public String getDirection(double leftSpeed, double rightSpeed){
@@ -98,6 +98,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        m_driveTrain.stopMotor();
+        // m_driveTrain.stopMotor();
     }
 }

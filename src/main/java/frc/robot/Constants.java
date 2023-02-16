@@ -28,7 +28,7 @@ public final class Constants {
         public final static double kSlowThrottle = 0.5;
         
         public final static int kThrottleButton = 2;
-        public final static int kBalanceButton = 1; //Second joystick
+        public final static int kBalanceButton = 1;
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
@@ -48,7 +48,7 @@ public final class Constants {
 
     public final class BlinkinConstants {
 
-        public final static int kBlinkinPort = 0;
+        public final static int kBlinkinPort = 5;
 
     }
 

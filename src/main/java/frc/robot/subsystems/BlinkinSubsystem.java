@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BlinkinConstants;
@@ -13,7 +16,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public BlinkinSubsystem() {}
 
-  private final Spark blinkin = new Spark(BlinkinConstants.kBlinkinPort);
+  private final CANSparkMax blinkin = new CANSparkMax(BlinkinConstants.kBlinkinPort, MotorType.kBrushless);
 
   
 
@@ -26,12 +29,12 @@ public class BlinkinSubsystem extends SubsystemBase {
     blinkin.set(pattern);
   }
 
-  public void setOcean(){
-    blinkin.set(-0.95);
+  public void setOcean(double power){
+    blinkin.set(power);
   }
 
   public void setRainbow(){
-    blinkin.set(-0.99);
+    blinkin.stopMotor();
   }
 
   public void setBlue(){
