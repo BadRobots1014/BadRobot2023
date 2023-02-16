@@ -45,7 +45,7 @@ public class BalanceCommand extends CommandBase {
         // the formula that Noirit used, condensed down (even more now)
         speed = angle * GyroConstants.kBalanceSpeed;
         m_ledsubsystem.setRed();
-        m_drivesubsystem.tankDrive(speed, speed);
+        m_drivesubsystem.drive(0, 0, 0);
     }
     else {
         m_drivesubsystem.stop();

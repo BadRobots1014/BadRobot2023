@@ -4,49 +4,53 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel;
+
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.MovementConstants;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.CANSparkMax.IdleMode;
-
 public class DrivetrainSubsystem extends SubsystemBase {
-    private final CANSparkMax m_leftA = new CANSparkMax(DriveConstants.kLeftAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax m_leftB = new CANSparkMax(DriveConstants.kLeftBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax m_rightA = new CANSparkMax(DriveConstants.kRightAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax m_rightB = new CANSparkMax(DriveConstants.kRightBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
+    private NavXGyroSubsystem m_gyroSubsystem = new NavXGyroSubsystem();
+
+    private final CANSparkMax m_leftFront = new CANSparkMax(DriveConstants.kLeftAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_leftBack = new CANSparkMax(DriveConstants.kLeftBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightFront = new CANSparkMax(DriveConstants.kRightAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightBack = new CANSparkMax(DriveConstants.kRightBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+    private final MecanumDrive m_driveTrain = new MecanumDrive(m_leftFront, m_leftBack, m_rightFront, m_rightBack);
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
     
 
     public DrivetrainSubsystem() {
-        m_leftA.setInverted(false);
-        m_leftB.setInverted(true);
-        m_rightA.setInverted(true);
-        m_rightB.setInverted(false);
+        m_leftFront.setInverted(false);
+        m_leftBack.setInverted(false);
+        m_rightFront.setInverted(false);
+        m_rightBack.setInverted(false);
 
-        m_leftA.setIdleMode(IdleMode.kBrake);
-        m_leftB.setIdleMode(IdleMode.kBrake);
-        m_rightA.setIdleMode(IdleMode.kBrake);
-        m_rightB.setIdleMode(IdleMode.kBrake);
+        m_leftFront.setIdleMode(IdleMode.kBrake);
+        m_leftBack.setIdleMode(IdleMode.kBrake);
+        m_rightFront.setIdleMode(IdleMode.kBrake);
+        m_rightBack.setIdleMode(IdleMode.kBrake);
 
-        m_leftB.follow(m_leftA);
-        m_rightB.follow(m_rightA);
-
-        m_tab.addNumber("Left Power", m_leftA::get);
-        m_tab.addNumber("Right Power", m_rightA::get);
+        m_tab.addNumber("Left Front Power", m_leftFront::get);
+        m_tab.addNumber("Right Front Power", m_rightFront::get);
+        m_tab.addNumber("Left Back Power", m_leftBack::get);
+        m_tab.addNumber("Right Back Power", m_rightBack::get);
     }
 
-    public void tankDrive(double leftSpeed, double rightSpeed) {
-        m_driveTrain.tankDrive(clampPower(leftSpeed), clampPower(rightSpeed), true);
+    public void drive(double xSpeed, double ySpeed, double zRotation) {
+        Rotation2d gyroYaw = new Rotation2d(m_gyroSubsystem.getYaw());
+        m_driveTrain.driveCartesian(xSpeed, ySpeed, zRotation, gyroYaw);
     }
 
     public String getDirection(double leftSpeed, double rightSpeed){

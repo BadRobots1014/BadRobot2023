@@ -12,6 +12,7 @@ import frc.robot.subsystems.BlinkinSubsystem;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,19 +23,20 @@ public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DrivetrainSubsystem m_subsystem;
   private final BlinkinSubsystem m_ledSubsystem;
-  private DoubleSupplier m_rightSpeed;
-  private DoubleSupplier m_leftSpeed;
+  private DoubleSupplier m_xSpeed;
+  private DoubleSupplier m_ySpeed;
+  private DoubleSupplier m_zRotation;
   private DoubleSupplier m_throttle;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
-  private GenericEntry directionEntry =
-       m_tab.add("Direction", "")
-          .getEntry();
+  // private GenericEntry directionEntry =
+  //      m_tab.add("Direction", "")
+  //         .getEntry();
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DrivetrainSubsystem subsystem, DoubleSupplier rightSpeed, DoubleSupplier leftSpeed, DoubleSupplier throttle, BlinkinSubsystem lightSubsystem) {
+  public DriveCommand(DrivetrainSubsystem subsystem, DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier zRotation, DoubleSupplier throttle, BlinkinSubsystem lightSubsystem) {
     m_subsystem = subsystem;
     m_ledSubsystem = lightSubsystem;
 
@@ -42,8 +44,9 @@ public class DriveCommand extends CommandBase {
     addRequirements(subsystem);
     addRequirements(lightSubsystem);
 
-    m_leftSpeed = leftSpeed;
-    m_rightSpeed = rightSpeed;
+    m_xSpeed = xSpeed;
+    m_ySpeed = ySpeed;
+    m_zRotation = zRotation;
     m_throttle = throttle;
   }
 
@@ -54,32 +57,32 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.tankDrive(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
+    m_subsystem.drive(m_xSpeed.getAsDouble() * m_throttle.getAsDouble(), m_ySpeed.getAsDouble() * m_throttle.getAsDouble(), m_zRotation.getAsDouble() * m_throttle.getAsDouble());
 
-    String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
-    directionEntry.setString(lightDirection);
-    switch(lightDirection) {
-      case(MovementConstants.kStationary):
-        m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
-        break;
-      case(MovementConstants.kForward):
-        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeBlue);
-        } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
-        }
-        break;
-      case(MovementConstants.kBackward):
-        if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
-        } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
-        }
-        break;
-      default:
-        m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
-        break;
-    }
+    // // String lightDirection = m_subsystem.getDirection(m_leftSpeed.getAsDouble() * m_throttle.getAsDouble(), m_rightSpeed.getAsDouble() * m_throttle.getAsDouble());
+    // directionEntry.setString(lightDirection);
+    // switch(lightDirection) {
+    //   case(MovementConstants.kStationary):
+    //     m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
+    //     break;
+    //   case(MovementConstants.kForward):
+    //     if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+    //       m_ledSubsystem.set(BlinkinPatternConstants.kStrobeBlue);
+    //     } else {
+    //       m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
+    //     }
+    //     break;
+    //   case(MovementConstants.kBackward):
+    //     if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
+    //       m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
+    //     } else {
+    //       m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
+    //     }
+    //     break;
+    //   default:
+    //     m_ledSubsystem.set(BlinkinPatternConstants.kSolidWhite);
+    //     break;
+    // }
 
     
   }

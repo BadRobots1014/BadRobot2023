@@ -52,12 +52,30 @@ public class RobotContainer {
     }
   }
 
+  public double getRightX() {
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return Math.abs(rightJoystick.getX()) > ControllerConstants.kDeadZoneRadius ? rightJoystick.getX() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getRightX()) > ControllerConstants.kXboxDeadZoneRadius ? xboxController.getRightX() : 0;
+    }
+  }
+
   public double getLeftY() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
     }
     else {
       return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
+    }
+  }
+
+  public double getLeftX() {
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return Math.abs(leftJoystick.getX()) > ControllerConstants.kDeadZoneRadius ? leftJoystick.getX() : 0;
+    }
+    else {
+      return Math.abs(xboxController.getLeftX()) > ControllerConstants.kDeadZoneRadius ? xboxController.getLeftX() : 0;
     }
   }
 
@@ -74,7 +92,7 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightX, this::getRightY, this::getLeftX, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
