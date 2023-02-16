@@ -77,7 +77,7 @@ public class RobotContainer {
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
-    this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+    
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem);
@@ -99,7 +99,13 @@ public class RobotContainer {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
       JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
-      driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
+      if (driveStraightButton.getAsBoolean()){
+        driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
+      }else{
+        this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+
+      }
+
     }
     else {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
