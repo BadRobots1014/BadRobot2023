@@ -25,6 +25,7 @@ public class BlinkinSubsystem extends SubsystemBase {
 
   private final CANSparkMax blinkin = new CANSparkMax(BlinkinConstants.kBlinkinPort, MotorType.kBrushless);
   private final CANSparkMax gatherer = new CANSparkMax(7, MotorType.kBrushless);
+  // private final SparkMaxAbsoluteEncoder encoder = new SparkMaxAbsoluteEncoder(blinkin, new SparkMaxAbsoluteEncoder.Type(0));
 
   
 
