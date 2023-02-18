@@ -12,7 +12,7 @@ import com.revrobotics.ColorSensorV3;
 import frc.robot.Constants.SensorConstants;
 
 public class ColorSensorSubsystem extends SubsystemBase {
-    public ColorSensorV3 sensor = new ColorSensorV3(SensorConstants.ColorSensorPort);
+    public ColorSensorV3 sensor = new ColorSensorV3(SensorConstants.kColorSensorPort);
     public double ir;
     public Color detectedColor = Color.kBlack;
     public ColorMatch matcher = new ColorMatch();
