@@ -2,6 +2,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.MecanumDrive@7c7fb5fa": "MecanumDrive",
       "/Shuffleboard/Drivetrain/frc.robot.subsystems.DrivetrainSubsystem@199386e0": "MecanumDrive"
     }
   }
