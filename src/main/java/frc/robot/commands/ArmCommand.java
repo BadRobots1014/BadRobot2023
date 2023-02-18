@@ -35,6 +35,7 @@ public class ArmCommand extends CommandBase {
   @Override
   public void initialize() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -99,11 +99,11 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.set(clampPower(power));
   }
 
-  private static double clampPower(double power) {
+  private double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);
-  } 
+  }
 
-  public void runToPosition(double pos){
+  public void runToPosition(CANSparkMax motor, double pos){
     
   }
 
