@@ -23,7 +23,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   }
 
   public void set(double pattern) {
-    blinkin.set(pattern);
+    revSpark.set(pattern);
   }
 
   public void setOcean(){
