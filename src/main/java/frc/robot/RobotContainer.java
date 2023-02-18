@@ -14,6 +14,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LimelightPIDCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -38,6 +39,7 @@ public class RobotContainer {
 
   private LimelightSubsystem m_limelightSubsystem;
   private ConeLineUpCommand m_coneLineUpCommand;
+  private LimelightPIDCommand m_limelightPIDCommand;
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
@@ -79,7 +81,7 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    //this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
@@ -87,6 +89,8 @@ public class RobotContainer {
 
     this.m_limelightSubsystem = new LimelightSubsystem();
     this.m_coneLineUpCommand = new ConeLineUpCommand(m_limelightSubsystem, drivetrainSubsystem);
+    this.m_limelightPIDCommand = new LimelightPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .2);
+
 
     // Configure the button bindings
     configureButtonBindings();
@@ -110,6 +114,9 @@ public class RobotContainer {
 
     JoystickButton lineUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kLineUpButton);
     lineUpButton.whileTrue(this.m_coneLineUpCommand);
+
+    JoystickButton pidLineUpButton =  new JoystickButton(this.rightJoystick, ControllerConstants.kPIDLineUpButton);
+    pidLineUpButton.whileTrue(this.m_limelightPIDCommand);
   }
 
   /**

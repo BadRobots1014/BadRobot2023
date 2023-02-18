@@ -35,6 +35,9 @@ public final class Constants {
         public final static double kXboxDeadZoneRadius = .1;
 
         //Xbox buttons in RobotContainer
+
+        public final static int kLineUpButton = 3;
+        public final static int kPIDLineUpButton = 4;
     }
 
     public final class DriveConstants {
@@ -61,6 +64,11 @@ public final class Constants {
     public final class LimelightConstants {
 
         public final static double kLineUpMaxSpeed = .5;
+        public final static double kP = .1;
+        public final static double kI = .1;
+        public final static double kD = .1;
+        public final static double setpoint = 0;
+
     }
 
     public final static class MovementConstants {
