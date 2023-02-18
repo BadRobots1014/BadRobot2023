@@ -80,19 +80,24 @@ public class RobotContainer {
   }
 
   private double getThrottle() {
-    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    }
+    else {
+      return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    }
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    this.drivetrainSubsystem = new DrivetrainSubsystem();
+    this.drivetrainSubsystem = new DrivetrainSubsystem(navxGyroSubsystem);
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightX, this::getRightY, this::getLeftX, this::getThrottle, this.m_blinkinSubsystem);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getRightX, this::getLeftX, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);

@@ -32,7 +32,7 @@ public final class Constants {
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
-        public final static double kXboxDeadZoneRadius = .1;
+        public final static double kXboxDeadZoneRadius = .5;
 
         //Xbox buttons in RobotContainer
     }

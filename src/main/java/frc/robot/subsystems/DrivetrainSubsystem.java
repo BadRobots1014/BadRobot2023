@@ -19,7 +19,7 @@ import frc.robot.Constants.MovementConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
 
-    private NavXGyroSubsystem m_gyroSubsystem = new NavXGyroSubsystem();
+    private NavXGyroSubsystem m_gyroSubsystem;
 
     private final CANSparkMax m_leftFront = new CANSparkMax(DriveConstants.kLeftAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax m_leftBack = new CANSparkMax(DriveConstants.kLeftBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -31,7 +31,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
     
 
-    public DrivetrainSubsystem() {
+    public DrivetrainSubsystem( NavXGyroSubsystem gyroSubsystem) {
+
+        m_gyroSubsystem = gyroSubsystem;
+
         m_leftFront.setInverted(false);
         m_leftBack.setInverted(false);
         m_rightFront.setInverted(false);
@@ -50,50 +53,50 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void drive(double xSpeed, double ySpeed, double zRotation) {
         Rotation2d gyroYaw = new Rotation2d(m_gyroSubsystem.getYaw());
-        m_driveTrain.driveCartesian(xSpeed, ySpeed, zRotation, gyroYaw);
+        m_driveTrain.driveCartesian(xSpeed, ySpeed, zRotation, gyroYaw); //Note that x is forward and y is right. This is fixed when it's initialized in RobotContainer.
     }
 
     public String getDirection(double leftSpeed, double rightSpeed){
 
-        if (leftSpeed == 0 && rightSpeed == 0){ // If both motors arent moving
-            return MovementConstants.kStationary;
-        }
+        // if (leftSpeed == 0 && rightSpeed == 0){ // If both motors arent moving
+        //     return MovementConstants.kStationary;
+        // }
 
-        else if (rightSpeed == 0){ // If the right motor isnt moving but the left one is(because the above conditional was false)
-            return MovementConstants.kPivotingOffOfRight;
-        }
+        // else if (rightSpeed == 0){ // If the right motor isnt moving but the left one is(because the above conditional was false)
+        //     return MovementConstants.kPivotingOffOfRight;
+        // }
         
-        else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
-            return MovementConstants.kPivotingOffOfLeft;
-        }
+        // else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
+        //     return MovementConstants.kPivotingOffOfLeft;
+        // }
 
-        else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
-            return MovementConstants.kSpinningInPlace;
-        }
+        // else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
+        //     return MovementConstants.kSpinningInPlace;
+        // }
 
-        else if (rightSpeed < 0){ // If the right motor is moving backward
-            if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
-                return MovementConstants.kBackward;
-            }
-            else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
-                return MovementConstants.kTurningCounterclockwise;
-            }
-            else{ // If the right motor is moving backwards faster than the left motor
-                return MovementConstants.kTurningClockwise;
-            }
-        }
+        // else if (rightSpeed < 0){ // If the right motor is moving backward
+        //     if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
+        //         return MovementConstants.kBackward;
+        //     }
+        //     else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
+        //         return MovementConstants.kTurningCounterclockwise;
+        //     }
+        //     else{ // If the right motor is moving backwards faster than the left motor
+        //         return MovementConstants.kTurningClockwise;
+        //     }
+        // }
         
-        else if (rightSpeed > 0){ // If the right motor is moving forwards
-            if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
-                return MovementConstants.kForward;
-            }
-            else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
-                return MovementConstants.kTurningCounterclockwise;
-            }
-            else{ // If the left motor is going forward faster than the right motor
-                return MovementConstants.kTurningClockwise;
-            }
-        }
+        // else if (rightSpeed > 0){ // If the right motor is moving forwards
+        //     if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
+        //         return MovementConstants.kForward;
+        //     }
+        //     else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
+        //         return MovementConstants.kTurningCounterclockwise;
+        //     }
+        //     else{ // If the left motor is going forward faster than the right motor
+        //         return MovementConstants.kTurningClockwise;
+        //     }
+        // }
         return MovementConstants.kGetDirectionEdgeCase;
     }
 
