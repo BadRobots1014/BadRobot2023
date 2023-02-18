@@ -29,6 +29,8 @@ public final class Constants {
         
         public final static int kThrottleButton = 2;
         public final static int kBalanceButton = 1; //Second joystick
+
+        public final static int kLineUpButton = 3;
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
