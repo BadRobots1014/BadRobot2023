@@ -43,6 +43,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     this.shoulderTicks = 0;//read ticks from shaft encoder
     this.wristTicks = 0;
+    //code to put arm at preset arm position
 
   }
 

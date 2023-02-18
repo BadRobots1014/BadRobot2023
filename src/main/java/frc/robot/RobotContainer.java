@@ -15,6 +15,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.ArmHighCommand;
+import frc.robot.commands.ArmLowCommand;
+import frc.robot.commands.ArmMediumCommand;
+import frc.robot.commands.ArmStoreCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
@@ -39,8 +43,12 @@ public class RobotContainer {
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private int m_setArm;
-  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem, m_setArm);
+
+  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  private final ArmStoreCommand m_armStoreCommand = new ArmStoreCommand(m_armSubsystem);
+  private final ArmHighCommand m_armHighCommand = new ArmHighCommand(m_armSubsystem);
+  private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
+  private final ArmLowCommand m_armLowCommand = new ArmLowCommand(m_armSubsystem);
   private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
 
@@ -98,26 +106,17 @@ public class RobotContainer {
     // Arm Setting Button Bindings
 
     JoystickButton ArmStoredButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmStoreButton);
-    ArmStoredButton.whileTrue(this.m_armCommand);
-    if(ArmStoredButton.getAsBoolean()){
-      m_setArm = ArmConstants.kArmStoredPos;
-    }
+    ArmStoredButton.whileTrue(this.m_armStoreCommand);
+    
     JoystickButton ArmLowButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmLowButton);
-    ArmLowButton.whileTrue(this.m_armCommand);
-    if(ArmStoredButton.getAsBoolean()){
-      m_setArm = ArmConstants.kArmLowPos;
-    }
+    ArmLowButton.whileTrue(this.m_armLowCommand);
+    
     JoystickButton ArmMediumButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMediumButton);
-    ArmLowButton.whileTrue(this.m_armCommand);
-    if(ArmMediumButton.getAsBoolean()){
-      m_setArm = ArmConstants.kArmMiddlePos;
-    }
+    ArmMediumButton.whileTrue(this.m_armMediumCommand);
+    
     Trigger ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
-    ArmHighButton.whileTrue(this.m_armCommand);
-    if(ArmHighButton.getAsBoolean()){
-      m_setArm = ArmConstants.kArmHighPos;
-      System.out.println("HIGHGHHG");
-    }
+    ArmHighButton.whileTrue(this.m_armHighCommand);
+    
     
     
   }
