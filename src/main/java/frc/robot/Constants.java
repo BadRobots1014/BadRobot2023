@@ -34,8 +34,10 @@ public final class Constants {
 
     public final class DriveConstants {
 
-        public final static int kRightPort = 2;
-        public final static int kLeftPort = 3;
+        public final static int kRightAPort = 1;
+        public final static int kRightBPort = 2;
+        public final static int kLeftAPort = 3;
+        public final static int kLeftBPort = 4;
 
     }
 
