@@ -15,7 +15,7 @@
         "header": {
           "open": true
         }
-      }
+      },
       "REV Color Sensor V3[1,82]": {
         "header": {
           "open": true
@@ -31,8 +31,19 @@
   "NetworkTables": {
     "transitory": {
       "Shuffleboard": {
+
+        "Drivetrain": {
+          "open": true
+        },
         "open": true
       }
     }
+  },
+  "NetworkTables Info": {
+    "visible": true,
+
+     "open": true
+    
+
   }
 }
