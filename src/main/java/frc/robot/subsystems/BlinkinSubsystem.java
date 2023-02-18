@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -15,9 +18,13 @@ import frc.robot.Constants.BlinkinConstants;
 
 public class BlinkinSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public BlinkinSubsystem() {}
+  public BlinkinSubsystem() {
+    blinkin.setIdleMode(IdleMode.kBrake);
+    gatherer.setIdleMode(IdleMode.kBrake);
+  }
 
   private final CANSparkMax blinkin = new CANSparkMax(BlinkinConstants.kBlinkinPort, MotorType.kBrushless);
+  private final CANSparkMax gatherer = new CANSparkMax(7, MotorType.kBrushless);
 
   
 
@@ -31,7 +38,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   }
 
   public void setOcean(double power){
-    blinkin.set(power);
+    blinkin.set(power * .25);
   }
 
   public void setRainbow(){
@@ -54,9 +61,9 @@ public class BlinkinSubsystem extends SubsystemBase {
     blinkin.set(0.93);
   }
 
-  public void getEncoder() {
-    blinkin.getAbsoluteEncoder(EncodingType.k4X);
-  }
+  // public void getEncoder() {
+  //   blinkin.getAbsoluteEncoder(EncodingType.k4X);
+  // }
 
   @Override
   public void simulationPeriodic() {
