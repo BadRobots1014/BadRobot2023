@@ -22,7 +22,8 @@ public class DriveStraightCommand extends CommandBase {
   private double initial_yaw;
   private DoubleSupplier m_leftSpeed;
   private DoubleSupplier m_rightSpeed;
-  private static Double m_driveSpeed;
+  private DoubleSupplier m_throttle;
+  private Double m_driveSpeed;
 
 
   /**
@@ -30,7 +31,7 @@ public class DriveStraightCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed) {
+  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,7 +39,8 @@ public class DriveStraightCommand extends CommandBase {
 
     m_leftSpeed = leftSpeed;
     m_rightSpeed = rightSpeed;
-    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()));
+    m_throttle = throttle;
+    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
   }
 
   // Called when the command is initially scheduled.
@@ -76,5 +78,4 @@ public class DriveStraightCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-
 }
