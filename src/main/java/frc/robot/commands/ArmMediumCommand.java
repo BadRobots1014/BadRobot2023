@@ -32,7 +32,7 @@ public class ArmMediumCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition("MEDIUM");
+    ArmSubsystem.setPresetPosition(ArmConstants.kArmMedium);
   }
 
   // Called once the command ends or is interrupted.

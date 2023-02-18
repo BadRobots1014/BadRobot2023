@@ -32,7 +32,7 @@ public class ArmStoreCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition("STORED");
+    ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
   }
 
   // Called once the command ends or is interrupted.
