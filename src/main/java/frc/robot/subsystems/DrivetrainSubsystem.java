@@ -49,6 +49,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_tab.addNumber("Right Front Power", m_rightFront::get);
         m_tab.addNumber("Left Back Power", m_leftBack::get);
         m_tab.addNumber("Right Back Power", m_rightBack::get);
+        m_tab.add(m_driveTrain.toString(), m_driveTrain);
     }
 
     public void drive(double xSpeed, double ySpeed, double zRotation) {

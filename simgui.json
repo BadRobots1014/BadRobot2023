@@ -1,7 +1,8 @@
 {
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Drivetrain/frc.robot.subsystems.DrivetrainSubsystem@199386e0": "MecanumDrive"
     }
   }
 }
