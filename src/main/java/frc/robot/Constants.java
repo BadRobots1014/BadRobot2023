@@ -61,12 +61,10 @@ public final class Constants {
     public final static class MovementConstants {
 
         public final static String kStationary = "Stationary";
-        public final static String kPivotingOffOfRight = "Pivoting off of right";
-        public final static String kPivotingOffOfLeft = "Pivoting off of left";
+        public final static String kForward = "Forward";
         public final static String kBackward = "Backward";
         public final static String kTurningCounterclockwise = "Turning Counterclockwise";
         public final static String kTurningClockwise = "Turning Clockwise";
-        public final static String kForward = "Forward";
         public final static String kSpinningInPlace = "Spinning in place";
         public final static String kGetDirectionEdgeCase = "getDirection edge case";
 
@@ -74,18 +72,24 @@ public final class Constants {
 
     public final static class BlinkinPatternConstants {
 
-        public final static double kSolidRed = 0.61; 
-        public final static double kSolidBlue = 0.87; 
-        public final static double kSolidWhite = 0.93; 
-        public final static double kStrobeRed = -0.11;
-        public final static double kStrobeBlue = -0.09;
-
+        public final static double solidRed = 0.61; 
+        public final static double solidBlue = 0.87; 
+        public final static double solidGreen = 0.77;
+        public final static double solidOrange = 0.65;
+        public final static double breatheColor1 = 0.09; //Color1 and 2 have to be physically set. Color1 is green
+        public final static double breatheColor2 = 0.29; //Color2 is orange
+        public final static double solidWhite = 0.93; 
+        public final static double breatheRed = -0.17;
+        public final static double breatheBlue = -0.15;
+        public final static double confetti = -0.87;
+        public final static double solidBlack = 0.99; // Primarily For Errors, when something goes boom with the lights
     }
 
     public final static class GyroConstants {
 
         public final static double kBalanceThreshold = 5; //In degrees off of upright
         public final static double kBalanceSpeed = 0.027;
+
 
     }
 
