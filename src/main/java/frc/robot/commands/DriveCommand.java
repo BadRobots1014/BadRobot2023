@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -112,20 +113,20 @@ public class DriveCommand extends CommandBase {
      
       case(MovementConstants.kForward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheBlue);
 
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.kSolidBlue);
+          m_ledSubsystem.set(BlinkinPatternConstants.solidBlue);
         }
         break;
 
       // Red if Backwards
       case(MovementConstants.kBackward):
         if(m_throttle.getAsDouble() == ControllerConstants.kSlowThrottle){
-          m_ledSubsystem.set(BlinkinPatternConstants.kStrobeRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.breatheRed);
 
         } else {
-          m_ledSubsystem.set(BlinkinPatternConstants.kSolidRed);
+          m_ledSubsystem.set(BlinkinPatternConstants.solidRed);
         }
         break;
 
