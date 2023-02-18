@@ -22,6 +22,10 @@ public class BlinkinSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void set(double pattern) {
+    blinkin.set(pattern);
+  }
+
   public void setOcean(){
     blinkin.set(-0.95);
   }

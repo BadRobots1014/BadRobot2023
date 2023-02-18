@@ -10,29 +10,38 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.MovementConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    private final CANSparkMax m_left = new CANSparkMax(DriveConstants.kLeftPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax m_right = new CANSparkMax(DriveConstants.kRightPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_leftA = new CANSparkMax(DriveConstants.kLeftAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_leftB = new CANSparkMax(DriveConstants.kLeftBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightA = new CANSparkMax(DriveConstants.kRightAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightB = new CANSparkMax(DriveConstants.kRightBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
+    private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
 
     public static final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
-
+    
     public DrivetrainSubsystem() {
-        m_left.setInverted(false);
-        m_right.setInverted(true);
-        m_right.set(0);
+        m_leftA.setInverted(false);
+        m_leftB.setInverted(true);
+        m_rightA.setInverted(true);
+        m_rightB.setInverted(false);
 
-        m_left.setIdleMode(IdleMode.kBrake);
-        m_right.setIdleMode(IdleMode.kBrake);
+        m_leftA.setIdleMode(IdleMode.kBrake);
+        m_leftB.setIdleMode(IdleMode.kBrake);
+        m_rightA.setIdleMode(IdleMode.kBrake);
+        m_rightB.setIdleMode(IdleMode.kBrake);
 
-        m_tab.addNumber("Left Power", m_left::get);
-        m_tab.addNumber("Right Power", m_right::get);
+        m_leftB.follow(m_leftA);
+        m_rightB.follow(m_rightA);
+
+        m_tab.addNumber("Left Power", m_leftA::get);
+        m_tab.addNumber("Right Power", m_rightA::get);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -42,45 +51,45 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public String getDirection(double leftSpeed, double rightSpeed){
 
         if (leftSpeed == 0 && rightSpeed == 0){ // If both motors arent moving
-            return "Stationary";
+            return MovementConstants.kStationary;
         }
 
         else if (rightSpeed == 0){ // If the right motor isnt moving but the left one is(because the above conditional was false)
-            return "Pivoting off of right";
+            return MovementConstants.kPivotingOffOfRight;
         }
         
         else if (leftSpeed == 0){ // If the left motor isnt moving but the right one is(because the above conditional was false)
-            return "Pivoting off of left";
+            return MovementConstants.kPivotingOffOfLeft;
         }
 
         else if (leftSpeed == -rightSpeed){ // If the left motor and right motor are going the exact same speed but in opposite directions
-            return "Spinning in place";
+            return MovementConstants.kSpinningInPlace;
         }
 
         else if (rightSpeed < 0){ // If the right motor is moving backward
             if (leftSpeed == rightSpeed){ // If the left motor is moving backward at the same rate
-                return "Backward";
+                return MovementConstants.kBackward;
             }
             else if (leftSpeed < rightSpeed){//If the left motor is moving backwards faster than the right motor
-                return "Turning Counterclockwise";
+                return MovementConstants.kTurningCounterclockwise;
             }
             else{ // If the right motor is moving backwards faster than the left motor
-                return "Turning Clockwise";
+                return MovementConstants.kTurningClockwise;
             }
         }
-
+        
         else if (rightSpeed > 0){ // If the right motor is moving forwards
             if (leftSpeed == rightSpeed){ // If the left motor is moving forwards at the same rate
-                return "Forward";
+                return MovementConstants.kForward;
             }
             else if (leftSpeed < rightSpeed){ // If the right motor is going forward faster than the left motor
-                return "Turning counterclockwise";
+                return MovementConstants.kTurningCounterclockwise;
             }
             else{ // If the left motor is going forward faster than the right motor
-                return "Turning clockwise";
+                return MovementConstants.kTurningClockwise;
             }
         }
-        return "getDirection edge case";
+        return MovementConstants.kGetDirectionEdgeCase;
     }
 
     private static double clampPower(double power) {
