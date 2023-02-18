@@ -70,44 +70,6 @@ public class DriveCommand extends CommandBase {
       // White if Stationary
       // Light Test Mode, Default Should be white, is currently commented, if not testing switch commented status
       case (MovementConstants.kStationary):
-      
-      // Testing, default should be fire large pattern, Comment when in normal Operations
-        /*
-        double testPatternCode; // Initialized Here So can be used in Try Catch
-        // When inputting from shuffle board, if line is cleared instead of digits replaced, throws NumberFormatException, robot shuts off
-        try {
-          //Gets raw patternCode Input
-          testPatternCode = Double.parseDouble(patternInput.getString("-0.57"));
-          //Prevents raw Input from breaking Stuff
-          // Funky Little Type Changing stuff
-          // Rounds Values to 2 decimal Places, makes int since has to be whole number to change to odd
-          int wholePatternCode = Math.round(Double.valueOf(testPatternCode).floatValue() * 100);
-          // Checks for Even Numbers
-          if (wholePatternCode % 2 == 0){ 
-            // Prevents Even Codes from being used, goes down 1
-            wholePatternCode = wholePatternCode - 1;
-          }
-          // Makes Double to Allow for division + Changes Back to decimal
-          testPatternCode = (double)wholePatternCode / 100;
-
-          //Bounds codes to -1 and 1
-          if(Math.abs(testPatternCode) >= 1){
-            throw new NumberFormatException(); //Handles in Try Catch, sets to Black
-          }
-
-          
-          m_ledSubsystem.set(testPatternCode);
-        } 
-        // Prevents things from messing up when inputting codes
-        catch (NumberFormatException e) {
-            // Sets it to black
-            testPatternCode = BlinkinPatternConstants.solidBlack;
-            
-            m_ledSubsystem.set(testPatternCode);
-        }
-        */   
-
-        // When Actually Using the Robot, stationary is solid white
         m_ledSubsystem.set(BlinkinPatternConstants.solidWhite);
         break;
      
