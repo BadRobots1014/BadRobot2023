@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.GyroConstants;
-import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
 
@@ -21,7 +20,9 @@ public class DriveStraightCommand extends CommandBase {
   private final NavXGyroSubsystem m_subsystem;
   private final DrivetrainSubsystem m_drivesubsystem;
   private double initial_yaw;
-  private DoubleSupplier m_driveSpeed;
+  private DoubleSupplier m_leftSpeed;
+  private DoubleSupplier m_rightSpeed;
+  private static Double m_driveSpeed;
 
 
   /**
@@ -29,13 +30,15 @@ public class DriveStraightCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier driveSpeed) {
+  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem, drivesubsystem);
 
-    m_driveSpeed = driveSpeed;
+    m_leftSpeed = leftSpeed;
+    m_rightSpeed = rightSpeed;
+    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()));
   }
 
   // Called when the command is initially scheduled.
@@ -47,30 +50,18 @@ public class DriveStraightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble(), m_driveSpeed.getAsDouble());
+    m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
 
     double angle = initial_yaw - m_subsystem.getYaw();
     if(angle >= GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         double speed = angle * GyroConstants.kOffsetSpeed;
-        if(m_driveSpeed.getAsDouble()>0){
-          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble(),m_driveSpeed.getAsDouble()+speed);
-        }
-        if(m_driveSpeed.getAsDouble()<0){
-          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble(),m_driveSpeed.getAsDouble()-speed);
-        }
-        
-        
+        m_drivesubsystem.tankDrive(m_driveSpeed,m_driveSpeed+speed);
     }
     if(angle <= -1 * GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         double speed = angle * GyroConstants.kOffsetSpeed;
-        if(m_driveSpeed.getAsDouble()>0){
-          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble()+speed,m_driveSpeed.getAsDouble());
-        }
-        if(m_driveSpeed.getAsDouble()<0){
-          m_drivesubsystem.tankDrive(m_driveSpeed.getAsDouble()-speed,m_driveSpeed.getAsDouble());
-        }
+        m_drivesubsystem.tankDrive(m_driveSpeed+speed,m_driveSpeed);
     }
   }
 
@@ -85,4 +76,5 @@ public class DriveStraightCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
 }
