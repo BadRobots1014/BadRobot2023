@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BlinkinConstants;
@@ -51,6 +52,10 @@ public class BlinkinSubsystem extends SubsystemBase {
 
   public void setWhite(){
     blinkin.set(0.93);
+  }
+
+  public void getEncoder() {
+    blinkin.getAbsoluteEncoder(EncodingType.k4X);
   }
 
   @Override
