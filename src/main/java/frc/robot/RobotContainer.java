@@ -64,7 +64,12 @@ public class RobotContainer {
   }
 
   private double getThrottle() {
-    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    }
+    else {
+      return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    }
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
