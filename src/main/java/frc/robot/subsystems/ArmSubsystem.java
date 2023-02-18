@@ -19,8 +19,9 @@ public class ArmSubsystem extends SubsystemBase {
   private final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   private final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public int shoulderTicks;
-  public int wristTicks;
+  public int winchTicks;
+  public int extenderTicks;
+  public boolean grabber;
 
   public static String armPosition = ArmConstants.kArmStored;
 
@@ -41,8 +42,8 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    this.shoulderTicks = 0;//read ticks from shaft encoder
-    this.wristTicks = 0;
+    this.winchTicks = 0;//read ticks from shaft encoder
+    this.extenderTicks = 0; 
     //code to put arm at preset arm position
 
   }
@@ -101,5 +102,9 @@ public class ArmSubsystem extends SubsystemBase {
   private static double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);
   } 
+
+  public void runToPosition(double pos){
+    
+  }
 
 }

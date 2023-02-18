@@ -40,6 +40,10 @@ public class ArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(ArmSubsystem.armPosition.equals(ArmConstants.kArmHigh)){
+      m_armSubsystem.runExtender(0.02);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
