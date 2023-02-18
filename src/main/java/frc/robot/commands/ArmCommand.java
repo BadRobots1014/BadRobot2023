@@ -41,7 +41,12 @@ public class ArmCommand extends CommandBase {
   @Override
   public void execute() {
     if(ArmSubsystem.armPosition.equals(ArmConstants.kArmHigh)){
-      m_armSubsystem.runExtender(0.02);
+      m_armSubsystem.runExtender(0.01);
+    }else if(ArmSubsystem.armPosition.equals(ArmConstants.kArmLow)){
+      m_armSubsystem.runExtender(-0.01);
+    }
+    else{
+      m_armSubsystem.runExtender(0);
     }
 
   }
