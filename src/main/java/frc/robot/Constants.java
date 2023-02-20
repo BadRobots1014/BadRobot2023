@@ -114,11 +114,18 @@ public final class Constants {
     public final static class EncoderConstants {
 
         public final static double kDefaultDPP = 4.0/256.0;
+
         public final static int kExtenderChannelA = 0;
         public final static int kExtenderChannelB = 1;
         public final static double kExtenderMinRate = 10.0;
         public final static boolean kExtenderIsReversed = false;
         public final static int kExtenderSampleSize = 5;
+
+        public final static int kWinchChannelA = 0;
+        public final static int kWinchChannelB = 1;
+        public final static double kWinchMinRate = 10.0;
+        public final static boolean kWinchIsReversed = false;
+        public final static int kWinchSampleSize = 5;
 
     }
 
