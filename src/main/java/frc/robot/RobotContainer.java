@@ -14,13 +14,9 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriverPresetNextCommand;
-import frc.robot.commands.DriverPresetPreviousCommand;
 import frc.robot.commands.ExampleCommand;
 
-import frc.robot.commands.ColorSensorCommand;
-import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DriverPresetsSubsystem;
-import frc.robot.commands.BlinkinCommand;
 
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -41,7 +37,6 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final DriverPresetNextCommand m_DriverPresetNextCommand = new DriverPresetNextCommand(m_DriverPresetsSubsystem);
-  private final DriverPresetPreviousCommand m_DriverPresetPreviousCommand = new DriverPresetPreviousCommand(m_DriverPresetsSubsystem);
 
 
   private final BalanceCommand m_balancecommand;
@@ -49,8 +44,11 @@ public class RobotContainer {
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
-  private Joystick rightJoystick;
-  private Joystick leftJoystick;
+  private static Joystick rightJoystick = new Joystick(0);
+  private static Joystick leftJoystick = new Joystick(1);
+
+  public static JoystickButton button6 = new JoystickButton(rightJoystick, 6);
+  public static JoystickButton button7 = new JoystickButton(rightJoystick, 7);
 
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
@@ -75,7 +73,7 @@ public class RobotContainer {
   }
 
   private double getThrottle() {
-    return this.rightJoystick.getRawButton(DriverPresetsSubsystem.getkThrottleButton()) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    return rightJoystick.getRawButton(DriverPresetsSubsystem.getkThrottleButton()) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -83,8 +81,8 @@ public class RobotContainer {
 
     this.drivetrainSubsystem = new DrivetrainSubsystem();
 
-    this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
-    this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
+    rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
+    leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
@@ -104,19 +102,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton Button6 = new JoystickButton(leftJoystick, 6);
-    Button6.whileTrue(m_DriverPresetNextCommand);
-    JoystickButton Button7 = new JoystickButton(leftJoystick, 7);
-    Button7.whileTrue(m_DriverPresetPreviousCommand);
     
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+      JoystickButton balanceButton = new JoystickButton(rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
     }
     else {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
       balanceButton.whileTrue(this.m_balancecommand);
     }
+    button6.whileTrue(m_DriverPresetNextCommand);
+    button7.whileTrue(m_DriverPresetNextCommand);
   }
 
   /**

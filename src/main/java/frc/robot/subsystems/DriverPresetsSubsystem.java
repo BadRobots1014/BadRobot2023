@@ -3,17 +3,18 @@ package frc.robot.subsystems;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class DriverPresetsSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
   public static HashMap<Integer, String> Drivers = new HashMap<Integer, String>();
   public DriverPresetsSubsystem() {
     Drivers.put(1, "DRIVERNAME");
     DrivetrainSubsystem.m_tab.addString("Current Driver String", this::getDriver);
     DrivetrainSubsystem.m_tab.addInteger("Current Driver Number", this::getCurrentDriver);
+    DrivetrainSubsystem.m_tab.addBoolean("6 pressed", RobotContainer.button6::getAsBoolean);
   }
 
-  public static int CurrentDriver = 0;
+  public static int CurrentDriver = 1;
 
   public static final int DRIVERNAME = 1;
   //Drivers add desired Constants
@@ -48,8 +49,30 @@ public class DriverPresetsSubsystem extends SubsystemBase {
     }
     
   }
+  private Boolean is6down = false;
+  private Boolean is7down = false;
   public int getCurrentDriver()
   {
+    if (!RobotContainer.button6.getAsBoolean() && is6down)
+    {
+      CurrentDriver++;
+      is6down = false;
+    }
+    if (RobotContainer.button6.getAsBoolean())
+    {
+      is6down = true;
+    }
+
+    if (!RobotContainer.button7.getAsBoolean() && is7down)
+    {
+      CurrentDriver--;
+      is7down = false;
+    }
+    if (RobotContainer.button7.getAsBoolean())
+    {
+      is7down = true;
+    }
+
     return CurrentDriver;
   } 
 

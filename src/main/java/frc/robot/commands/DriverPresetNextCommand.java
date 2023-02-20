@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriverPresetsSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -24,11 +25,20 @@ public class DriverPresetNextCommand extends CommandBase {
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
+  //private boolean is6down = false;
   @Override
   public void execute() 
   {
+    
+  if (RobotContainer.button6.getAsBoolean())
+  {
     DriverPresetsSubsystem.CurrentDriver++;
   }
+  /*if (RobotContainer.button7.getAsBoolean())
+  {
+    DriverPresetsSubsystem.CurrentDriver--;
+  }*/
+}
 
   // Called once the command ends or is interrupted.
   @Override
