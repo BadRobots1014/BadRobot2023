@@ -35,6 +35,10 @@ public final class Constants {
         // For Xbox
         public final static int kXboxControllerPort = 2;
         public final static double kXboxDeadZoneRadius = .1;
+        public static final int kArmHighButton = 0;
+        public static final int kArmMediumButton = 0;
+        public static final int kArmLowButton = 0;
+        public static final int kArmStoreButton = 0;
 
         //Xbox buttons in RobotContainer
 
@@ -50,6 +54,15 @@ public final class Constants {
         public final static int kRightBPort = 2;
         public final static int kLeftAPort = 3;
         public final static int kLeftBPort = 4;
+
+    }
+
+    public final class ArmConstants{
+
+        public static final int kArmStoredPos = 0;
+        public static final int kArmLowPos = 0;
+        public static final int kArmMiddlePos = 0;
+        public static final int kArmHighPos = 0;
 
     }
 

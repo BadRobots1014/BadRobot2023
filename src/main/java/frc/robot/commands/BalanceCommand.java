@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.GyroConstants;
-import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -22,15 +21,15 @@ public class BalanceCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public BalanceCommand(NavXGyroSubsystem subsystem, BlinkinSubsystem lightSubsystem, DrivetrainSubsystem drivesubsystem) {
+  public BalanceCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier driveSpeed) {
     m_subsystem = subsystem;
-    m_ledsubsystem = lightSubsystem;
     m_drivesubsystem = drivesubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem, lightSubsystem, drivesubsystem);
   }
 
-  // Called when the command is initially scheduled.
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_subsystem.reset();
