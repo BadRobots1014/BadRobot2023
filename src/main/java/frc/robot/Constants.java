@@ -35,6 +35,10 @@ public final class Constants {
         public final static int kArmLowButton = 2;//left joystick middle bottom button
         public final static int kArmStoreButton = 4;//left joystick top left button
 
+        public final static int kGrabberManFButton = 6; //right joystick base left top button
+        public final static int kGrabberManRButton = 7; //right joystick base left bottom button
+        public final static int kGrabberPresetFButton = 11; //right joystick base right top button
+        public final static int kGrabberPresetRButton = 10; //right joystick base right bottom button
         
     }
     public final class ArmConstants{
@@ -51,12 +55,26 @@ public final class Constants {
         public final static int kArmStoredPos = 0;
         public final static String kArmStored = "STORED";
 
+        // Grabber Running Modes
+        public final static String kManualRunForward = "Manual Run Forward";
+        public final static String kManualRunBackward = "Manual Run Backward";
+        public final static String kPresetRunForward = "Preset Run Forward";
+        public final static String kPresetRunBackward = "Preset Run Backward";
+        public final static String kBrake = "Brake";
+
+
+        // Grabber power constants
+        public final static double kGrabberPowerF = 0.25;
+        public final static double kGrabberPowerR = -0.25;
+        public final static double kGrabberBrake = 0;
         
 
         // motor ports
         public final static int kGrabberPort = 7; 
         public final static int kExtenderPort = 5; 
         public final static int kWinchPort = 6; 
+
+        
 
 
     }

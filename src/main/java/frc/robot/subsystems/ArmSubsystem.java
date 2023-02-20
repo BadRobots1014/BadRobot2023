@@ -80,15 +80,23 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void closeGrabber(){
-    m_grabber.set(clampPower(1));
+    m_grabber.set(ArmConstants.kGrabberPowerR);
   }
 
   public void openGrabber(){
-    m_grabber.set(clampPower(-1));
+    m_grabber.set(ArmConstants.kGrabberPowerF);
   }
 
   public void runGrabber(double power){
     m_grabber.set(clampPower(power));
+  }
+
+  public void runGrabberReverse(double power){
+    m_grabber.set(-clampPower(power));
+  }
+
+  public void stopGrabber(){
+    m_grabber.set(ArmConstants.kGrabberBrake);
   }
 
   public void runExtender(double power){
