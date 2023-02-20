@@ -29,6 +29,8 @@ public final class Constants {
         
         public final static int kThrottleButton = 2;
         public final static int kBalanceButton = 1; //Second joystick
+
+        public final static int kLineUpButton = 3;
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
@@ -56,6 +58,11 @@ public final class Constants {
 
         public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
 
+    }
+
+    public final class LimelightConstants {
+
+        public final static double kLineUpMaxSpeed = .5;
     }
 
     public final static class MovementConstants {
