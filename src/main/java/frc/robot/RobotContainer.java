@@ -81,11 +81,11 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    //this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
-    // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
+    //this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     this.m_limelightSubsystem = new LimelightSubsystem();
     this.m_coneLineUpCommand = new ConeLineUpCommand(m_limelightSubsystem, drivetrainSubsystem);
@@ -112,8 +112,8 @@ public class RobotContainer {
       balanceButton.whileTrue(this.m_balancecommand);
     }
 
-    JoystickButton lineUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kLineUpButton);
-    lineUpButton.whileTrue(this.m_coneLineUpCommand);
+    //JoystickButton lineUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kLineUpButton);
+    //lineUpButton.whileTrue(this.m_coneLineUpCommand);
 
     JoystickButton pidLineUpButton =  new JoystickButton(this.rightJoystick, ControllerConstants.kPIDLineUpButton);
     pidLineUpButton.whileTrue(this.m_limelightPIDCommand);
