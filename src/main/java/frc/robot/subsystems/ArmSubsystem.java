@@ -4,14 +4,17 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
+
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.EncoderConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -19,6 +22,8 @@ public class ArmSubsystem extends SubsystemBase {
   private final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   private final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
+  private final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   public int winchTicks;
   public int extenderTicks;
   public boolean grabber;
@@ -36,6 +41,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_extender.setInverted(false); // Find out if needs to be T/F
     m_extender.setIdleMode(IdleMode.kBrake);
     
+    this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
+    this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
   }
 
   @Override
@@ -113,6 +120,24 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void runToPosition(CANSparkMax motor, double pos){
     
+  }
+
+  public boolean getEncoderDirection(Encoder encoder) {return encoder.getDirection();}
+
+  public double getEncoderDistance(Encoder encoder) {return encoder.getDistance();}
+
+  public boolean getEncoderStopped(Encoder encoder) {return encoder.getStopped();}
+
+  public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {
+    encoder.reset();
+    encoder.setDistancePerPulse(distancePerPulse);
+    encoder.setMinRate(minRate);
+    encoder.setReverseDirection(isReversed);
+    encoder.setSamplesToAverage(samplesToAverage);
+  }
+
+  public void resetEncoder(Encoder encoder) {
+    encoder.reset();
   }
 
 }
