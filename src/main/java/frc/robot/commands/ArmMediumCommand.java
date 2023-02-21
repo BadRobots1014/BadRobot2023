@@ -33,6 +33,9 @@ public class ArmMediumCommand extends CommandBase {
   @Override
   public void execute() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmMedium);
+    m_armSubsystem.runExtender(0);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+      System.out.println("Obliberated  Power");
   }
 
   // Called once the command ends or is interrupted.

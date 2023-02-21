@@ -16,7 +16,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ArmCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-  private int m_setArm;
+  
 
   /**
    * Creates a new ExampleCommand.
@@ -41,15 +41,7 @@ public class ArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ArmSubsystem.armPosition.equals(ArmConstants.kArmHigh)){
-      m_armSubsystem.runExtender(0.01);
-    }else if(ArmSubsystem.armPosition.equals(ArmConstants.kArmLow)){
-      m_armSubsystem.runExtender(-0.01);
-    }
-    else{
-      m_armSubsystem.runExtender(0);
-    }
-
+    
   }
 
   // Called once the command ends or is interrupted.

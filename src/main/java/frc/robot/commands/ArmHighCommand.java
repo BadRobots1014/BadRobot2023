@@ -33,6 +33,9 @@ public class ArmHighCommand extends CommandBase {
   @Override
   public void execute() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmHigh);
+    m_armSubsystem.runExtender(-0.08);
+    System.out.println();
+      System.out.println("Extending");
   }
 
   // Called once the command ends or is interrupted.

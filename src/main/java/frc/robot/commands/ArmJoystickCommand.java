@@ -10,7 +10,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ArmStoreCommand extends CommandBase {
+public class ArmJoystickCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
 
@@ -19,7 +19,7 @@ public class ArmStoreCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmStoreCommand(ArmSubsystem subsystem) {
+  public ArmJoystickCommand(ArmSubsystem subsystem) {
     m_armSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -32,10 +32,8 @@ public class ArmStoreCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
-    m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
-    System.out.println("Obliberated  Power");
+    
+
   }
 
   // Called once the command ends or is interrupted.

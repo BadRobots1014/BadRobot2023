@@ -114,8 +114,11 @@ public class RobotContainer {
     JoystickButton ArmMediumButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMediumButton);
     ArmMediumButton.whileTrue(this.m_armMediumCommand);
     
-    Trigger ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
+    JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armHighCommand);
+    
+
+
     
     
     
