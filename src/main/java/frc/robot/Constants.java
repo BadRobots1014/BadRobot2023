@@ -63,10 +63,10 @@ public final class Constants {
 
     public final class LimelightConstants {
 
-        public final static double kLineUpMaxSpeed = 1;
-        public final static double kP = .1;
-        public final static double kI = .1;
-        public final static double kD = .1;
+        public final static double kLineUpMaxSpeed = .75;
+        public final static double kP = .3;
+        public final static double kI = .7;
+        public final static double kD = 0;
         public final static double setpoint = 0;
 
     }
