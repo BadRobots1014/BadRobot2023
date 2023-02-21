@@ -22,8 +22,8 @@ public class ArmSubsystem extends SubsystemBase {
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  //private final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
-  private final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
+  public final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
+  public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   public int winchTicks;
   public int extenderTicks;
   public boolean grabber;
@@ -38,10 +38,10 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.setInverted(false); // Find out if needs to be T/F
     m_winch.setIdleMode(IdleMode.kBrake);
 
-    m_extender.setInverted(false); // Find out if needs to be T/F
+    m_extender.setInverted(true); // Find out if needs to be T/F
     m_extender.setIdleMode(IdleMode.kBrake);
     
-    //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
+    this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
     this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
   }
 
@@ -122,10 +122,6 @@ public class ArmSubsystem extends SubsystemBase {
     return MathUtil.clamp(power, -1.0, 1.0);
   }
 
-  public void runToPosition(CANSparkMax motor, double pos){
-    
-  }
-
   public boolean getEncoderDirection(Encoder encoder) {return encoder.getDirection();}
 
   public double getEncoderDistance(Encoder encoder) {return encoder.getDistance();} //(ticks)    4/256
@@ -142,6 +138,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void resetEncoder(Encoder encoder) {
     encoder.reset();
+  }
+
+  public void runToPosition(CANSparkMax motor, double pos){
+    if(pos > 1){
+
+    }else if(pos < 1){
+    
+    }
   }
 
 

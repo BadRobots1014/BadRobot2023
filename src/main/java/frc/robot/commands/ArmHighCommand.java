@@ -33,8 +33,9 @@ public class ArmHighCommand extends CommandBase {
   @Override
   public void execute() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmHigh);
-    m_armSubsystem.runExtender(-0.08);
-    System.out.println();
+    m_armSubsystem.runExtender(0.08);
+    System.out.println("EncoderCount: ");
+    System.out.println(m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
       System.out.println("Extending");
   }
 
