@@ -29,12 +29,23 @@ public final class Constants {
         
         public final static int kThrottleButton = 2;
         public final static int kBalanceButton = 1; //Second joystick
+
+        public final static int kDriveStraightButton = 3;//drive straight command  middle top button on left joystick
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
         public final static double kXboxDeadZoneRadius = .1;
+        public static final int kArmHighButton = 0;
+        public static final int kArmMediumButton = 0;
+        public static final int kArmLowButton = 0;
+        public static final int kArmStoreButton = 0;
 
         //Xbox buttons in RobotContainer
+
+        
+
+
+        
     }
 
     public final class DriveConstants {
@@ -43,6 +54,15 @@ public final class Constants {
         public final static int kRightBPort = 2;
         public final static int kLeftAPort = 3;
         public final static int kLeftBPort = 4;
+
+    }
+
+    public final class ArmConstants{
+
+        public static final int kArmStoredPos = 0;
+        public static final int kArmLowPos = 0;
+        public static final int kArmMiddlePos = 0;
+        public static final int kArmHighPos = 0;
 
     }
 
@@ -88,7 +108,10 @@ public final class Constants {
     public final static class GyroConstants {
 
         public final static double kBalanceThreshold = 5; //In degrees off of upright
+        public final static double kOffsetThreshold = 0.25;
         public final static double kBalanceSpeed = 0.027;
+        public final static double kOffsetSpeed = 0.027;
+        
 
 
     }
