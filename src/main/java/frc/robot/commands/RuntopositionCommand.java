@@ -4,13 +4,13 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystems.ArmSubsystem;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 /** An example command that uses an example subsystem. */
-public class ArmHighCommand extends CommandBase {
+public class RuntopositionCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
 
@@ -19,7 +19,7 @@ public class ArmHighCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmHighCommand(ArmSubsystem subsystem) {
+  public RuntopositionCommand(ArmSubsystem subsystem) {
     m_armSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -27,16 +27,16 @@ public class ArmHighCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("INIT");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmHigh);
-    m_armSubsystem.runExtender(0.08);
-    System.out.println("EncoderCount: ");
-    //System.out.println(m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
-      System.out.println("Extending");
+    System.out.println("RUNTOPOSITION");
+    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, ArmSubsystem.m_extenderEncoder, 5);
+    
   }
 
   // Called once the command ends or is interrupted.

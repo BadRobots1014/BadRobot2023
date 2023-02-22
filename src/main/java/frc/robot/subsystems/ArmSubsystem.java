@@ -20,13 +20,14 @@ import frc.robot.Constants.EncoderConstants;
 public class ArmSubsystem extends SubsystemBase {
 
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
-  public final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
+  public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public final static Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
   public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   public int winchTicks;
   public int extenderTicks;
   public boolean grabber;
+  
 
   public static String armPosition = ArmConstants.kArmStored;
 
@@ -41,17 +42,17 @@ public class ArmSubsystem extends SubsystemBase {
     m_extender.setInverted(true); // Find out if needs to be T/F
     m_extender.setIdleMode(IdleMode.kBrake);
     
-    this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
+    //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
     this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
   }
+
+
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     
-    this.winchTicks = 0;//read ticks from shaft encoder
-    this.extenderTicks = 0; 
-    //code to put arm at preset arm position
+    
 
   }
 
@@ -140,11 +141,15 @@ public class ArmSubsystem extends SubsystemBase {
     encoder.reset();
   }
 
-  public void runToPosition(CANSparkMax motor, double pos){
-    if(pos > 1){
-
-    }else if(pos < 1){
-    
+  public static void runToPosition(CANSparkMax motor, Encoder encoder, double pos){
+    double distance = pos - encoder.getDistance();
+    double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
+    if(pos > encoder.getDistance()){
+      motor.set(0.05 * coefficient);
+      System.out.println(0.05 * coefficient);
+    }else if(pos < encoder.getDistance()){
+      motor.set(-0.04 * coefficient);
+      System.out.println(-0.04 * coefficient);
     }
   }
 

@@ -20,6 +20,7 @@ import frc.robot.commands.ArmLowCommand;
 import frc.robot.commands.ArmMediumCommand;
 import frc.robot.commands.ArmStoreCommand;
 import frc.robot.commands.GrabberCommand;
+import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
@@ -50,6 +51,7 @@ public class RobotContainer {
   private final ArmHighCommand m_armHighCommand = new ArmHighCommand(m_armSubsystem);
   private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
   private final ArmLowCommand m_armLowCommand = new ArmLowCommand(m_armSubsystem);
+  
   private final GrabberCommand m_grabberCommand;
   private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
@@ -60,6 +62,8 @@ public class RobotContainer {
   private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
 
   private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
+
+  private final RuntopositionCommand runToPositionCommand;
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -85,6 +89,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    this.runToPositionCommand = new RuntopositionCommand(m_armSubsystem);
+
     this.drivetrainSubsystem = new DrivetrainSubsystem();
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
@@ -109,8 +115,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
-    lightButton.whileTrue(this.m_balancecommand);
+    //JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
+    //lightButton.whileTrue(this.m_balancecommand);
 
     // Arm Setting Button Bindings
 
@@ -126,6 +132,9 @@ public class RobotContainer {
     JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armHighCommand);
 
+    Trigger RunToPositionTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kRunToPositionTrigger);
+    RunToPositionTrigger.whileTrue(runToPositionCommand);
+    
 
     JoystickButton GrabberManFButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberManFButton);
     if(GrabberManFButton.getAsBoolean()){
@@ -146,6 +155,8 @@ public class RobotContainer {
     if(GrabberPresetRButton.getAsBoolean()){
       runMode = ArmConstants.kPresetRunBackward;
     }
+
+    
 
     
   }

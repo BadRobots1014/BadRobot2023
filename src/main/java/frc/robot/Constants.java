@@ -34,11 +34,13 @@ public final class Constants {
         public final static int kArmMediumButton = 5;//left joystick top right button
         public final static int kArmLowButton = 2;//left joystick middle bottom button
         public final static int kArmStoreButton = 4;//left joystick top left button
+        public final static int kRunToPositionTrigger = 1;//left trigger joystick
 
         public final static int kGrabberManFButton = 3; //right joystick base left top button
         public final static int kGrabberManRButton = 4; //right joystick base left bottom button
         public final static int kGrabberPresetFButton = 5; //right joystick base right top button
         public final static int kGrabberPresetRButton = 2; //right joystick base right bottom button
+        
         
     }
     public final class ArmConstants{
