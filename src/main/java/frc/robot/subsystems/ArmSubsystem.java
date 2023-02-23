@@ -43,7 +43,9 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.setInverted(false); // Find out if needs to be T/F
     m_winch.setIdleMode(IdleMode.kBrake);
 
-    m_extender.setInverted(false); // Find out if needs to be T/F
+
+    m_extender.setInverted(true); //needs to be T
+
     m_extender.setIdleMode(IdleMode.kBrake);
 
     m_tab.addString("PresetArmPosition", this::getArmState);
@@ -74,10 +76,10 @@ public class ArmSubsystem extends SubsystemBase {
   public void IK(){
     //inverse kinematics stuff goes here
   }
-  public static void setPresetPosition(String armPosition){
+  public static void setPresetPosition(String armPos){
     //preset position stuff goes here
 
-    switch (armPosition){
+    switch (armPos){
       case ArmConstants.kArmStored:
       armPosition = ArmConstants.kArmStored;
       System.out.println("ARM IS STORED");
@@ -93,7 +95,7 @@ public class ArmSubsystem extends SubsystemBase {
       case ArmConstants.kArmHigh:
       armPosition = ArmConstants.kArmHigh;
       System.out.println("ARM IS HIGH");
-      System.out.println(armPosition);
+     
       break;
     }
   }
