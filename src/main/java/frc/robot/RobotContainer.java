@@ -19,11 +19,12 @@ import frc.robot.commands.ArmHighCommand;
 import frc.robot.commands.ArmLowCommand;
 import frc.robot.commands.ArmMediumCommand;
 import frc.robot.commands.ArmStoreCommand;
-import frc.robot.commands.GrabberCommand;
+import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.commands.ColorSensorCommand;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -52,10 +53,11 @@ public class RobotContainer {
   private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
   private final ArmLowCommand m_armLowCommand = new ArmLowCommand(m_armSubsystem);
   
-  private final GrabberCommand m_grabberCommand;
+  private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_armSubsystem);
+  private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_armSubsystem);
+
   private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;
-  private String runMode;
 
   private DrivetrainSubsystem drivetrainSubsystem;
 
@@ -102,7 +104,6 @@ public class RobotContainer {
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);
 
-    this. m_grabberCommand = new GrabberCommand(m_armSubsystem, runMode, this::getRightZ); // In Progress - 
 
     // Configure the button bindings
     configureButtonBindings();
@@ -134,27 +135,14 @@ public class RobotContainer {
 
     Trigger RunToPositionTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kRunToPositionTrigger);
     RunToPositionTrigger.whileTrue(runToPositionCommand);
+
+    JoystickButton GrabberForwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberFButton);
+    GrabberForwardButton.whileTrue(this.m_grabberCommandForward);
+
+    JoystickButton GrabberBackwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberRButton);
+    GrabberBackwardButton.whileTrue(this.m_grabberCommandBackward);
+
     
-
-    JoystickButton GrabberManFButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberManFButton);
-    if(GrabberManFButton.getAsBoolean()){
-      runMode = ArmConstants.kManualRunForward;
-    }
-
-    JoystickButton GrabberManRButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberManRButton);
-    if(GrabberManRButton.getAsBoolean()){
-      runMode = ArmConstants.kManualRunBackward;
-    }
-
-    JoystickButton GrabberPresetFButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberPresetFButton);
-    if(GrabberPresetFButton.getAsBoolean()){
-      runMode = ArmConstants.kPresetRunForward;
-    }
-
-    JoystickButton GrabberPresetRButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberPresetRButton);
-    if(GrabberPresetRButton.getAsBoolean()){
-      runMode = ArmConstants.kPresetRunBackward;
-    }
 
     
 
