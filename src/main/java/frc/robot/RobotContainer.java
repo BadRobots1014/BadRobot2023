@@ -15,6 +15,7 @@ import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.ExampleCommand;
+
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -30,6 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final BalanceCommand m_balancecommand;
@@ -64,7 +66,12 @@ public class RobotContainer {
   }
 
   private double getThrottle() {
-    return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    }
+    else {
+      return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+    }
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -95,7 +102,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-  
+
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
