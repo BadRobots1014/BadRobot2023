@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -35,7 +36,8 @@ public class ArmHighCommand extends CommandBase {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmHigh);
     m_armSubsystem.runExtender(0.08);
     System.out.println("EncoderCount: ");
-    //System.out.println(m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
+    System.out.println(m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
+    SmartDashboard.putNumber("Encoder", m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
       System.out.println("Extending");
   }
 

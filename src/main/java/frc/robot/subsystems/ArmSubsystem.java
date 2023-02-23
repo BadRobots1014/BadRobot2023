@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.EncoderConstants;
@@ -22,8 +24,9 @@ public class ArmSubsystem extends SubsystemBase {
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public final static Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
-  public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
+  public final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
+ // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
+  private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
   public int winchTicks;
   public int extenderTicks;
   public boolean grabber;
@@ -41,9 +44,12 @@ public class ArmSubsystem extends SubsystemBase {
 
     m_extender.setInverted(true); // Find out if needs to be T/F
     m_extender.setIdleMode(IdleMode.kBrake);
+
+    m_tab.addString("PresetArmPosition", this::getArmState);
+    
     
     //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
-    this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
+   // this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
   }
 
 
@@ -59,6 +65,7 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+    
   }
 
   public void IK(){
@@ -122,6 +129,10 @@ public class ArmSubsystem extends SubsystemBase {
   private double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);
   }
+
+public String getArmState(){
+  return armPosition;
+} 
 
   public boolean getEncoderDirection(Encoder encoder) {return encoder.getDirection();}
 

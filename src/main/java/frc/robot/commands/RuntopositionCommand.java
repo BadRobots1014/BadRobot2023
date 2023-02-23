@@ -35,7 +35,7 @@ public class RuntopositionCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("RUNTOPOSITION");
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, ArmSubsystem.m_extenderEncoder, 5);
+    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, 5);
     
   }
 
