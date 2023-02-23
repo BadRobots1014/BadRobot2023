@@ -52,17 +52,23 @@ public class DriveStraightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    System.out.println("Command executed");
     m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
 
     double angle = initial_yaw - m_subsystem.getYaw();
     if(angle >= GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         double speed = angle * GyroConstants.kOffsetSpeed;
+        System.out.println("speed: "+speed);
+        System.out.println("Angle: " + angle);
         m_drivesubsystem.tankDrive(m_driveSpeed,m_driveSpeed+speed);
     }
     if(angle <= -1 * GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         double speed = angle * GyroConstants.kOffsetSpeed;
+        System.out.println("speed: " +speed);
+        System.out.println("Angle:" + angle);
         m_drivesubsystem.tankDrive(m_driveSpeed+speed,m_driveSpeed);
     }
   }
