@@ -27,6 +27,7 @@ public class ArmSubsystem extends SubsystemBase {
   public final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
+
   public int winchTicks;
   public int extenderTicks;
   public boolean grabber;
@@ -49,7 +50,8 @@ public class ArmSubsystem extends SubsystemBase {
     
     
     //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
-   // this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
+
+    // this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
   }
 
 
@@ -98,25 +100,14 @@ public class ArmSubsystem extends SubsystemBase {
     motor.stopMotor();
   }
 
-  public void closeGrabber(){
-    m_grabber.set(ArmConstants.kGrabberPowerR);
-  }
-
-  public void openGrabber(){
-    m_grabber.set(ArmConstants.kGrabberPowerF);
-  }
-
   public void runGrabber(double power){
     m_grabber.set(clampPower(power));
   }
 
-  public void runGrabberReverse(double power){
-    m_grabber.set(-clampPower(power));
+  public void stopGrabber(){
+    m_grabber.stopMotor();
   }
 
-  public void stopGrabber(){
-    m_grabber.set(ArmConstants.kGrabberBrake);
-  }
 
   public void runExtender(double power){
     m_extender.set(clampPower(power));
@@ -163,7 +154,4 @@ public String getArmState(){
       System.out.println(-0.04 * coefficient);
     }
   }
-
-
-
 }
