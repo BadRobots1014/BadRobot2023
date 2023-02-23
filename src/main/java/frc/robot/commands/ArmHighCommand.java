@@ -37,7 +37,7 @@ public class ArmHighCommand extends CommandBase {
     m_armSubsystem.runExtender(0.08);
     System.out.println("EncoderCount: ");
     System.out.println(m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
-    SmartDashboard.putNumber("Encoder", m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
+    //SmartDashboard.putNumber("Encoder", m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
       System.out.println("Extending");
   }
 

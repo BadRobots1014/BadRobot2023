@@ -42,10 +42,11 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.setInverted(false); // Find out if needs to be T/F
     m_winch.setIdleMode(IdleMode.kBrake);
 
-    m_extender.setInverted(true); // Find out if needs to be T/F
+    m_extender.setInverted(false); // Find out if needs to be T/F
     m_extender.setIdleMode(IdleMode.kBrake);
 
     m_tab.addString("PresetArmPosition", this::getArmState);
+    m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderDistance);
     
     
     //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
@@ -90,6 +91,7 @@ public class ArmSubsystem extends SubsystemBase {
       case ArmConstants.kArmHigh:
       armPosition = ArmConstants.kArmHigh;
       System.out.println("ARM IS HIGH");
+      System.out.println(armPosition);
       break;
     }
   }
@@ -140,6 +142,10 @@ public String getArmState(){
 
   public boolean getEncoderStopped(Encoder encoder) {return encoder.getStopped();}
 
+  public double getExtenderEncoderDistance(){
+    return (getEncoderDistance(m_extenderEncoder));
+  }
+  
   public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {
     encoder.reset();
     encoder.setDistancePerPulse(distancePerPulse);

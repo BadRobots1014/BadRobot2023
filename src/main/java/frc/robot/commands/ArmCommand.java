@@ -34,7 +34,7 @@ public class ArmCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
+    //ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
     
   }
 
