@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,6 +22,7 @@ import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
+import frc.robot.util.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,6 +38,7 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final BalanceCommand m_balancecommand;
+
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
@@ -44,6 +49,8 @@ public class RobotContainer {
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
   private XboxController xboxController;
+
+  private Logger m_logger;
 
   public double getRightY() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
@@ -87,6 +94,25 @@ public class RobotContainer {
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
+    // Creates the logger
+    m_logger = new Logger("/home/lvuser/logs/", "ezlog");
+
+    // Sets the data to
+    {
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+      LocalDateTime now = LocalDateTime.now();
+
+      m_logger.createStaticField("Time", dtf.format(now));  //DOESN'T WORK
+      m_logger.createStaticField("Event", "CORI Preliminaries 1");
+      m_logger.recordFrequency(.250);
+
+      m_logger.createDynamicFieldDouble("Motor Speed", drivetrainSubsystem.getMotorSpeed(), drivetrainSubsystem::getMotorSpeed);
+
+      m_logger.setup();
+    }
+    // NOTE: The logs can be accessed through File Explorer by typing into the bar:
+    // ftp://roborio-1014-frc.local/home/lvuser/logs/
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -117,5 +143,14 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+  
+  /**
+   * Use this to pass the logger to the main {@link Robot} class to schedule updates.
+   *
+   * @return the logger
+   */
+  public Logger getLogger() {
+    return m_logger;
   }
 }
