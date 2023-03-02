@@ -40,7 +40,8 @@ public class DriveStraightCommand extends CommandBase {
     m_leftSpeed = leftSpeed;
     m_rightSpeed = rightSpeed;
     m_throttle = throttle;
-    m_driveSpeed = Math.max((m_leftSpeed.getAsDouble()), (m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
+    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
+    if (m_leftSpeed.getAsDouble()+m_rightSpeed.getAsDouble()<0) m_driveSpeed = m_driveSpeed*-1;
   }
 
   // Called when the command is initially scheduled.
@@ -60,16 +61,14 @@ public class DriveStraightCommand extends CommandBase {
     double speed = angle * GyroConstants.kOffsetSpeed;
     if (m_driveSpeed<0) speed = speed * -1;
     if(angle >= GyroConstants.kOffsetThreshold) {
-        // the formula that Noirit used, condensed down (even more now)
         System.out.println("speed: "+speed);
         System.out.println("Angle: " + angle);
         m_drivesubsystem.tankDrive(m_driveSpeed,m_driveSpeed+speed);
     }
     else if(angle <= -1 * GyroConstants.kOffsetThreshold) {
         // the formula that Noirit used, condensed down (even more now)
-        System.out.println("speed: " +speed);
-        System.out.println("Angle:" + angle);
-        m_drivesubsystem.tankDrive(m_driveSpeed+speed,m_driveSpeed);
+    // the formula that Noirit used, condensed down (even more now)
+      m_drivesubsystem.tankDrive(m_driveSpeed+speed,m_driveSpeed);
     }
     else{
       m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
