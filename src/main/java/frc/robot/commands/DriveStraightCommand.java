@@ -20,7 +20,6 @@ public class DriveStraightCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final NavXGyroSubsystem m_subsystem;
   private final DrivetrainSubsystem m_drivesubsystem;
-  private final BlinkinSubsystem m_lightsubsystem;
   private double initial_yaw;
   private DoubleSupplier m_leftSpeed;
   private DoubleSupplier m_rightSpeed;
@@ -33,10 +32,9 @@ public class DriveStraightCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightsubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
+  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
-    m_lightsubsystem = lightsubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem, drivesubsystem);
 
@@ -57,7 +55,7 @@ public class DriveStraightCommand extends CommandBase {
 
     m_driveSpeed = Math.max((m_leftSpeed.getAsDouble()), (m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
 
-    m_lightsubsystem.setOcean();
+
     System.out.println("Command executed");
 
     double angle = initial_yaw - m_subsystem.getYaw();
