@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class RuntopositionCommand extends CommandBase {
@@ -35,7 +35,7 @@ public class RuntopositionCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("RUNTOPOSITION");
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, 5);
+    ArmSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, 5);
     
   }
 
