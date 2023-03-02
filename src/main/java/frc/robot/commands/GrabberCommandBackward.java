@@ -36,7 +36,7 @@ public class GrabberCommandBackward extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.runGrabber(ArmConstants.kGrabberPowerR);
-    System.out.println("Grabber Running Backwards");
+    m_subsystem.checkCurrent();
   }
 
   // Called once the command ends or is interrupted.

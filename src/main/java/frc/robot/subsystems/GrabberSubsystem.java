@@ -24,8 +24,8 @@ public class GrabberSubsystem extends SubsystemBase {
  
   public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Grabber");
-
   public boolean grabber;
+  private double m_currentAmps;
   
 
   /** Creates a new ExampleSubsystem. */
@@ -37,7 +37,6 @@ public class GrabberSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     
-
   }
 
   @Override
@@ -53,6 +52,12 @@ public class GrabberSubsystem extends SubsystemBase {
   public void stopGrabber(){
     m_grabber.stopMotor();
   }
+
+  public void checkCurrent(){
+    m_currentAmps = m_grabber.getOutputCurrent();
+    System.out.println(m_currentAmps);
+  }
+
 
   private double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);

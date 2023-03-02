@@ -36,7 +36,7 @@ public class GrabberCommandForward extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.runGrabber(ArmConstants.kGrabberPowerF);
-    System.out.println("Grabber Running Forwards");
+    m_subsystem.checkCurrent();
   }
 
   // Called once the command ends or is interrupted.
