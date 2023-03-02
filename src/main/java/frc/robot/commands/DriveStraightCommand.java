@@ -25,7 +25,6 @@ public class DriveStraightCommand extends CommandBase {
   private DoubleSupplier m_throttle;
   private Double m_driveSpeed;
 
-
   /**
    * Creates a new ExampleCommand.
    *

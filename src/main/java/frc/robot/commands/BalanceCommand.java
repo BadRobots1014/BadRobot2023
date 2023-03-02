@@ -7,13 +7,13 @@ package frc.robot.commands;
 import frc.robot.Constants.GyroConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class BalanceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final NavXGyroSubsystem m_subsystem;
-  private final BlinkinSubsystem m_ledsubsystem;
   private final DrivetrainSubsystem m_drivesubsystem;
 
   /**
@@ -21,11 +21,11 @@ public class BalanceCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public BalanceCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier driveSpeed) {
+  public BalanceCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem, lightSubsystem, drivesubsystem);
+    addRequirements(subsystem, drivesubsystem);
   }
 
 
@@ -43,12 +43,10 @@ public class BalanceCommand extends CommandBase {
     if(Math.abs(angle) >= GyroConstants.kBalanceThreshold) {
         // the formula that Noirit used, condensed down (even more now)
         speed = angle * GyroConstants.kBalanceSpeed;
-        m_ledsubsystem.setRed();
         m_drivesubsystem.tankDrive(speed, speed);
     }
     else {
         m_drivesubsystem.stop();
-        m_ledsubsystem.setGreen();
     }
     /*if(angle >= 5 && angle < 10){
         speed = 0.10;

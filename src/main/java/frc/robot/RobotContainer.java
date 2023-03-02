@@ -15,7 +15,7 @@ import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.ExampleCommand;
-
+import frc.robot.commands.Turn15DegreesCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -36,16 +36,22 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final BalanceCommand m_balancecommand;
   private final DriveStraightCommand m_drivestraightcommand;
+  
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
-  private Joystick rightJoystick;
-  private Joystick leftJoystick;
+  private static Joystick rightJoystick;
+  private static Joystick leftJoystick;
+
+  public static JoystickButton turnLeft15Button;
+  public static JoystickButton turnRight15Button;
 
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
   private XboxController xboxController;
+
+  private final Turn15DegreesCommand m_Turn15DegreesCommand = new Turn15DegreesCommand(navxGyroSubsystem, drivetrainSubsystem, this::getRightY, this::getLeftY);
 
   public double getRightY() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
@@ -67,7 +73,7 @@ public class RobotContainer {
 
   private double getThrottle() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
+      return RobotContainer.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
     }
     else {
       return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
@@ -79,15 +85,17 @@ public class RobotContainer {
 
     this.drivetrainSubsystem = new DrivetrainSubsystem();
 
-    this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
-    this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
-    this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
+    RobotContainer.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
+    leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
+    xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     
+    turnLeft15Button = new JoystickButton(rightJoystick, 4);
+    turnRight15Button = new JoystickButton(rightJoystick, 5);
 
-    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
+    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
@@ -105,17 +113,17 @@ public class RobotContainer {
 
 
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+      JoystickButton balanceButton = new JoystickButton(rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
-      JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
-     
+      JoystickButton driveStraightButton = new JoystickButton(leftJoystick, ControllerConstants.kDriveStraightButton);
+     turnLeft15Button = new JoystickButton(leftJoystick, 4);
       driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
       
       driveStraightButton.whileFalse(this.teleopDriveCmd);
       balanceButton.whileTrue(this.m_balancecommand);
 
-      
-
+      turnLeft15Button.whileTrue(m_Turn15DegreesCommand);
+      System.out.println("Bindings Configured");
     }
     else {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);

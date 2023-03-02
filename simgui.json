@@ -21,11 +21,18 @@
           "open": true
         }
       }
+    },
+    "PWM Outputs": {
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@1eaf0f04": "DifferentialDrive",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@4f636720": "DifferentialDrive",
       "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@7c7fb5fa": "DifferentialDrive"
     }
   },
@@ -40,7 +47,22 @@
     }
   },
   "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Dashboard": {
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
     "open": true,
+    "shuffleboard": {
+      "open": true
+    },
     "visible": true
   }
 }
