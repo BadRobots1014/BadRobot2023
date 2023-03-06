@@ -23,22 +23,18 @@ public class ArmSubsystem extends SubsystemBase {
 
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
 
   public int winchTicks;
   public int extenderTicks;
-  public boolean grabber;
   
 
   public static String armPosition = ArmConstants.kArmStored;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
-    m_grabber.setInverted(false); // Find out if needs to be T/F Later
-    m_grabber.setIdleMode(IdleMode.kCoast);
 
     m_winch.setInverted(false); // Find out if needs to be T/F
     m_winch.setIdleMode(IdleMode.kBrake);
@@ -102,14 +98,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void stopMotor(CANSparkMax motor){
     motor.stopMotor();
-  }
-
-  public void runGrabber(double power){
-    m_grabber.set(clampPower(power));
-  }
-
-  public void stopGrabber(){
-    m_grabber.stopMotor();
   }
 
 

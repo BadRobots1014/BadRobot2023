@@ -32,11 +32,14 @@ public class GrabberSubsystem extends SubsystemBase {
   public GrabberSubsystem() {
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kBrake);
+
+    m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
   }  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+    m_currentAmps = getCurrent();
+    System.out.println(m_currentAmps);
   }
 
   @Override
@@ -53,9 +56,8 @@ public class GrabberSubsystem extends SubsystemBase {
     m_grabber.stopMotor();
   }
 
-  public void checkCurrent(){
-    m_currentAmps = m_grabber.getOutputCurrent();
-    System.out.println(m_currentAmps);
+  public double getCurrent(){
+    return m_grabber.getOutputCurrent();
   }
 
 

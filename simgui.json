@@ -21,29 +21,40 @@
           "open": true
         }
       }
+    },
+    "PWM Outputs": {
+      "window": {
+        "visible": true
+      }
     }
   },
-
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@37b2ea9d": "DifferentialDrive",
       "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@7c7fb5fa": "DifferentialDrive"
     }
-
   },
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
+    "Transitory Values": {
+      "open": false
+    },
     "transitory": {
       "Shuffleboard": {
         "Drivetrain": {
           "open": true
         },
-        "open": true
+        "Grabber": {
+          "open": true
+        }
       }
     }
   },
   "NetworkTables Info": {
     "open": true,
     "visible": true
-
   }
 }
