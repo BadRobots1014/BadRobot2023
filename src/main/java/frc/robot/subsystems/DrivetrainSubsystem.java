@@ -46,7 +46,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_leftB.follow(m_leftA);
         m_rightB.follow(m_rightA);
 
-        m_encoder = m_rightA.getEncoder();
+        m_encoder = m_rightA.getEncoder(); //In rotations
+        m_encoder.setPosition(0);
 
         m_tab.addNumber("Left Power", m_leftA::get);
         m_tab.addNumber("Right Power", m_rightA::get);
