@@ -14,6 +14,9 @@ import frc.robot.Constants.MovementConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -25,6 +28,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
 
     private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
+
+    private final RelativeEncoder m_encoder;
     
 
     public DrivetrainSubsystem() {
@@ -41,14 +46,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_leftB.follow(m_leftA);
         m_rightB.follow(m_rightA);
 
+        m_encoder = m_rightA.getEncoder();
+
         m_tab.addNumber("Left Power", m_leftA::get);
         m_tab.addNumber("Right Power", m_rightA::get);
 
         m_tab.add(m_driveTrain.toString(), m_driveTrain);
-    }
 
+        m_tab.addNumber(m_encoder.toString(), m_encoder::getPosition);
+    }
     public void tankDrive(double leftSpeed, double rightSpeed) {
         m_driveTrain.tankDrive(clampPower(leftSpeed), clampPower(rightSpeed), true);
+        System.out.print(m_encoder.getPosition());
     }
 
     public String getDirection(double leftSpeed, double rightSpeed){
