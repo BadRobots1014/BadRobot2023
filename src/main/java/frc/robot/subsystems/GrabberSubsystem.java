@@ -22,10 +22,10 @@ import frc.robot.Constants.EncoderConstants;
 public class GrabberSubsystem extends SubsystemBase {
 
  
-  public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Grabber");
-  public boolean grabber;
   private double m_currentAmps;
+  private String m_grabberState;
   
 
   /** Creates a new ExampleSubsystem. */
@@ -34,12 +34,11 @@ public class GrabberSubsystem extends SubsystemBase {
     m_grabber.setIdleMode(IdleMode.kBrake);
 
     m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
+    m_tab.addString("Grabber State", this::getGrabberState);
   }  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     m_currentAmps = getCurrent();
-    System.out.println(m_currentAmps);
   }
 
   @Override
@@ -57,9 +56,13 @@ public class GrabberSubsystem extends SubsystemBase {
   }
 
   public double getCurrent(){
+    m_grabberState = m_currentAmps >= ArmConstants.kGrabberAmpMax ? ArmConstants.kGrabberFilled : ArmConstants.kGrabberEmpty;
     return m_grabber.getOutputCurrent();
   }
 
+  public String getGrabberState(){
+    return m_grabberState;
+  }
 
   private double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);

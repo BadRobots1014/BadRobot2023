@@ -72,6 +72,12 @@ public final class Constants {
         // Grabber power constants
         public final static double kGrabberPowerF = 0.25;
         public final static double kGrabberPowerR = -0.25;
+
+        // Grabber State Constants
+        public final static double kGrabberAmpMax = 36; //Approximately how min number of amps motor reads out when it fills
+        public final static String kGrabberFilled = "Grabber is Filled";
+        public final static String kGrabberEmpty = "Grabber is Empty";
+
         
 
         // motor ports

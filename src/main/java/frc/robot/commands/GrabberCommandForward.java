@@ -49,5 +49,6 @@ public class GrabberCommandForward extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
-  }
+  } 
+
 }
