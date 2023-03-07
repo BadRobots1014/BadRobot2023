@@ -7,9 +7,9 @@ package frc.robot.commands;
 import frc.robot.Constants.GyroConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
-
+import frc.robot.subsystems.BlinkinSubsystem;
 import java.util.function.DoubleSupplier;
-
+import frc.robot.Constants.BlinkinPatternConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
@@ -19,6 +19,7 @@ public class DriveStraightCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final NavXGyroSubsystem m_subsystem;
   private final DrivetrainSubsystem m_drivesubsystem;
+  private final BlinkinSubsystem m_ledSubsystem;
   private double initial_yaw;
   private DoubleSupplier m_leftSpeed;
   private DoubleSupplier m_rightSpeed;
@@ -31,9 +32,10 @@ public class DriveStraightCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
+  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
+    m_ledSubsystem = lightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem, drivesubsystem);
 
@@ -52,30 +54,36 @@ public class DriveStraightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-
-    System.out.println("Command executed");
-
-    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
-    if (m_leftSpeed.getAsDouble()+m_rightSpeed.getAsDouble()<0) m_driveSpeed = m_driveSpeed*-1;
-
+    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble())) * m_throttle.getAsDouble();
+    if (m_leftSpeed.getAsDouble() + m_rightSpeed.getAsDouble() < 0) m_driveSpeed = -m_driveSpeed;
     double angle = initial_yaw - m_subsystem.getYaw();
     double speed = angle * GyroConstants.kOffsetSpeed;
-    if (m_driveSpeed<0) speed = -speed;
-    if(angle >= GyroConstants.kOffsetThreshold) {
-        System.out.println("speed: "+speed);
-        System.out.println("Angle: " + angle);
-        m_drivesubsystem.tankDrive(m_driveSpeed,m_driveSpeed+speed);
-    }
-    else if(angle <= -1 * GyroConstants.kOffsetThreshold) {
-        // the formula that Noirit used, condensed down (even more now)
-    // the formula that Noirit used, condensed down (even more now)
-      m_drivesubsystem.tankDrive(m_driveSpeed+speed,m_driveSpeed);
+    if (m_driveSpeed > 0) {
+      m_ledSubsystem.set(BlinkinPatternConstants.blinkingBlue);
+      if(angle >= GyroConstants.kOffsetThreshold) {
+          m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed + speed);
+      }
+      else if(angle <= -GyroConstants.kOffsetThreshold) {
+        m_drivesubsystem.tankDrive(m_driveSpeed + speed, m_driveSpeed);
+      }
+      else{
+       m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
+      }
     }
     else{
+      m_ledSubsystem.set(BlinkinPatternConstants.blinkingRed);
+      if(angle >= -GyroConstants.kOffsetThreshold) {
+        m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed - speed);
+      }
+      else if(angle <= GyroConstants.kOffsetThreshold) {
+        m_drivesubsystem.tankDrive(m_driveSpeed - speed, m_driveSpeed);
+      }
+      else{
       m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
+      }
     }
-  }
+  } 
+  
 
   // Called once the command ends or is interrupted.
   @Override
