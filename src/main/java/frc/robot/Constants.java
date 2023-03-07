@@ -58,7 +58,7 @@ public final class Constants {
         public final static int kArmLowPos = 1;
         public final static String kArmLow = "LOW";
 
-        public final static int kArmStoredPos = 0;
+        public final static int kArmStoredPos = 10;
         public final static String kArmStored = "STORED";
 
         // Grabber Running Modes

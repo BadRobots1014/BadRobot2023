@@ -33,13 +33,19 @@ public class ArmLowCommand extends CommandBase {
   @Override
   public void execute() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmLow);
-    m_armSubsystem.runExtender(-0.05);
+    if(m_armSubsystem.getExtenderEncoderPosition() > 10){
+      m_armSubsystem.runExtender(-0.05);
       System.out.println("Extending Backwards");
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_armSubsystem.runExtender(0);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+  }
 
   // Returns true when the command should end.
   @Override

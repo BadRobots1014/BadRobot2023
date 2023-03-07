@@ -32,6 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
   
 
   public static String armPosition = ArmConstants.kArmStored;
+  public static int currArmExtenderEncoderPreset = ArmConstants.kArmStoredPos;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
@@ -151,10 +152,10 @@ public class ArmSubsystem extends SubsystemBase {
   public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos){
     double distance = pos - encoder.getPosition();
     double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
-    if(pos > encoder.getPosition()){
+    if(pos < encoder.getPosition()){
       motor.set(0.05 * coefficient);
       System.out.println(0.05 * coefficient);
-    }else if(pos < encoder.getPosition()){
+    }else if(pos > encoder.getPosition()){
       motor.set(-0.04 * coefficient);
       System.out.println(-0.04 * coefficient);
     }

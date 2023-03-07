@@ -13,6 +13,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ArmStoreCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+  private final RuntopositionCommand m_RuntopositionCommand;
 
   /**
    * Creates a new ExampleCommand.
@@ -23,6 +24,7 @@ public class ArmStoreCommand extends CommandBase {
     m_armSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    m_RuntopositionCommand = new RuntopositionCommand(m_armSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,9 +35,9 @@ public class ArmStoreCommand extends CommandBase {
   @Override
   public void execute() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
-    m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+    m_RuntopositionCommand.execute();
     System.out.println("Obliberated  Power");
+    
   }
 
   // Called once the command ends or is interrupted.
