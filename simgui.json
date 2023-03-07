@@ -1,0 +1,46 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "REV Color Sensor V3[1,82]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [2]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "navX-Sensor[0]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@7c7fb5fa": "DifferentialDrive"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "Drivetrain": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "open": true,
+    "visible": true
+  }
+}
