@@ -54,6 +54,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
     
     
+    
     //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
 
     // this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
