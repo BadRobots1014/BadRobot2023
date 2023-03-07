@@ -40,8 +40,7 @@ public class DriveStraightCommand extends CommandBase {
     m_leftSpeed = leftSpeed;
     m_rightSpeed = rightSpeed;
     m_throttle = throttle;
-    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
-    if (m_leftSpeed.getAsDouble()+m_rightSpeed.getAsDouble()<0) m_driveSpeed = m_driveSpeed*-1;
+    m_driveSpeed = 0.0;
   }
 
   // Called when the command is initially scheduled.
@@ -57,9 +56,12 @@ public class DriveStraightCommand extends CommandBase {
 
     System.out.println("Command executed");
 
+    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
+    if (m_leftSpeed.getAsDouble()+m_rightSpeed.getAsDouble()<0) m_driveSpeed = m_driveSpeed*-1;
+
     double angle = initial_yaw - m_subsystem.getYaw();
     double speed = angle * GyroConstants.kOffsetSpeed;
-    if (m_driveSpeed<0) speed = speed * -1;
+    if (m_driveSpeed<0) speed = -speed;
     if(angle >= GyroConstants.kOffsetThreshold) {
         System.out.println("speed: "+speed);
         System.out.println("Angle: " + angle);
@@ -78,7 +80,7 @@ public class DriveStraightCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    m_drivesubsystem.tankDrive(0.0, 0.0);
   }
 
   // Returns true when the command should end.
