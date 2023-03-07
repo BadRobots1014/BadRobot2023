@@ -4,11 +4,10 @@
 
 package frc.robot.subsystems;
 
-import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Encoder;
@@ -16,7 +15,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.EncoderConstants;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -24,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public final Encoder m_extenderEncoder = new Encoder(EncoderConstants.kExtenderChannelA, EncoderConstants.kExtenderChannelB);
+  public final RelativeEncoder m_extenderEncoder;
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
 
@@ -48,8 +46,10 @@ public class ArmSubsystem extends SubsystemBase {
 
     m_extender.setIdleMode(IdleMode.kBrake);
 
+    m_extenderEncoder = m_extender.getEncoder();
+
     m_tab.addString("PresetArmPosition", this::getArmState);
-    m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderDistance);
+    m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
     
     
     //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
@@ -63,8 +63,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     
-    
-
   }
 
   @Override
@@ -76,6 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void IK(){
     //inverse kinematics stuff goes here
   }
+  
   public static void setPresetPosition(String armPos){
     //preset position stuff goes here
 
@@ -112,7 +111,6 @@ public class ArmSubsystem extends SubsystemBase {
     m_grabber.stopMotor();
   }
 
-
   public void runExtender(double power){
     m_extender.set(clampPower(power));
   }
@@ -125,18 +123,17 @@ public class ArmSubsystem extends SubsystemBase {
     return MathUtil.clamp(power, -1.0, 1.0);
   }
 
-public String getArmState(){
-  return armPosition;
-} 
+  public String getArmState(){
+    return armPosition;
+  } 
 
-  public boolean getEncoderDirection(Encoder encoder) {return encoder.getDirection();}
 
-  public double getEncoderDistance(Encoder encoder) {return encoder.getDistance();} //(ticks)    4/256
+  public double getEncoderPosition(RelativeEncoder encoder) {return encoder.getPosition();} // In rotations
 
-  public boolean getEncoderStopped(Encoder encoder) {return encoder.getStopped();}
+  public double getEncoderVelocity(RelativeEncoder encoder) {return encoder.getVelocity();}
 
-  public double getExtenderEncoderDistance(){
-    return (getEncoderDistance(m_extenderEncoder));
+  public double getExtenderEncoderPosition(){
+    return (getEncoderPosition(m_extenderEncoder));
   }
   
   public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {
@@ -151,13 +148,13 @@ public String getArmState(){
     encoder.reset();
   }
 
-  public static void runToPosition(CANSparkMax motor, Encoder encoder, double pos){
-    double distance = pos - encoder.getDistance();
+  public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos){
+    double distance = pos - encoder.getPosition();
     double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
-    if(pos > encoder.getDistance()){
+    if(pos > encoder.getPosition()){
       motor.set(0.05 * coefficient);
       System.out.println(0.05 * coefficient);
-    }else if(pos < encoder.getDistance()){
+    }else if(pos < encoder.getPosition()){
       motor.set(-0.04 * coefficient);
       System.out.println(-0.04 * coefficient);
     }
