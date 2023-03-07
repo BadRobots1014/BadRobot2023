@@ -48,6 +48,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_extender.setIdleMode(IdleMode.kBrake);
 
     m_extenderEncoder = m_extender.getEncoder();
+    resetEncoder(m_extenderEncoder);
 
     m_tab.addString("PresetArmPosition", this::getArmState);
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
@@ -137,16 +138,16 @@ public class ArmSubsystem extends SubsystemBase {
     return (getEncoderPosition(m_extenderEncoder));
   }
   
-  public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {
-    encoder.reset();
-    encoder.setDistancePerPulse(distancePerPulse);
-    encoder.setMinRate(minRate);
-    encoder.setReverseDirection(isReversed);
-    encoder.setSamplesToAverage(samplesToAverage);
-  }
+  // public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {
+  //   encoder.reset();
+  //   encoder.setDistancePerPulse(distancePerPulse);
+  //   encoder.setMinRate(minRate);
+  //   encoder.setReverseDirection(isReversed);
+  //   encoder.setSamplesToAverage(samplesToAverage);
+  // }
 
-  public void resetEncoder(Encoder encoder) {
-    encoder.reset();
+  public void resetEncoder(RelativeEncoder encoder) {
+    encoder.setPosition(0);
   }
 
   public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos){
