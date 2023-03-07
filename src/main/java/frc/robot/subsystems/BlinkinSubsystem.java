@@ -7,11 +7,18 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BlinkinConstants;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 
 public class BlinkinSubsystem extends SubsystemBase {
+
+  private final ShuffleboardTab m_tab = Shuffleboard.getTab("Blinkin");
+
   /** Creates a new ExampleSubsystem. */
-  public BlinkinSubsystem() {}
+  public BlinkinSubsystem() {
+    m_tab.add(blinkin.toString(), blinkin);
+  }
 
   private final Spark blinkin = new Spark(BlinkinConstants.kBlinkinPort);
 

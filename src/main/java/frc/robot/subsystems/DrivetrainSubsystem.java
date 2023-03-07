@@ -33,6 +33,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         m_tab.addNumber("Left Power", m_left::get);
         m_tab.addNumber("Right Power", m_right::get);
+
+        m_tab.add(m_driveTrain.toString(), m_driveTrain);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
