@@ -86,7 +86,7 @@ public class RobotContainer {
     //this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     this.m_limelightSubsystem = new LimelightSubsystem();
-    this.m_limelightPIDCommand = new LimelightPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .2);
+    this.m_limelightPIDCommand = new LimelightPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .5);
 
 
     // Configure the button bindings

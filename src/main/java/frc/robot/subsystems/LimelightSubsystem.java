@@ -43,6 +43,7 @@ public class LimelightSubsystem extends SubsystemBase{
         table.getEntry("pipeline").setNumber(pipelineNum);
     }
 
+    // THIS NEEDS TO CHANGE (temp solution)
     public double getTableX() {
         return tx.getDouble(0.0)/30;
     }
