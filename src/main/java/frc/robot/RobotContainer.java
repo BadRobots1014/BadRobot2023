@@ -20,7 +20,6 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.commands.ConeLineUpCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,7 +37,6 @@ public class RobotContainer {
   private DriveCommand teleopDriveCmd;
 
   private LimelightSubsystem m_limelightSubsystem;
-  private ConeLineUpCommand m_coneLineUpCommand;
   private LimelightPIDCommand m_limelightPIDCommand;
 
   private DrivetrainSubsystem drivetrainSubsystem;
@@ -88,7 +86,6 @@ public class RobotContainer {
     //this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     this.m_limelightSubsystem = new LimelightSubsystem();
-    this.m_coneLineUpCommand = new ConeLineUpCommand(m_limelightSubsystem, drivetrainSubsystem);
     this.m_limelightPIDCommand = new LimelightPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .2);
 
 
