@@ -96,9 +96,9 @@ public final class Constants {
         
 
         public final static double kP = 0.3;
-        public final static double kI = 0.7;
+        public final static double kI = 0.3;
         public final static double kD = 0.005;
 
-        public final static double kLineUpMaxSpeed = .2;
+        public final static double kLineUpMaxSpeed = .75;
     }
 }

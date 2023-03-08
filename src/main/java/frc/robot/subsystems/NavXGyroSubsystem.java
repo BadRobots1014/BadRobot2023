@@ -23,6 +23,10 @@ public class NavXGyroSubsystem extends SubsystemBase {
     return navx.getYaw();
   }
 
+  public double getPIDYaw() {
+    return navx.getYaw() / 180;
+  }
+
   public double getPitch() {
     return navx.getPitch();
   }

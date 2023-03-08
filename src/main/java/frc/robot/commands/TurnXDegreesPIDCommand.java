@@ -19,8 +19,8 @@ public class TurnXDegreesPIDCommand extends PIDCommand{
 
     public TurnXDegreesPIDCommand(NavXGyroSubsystem gS, DrivetrainSubsystem dS, double setpoint) {
         super(new PIDController(GyroConstants.kP, GyroConstants.kI, GyroConstants.kD),
-        gS::getYaw, 
-        gS.getYaw() + setpoint, 
+        gS::getPIDYaw, 
+        gS.getPIDYaw() + setpoint/180, 
         //output -> dS.tankDrive(power * output, power * -output),
         //output -> System.out.println(output),
         //output -> dS.tankDrive(power * output, power * (1-output)), 
