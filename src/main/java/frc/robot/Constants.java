@@ -35,6 +35,10 @@ public final class Constants {
         public final static double kXboxDeadZoneRadius = .1;
 
         //Xbox buttons in RobotContainer
+
+
+        // Gyro Line Up 
+        public final static int kGyroLineUp = 4;
     }
 
     public final class DriveConstants {
@@ -89,8 +93,12 @@ public final class Constants {
 
         public final static double kBalanceThreshold = 5; //In degrees off of upright
         public final static double kBalanceSpeed = 0.027;
+        
 
+        public final static double kP = 0.3;
+        public final static double kI = 0.7;
+        public final static double kD = 0.005;
 
+        public final static double kLineUpMaxSpeed = .2;
     }
-
 }

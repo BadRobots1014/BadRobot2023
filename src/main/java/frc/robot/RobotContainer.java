@@ -14,7 +14,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-
+import frc.robot.commands.TurnXDegreesPIDCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -42,6 +42,7 @@ public class RobotContainer {
   private Joystick leftJoystick;
 
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
+  private TurnXDegreesPIDCommand m_turnXDegreesPIDCommand;
 
   private XboxController xboxController;
 
@@ -86,6 +87,8 @@ public class RobotContainer {
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
+    
+    m_turnXDegreesPIDCommand = new TurnXDegreesPIDCommand(navxGyroSubsystem, drivetrainSubsystem, 90);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -107,6 +110,9 @@ public class RobotContainer {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
       balanceButton.whileTrue(this.m_balancecommand);
     }
+
+    JoystickButton pidLineUpButton =  new JoystickButton(this.rightJoystick, ControllerConstants.kGyroLineUp);
+    pidLineUpButton.whileTrue(this.m_turnXDegreesPIDCommand);
   }
 
   /**
