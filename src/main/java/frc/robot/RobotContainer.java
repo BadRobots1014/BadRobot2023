@@ -81,7 +81,7 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getLeftY, this::getRightY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
