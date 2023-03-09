@@ -60,6 +60,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_tab.addString("PresetArmPosition", this::getArmState);
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
     m_tab.addBoolean("Dunking", this::getDunkState);
+    m_tab.addDouble("ArmPresetHightTicks", this::getCurrArmExtenderEncoderPreset);
    // m_tab.addDouble("Left Z Axis",RobotContiner.getLeftZ);
     
     
@@ -110,7 +111,6 @@ public class ArmSubsystem extends SubsystemBase {
       armPosition = ArmConstants.kArmHigh;
       currArmExtenderEncoderPreset = ArmConstants.kArmHighPos;
       System.out.println("ARM IS HIGH");
-     
       break;
     }
   }
@@ -151,6 +151,9 @@ public class ArmSubsystem extends SubsystemBase {
     dunkState = state;
   }
 
+  public int getCurrArmExtenderEncoderPreset(){
+    return currArmExtenderEncoderPreset;
+  }
 
   public double getEncoderPosition(RelativeEncoder encoder) {return encoder.getPosition();} // In rotations
 
