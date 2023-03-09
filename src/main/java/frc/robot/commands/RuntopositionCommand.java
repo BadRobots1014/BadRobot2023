@@ -41,7 +41,11 @@ public class RuntopositionCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_armSubsystem.runExtender(0);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+
+  }
 
   // Returns true when the command should end.
   @Override

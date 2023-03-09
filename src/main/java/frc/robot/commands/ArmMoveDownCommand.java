@@ -10,22 +10,19 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ArmMediumCommand extends CommandBase {
+public class ArmMoveDownCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-  private final RuntopositionCommand m_RuntopositionCommand;
-
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmMediumCommand(ArmSubsystem subsystem) {
+  public ArmMoveDownCommand(ArmSubsystem subsystem) {
     m_armSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    m_RuntopositionCommand = new RuntopositionCommand(m_armSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -35,14 +32,17 @@ public class ArmMediumCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmMedium);
-    m_RuntopositionCommand.execute();
+    ArmSubsystem.setPresetPosition(ArmConstants.kArmLow);
+    if(m_armSubsystem.getExtenderEncoderPosition() > 0){
+      m_armSubsystem.runExtender(-0.05);
+      //System.out.println("Extending Backwards");
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_RuntopositionCommand.end(true);
     m_armSubsystem.runExtender(0);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
   }

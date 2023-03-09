@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.RobotContainer;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -29,10 +30,16 @@ public class ArmSubsystem extends SubsystemBase {
   public int winchTicks;
   public int extenderTicks;
   public boolean grabber;
+
+  public static final double extenderUpperBound = 33;
+  public static final double extenderLowerBound = 0;
   
 
   public static String armPosition = ArmConstants.kArmStored;
   public static int currArmExtenderEncoderPreset = ArmConstants.kArmStoredPos;
+  public static boolean dunkState = false;
+
+  
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
@@ -52,6 +59,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     m_tab.addString("PresetArmPosition", this::getArmState);
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
+    m_tab.addBoolean("Dunking", this::getDunkState);
+   // m_tab.addDouble("Left Z Axis",RobotContiner.getLeftZ);
     
     
     
@@ -84,18 +93,22 @@ public class ArmSubsystem extends SubsystemBase {
     switch (armPos){
       case ArmConstants.kArmStored:
       armPosition = ArmConstants.kArmStored;
+      currArmExtenderEncoderPreset = ArmConstants.kArmStoredPos;
       System.out.println("ARM IS STORED");
       break;
       case ArmConstants.kArmLow:
       armPosition = ArmConstants.kArmLow;
+      currArmExtenderEncoderPreset = ArmConstants.kArmLowPos;
       System.out.println("ARM IS LOW");
       break;
       case ArmConstants.kArmMedium:
       armPosition = ArmConstants.kArmMedium;
+      currArmExtenderEncoderPreset = ArmConstants.kArmMediumPos;
       System.out.println("ARM IS MEDIUM");
       break;
       case ArmConstants.kArmHigh:
       armPosition = ArmConstants.kArmHigh;
+      currArmExtenderEncoderPreset = ArmConstants.kArmHighPos;
       System.out.println("ARM IS HIGH");
      
       break;
@@ -130,6 +143,14 @@ public class ArmSubsystem extends SubsystemBase {
     return armPosition;
   } 
 
+  public boolean getDunkState(){
+    return dunkState;
+  }
+
+  public static void setDunkState(boolean state){
+    dunkState = state;
+  }
+
 
   public double getEncoderPosition(RelativeEncoder encoder) {return encoder.getPosition();} // In rotations
 
@@ -152,6 +173,9 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos){
+    if((dunkState == true) && (encoder.getPosition() < extenderUpperBound) && (encoder.getPosition() > extenderLowerBound)){
+      pos = pos - 3;
+    }
     double distance = pos - encoder.getPosition();
     double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
     if(pos < encoder.getPosition()){

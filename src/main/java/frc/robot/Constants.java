@@ -34,7 +34,10 @@ public final class Constants {
         public final static int kArmMediumButton = 5;//left joystick top right button
         public final static int kArmLowButton = 2;//left joystick middle bottom button
         public final static int kArmStoreButton = 4;//left joystick top left button
-        public final static int kZeroTrigger = 1;//left trigger joystick
+        public final static int kDunkTrigger = 1;//left trigger joystick
+        public final static int kArmMoveUp = 10;
+        public final static int kArmMoveDown = 11;
+        public final static int kArmZeroButton = 7;
 
         public final static int kGrabberFButton = 3; //right joystick middle top button
         public final static int kGrabberRButton = 2; //right joystick middle bottom button
@@ -49,16 +52,16 @@ public final class Constants {
     }
     public final class ArmConstants{
         //set preset arm positions
-        public final static int kArmHighPos = 3;
+        public final static int kArmHighPos = 25;
         public final static String kArmHigh = "HIGH";
 
-        public final static int kArmMiddlePos = 2;
+        public final static int kArmMediumPos = 15;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static int kArmLowPos = 1;
+        public final static int kArmLowPos = 5;
         public final static String kArmLow = "LOW";
 
-        public final static int kArmStoredPos = 10;
+        public final static int kArmStoredPos = 0;
         public final static String kArmStored = "STORED";
 
         // Grabber Running Modes

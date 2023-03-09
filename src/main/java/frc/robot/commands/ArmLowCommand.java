@@ -13,7 +13,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ArmLowCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-
+  private final RuntopositionCommand m_RuntopositionCommand;
   /**
    * Creates a new ExampleCommand.
    *
@@ -23,6 +23,7 @@ public class ArmLowCommand extends CommandBase {
     m_armSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    m_RuntopositionCommand = new RuntopositionCommand(m_armSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,16 +34,13 @@ public class ArmLowCommand extends CommandBase {
   @Override
   public void execute() {
     ArmSubsystem.setPresetPosition(ArmConstants.kArmLow);
-    if(m_armSubsystem.getExtenderEncoderPosition() > 0){
-      m_armSubsystem.runExtender(-0.05);
-      System.out.println("Extending Backwards");
-    }
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_RuntopositionCommand.end(true);
     m_armSubsystem.runExtender(0);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
   }

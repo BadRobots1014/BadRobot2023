@@ -21,12 +21,15 @@ import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ArmHighCommand;
 import frc.robot.commands.ArmLowCommand;
 import frc.robot.commands.ArmMediumCommand;
+import frc.robot.commands.ArmMoveDownCommand;
+import frc.robot.commands.ArmMoveUpCommand;
 import frc.robot.commands.ArmStoreCommand;
 import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.ZeroCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DunkCommand;
 import frc.robot.commands.ExampleCommand;
 
 import frc.robot.commands.GrabberCommandBackward;
@@ -60,6 +63,8 @@ public class RobotContainer {
   private final ArmHighCommand m_armHighCommand = new ArmHighCommand(m_armSubsystem);
   private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
   private final ArmLowCommand m_armLowCommand = new ArmLowCommand(m_armSubsystem);
+  private final ArmMoveUpCommand m_ArmMoveUpCommand = new ArmMoveUpCommand(m_armSubsystem);
+  private final ArmMoveDownCommand m_ArmMoveDownCommand = new ArmMoveDownCommand(m_armSubsystem);
   
   private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_armSubsystem);
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_armSubsystem);
@@ -77,6 +82,8 @@ public class RobotContainer {
   private final RuntopositionCommand runToPositionCommand;
 
   private final ZeroCommand m_zeroCommand;
+
+  private final DunkCommand m_dunkCommand;
 
   
   private Joystick rightJoystick;
@@ -101,6 +108,15 @@ public class RobotContainer {
     }
     else {
       return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
+    }
+  }
+
+  public double getLeftZ() {
+    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
+      return Math.abs(leftJoystick.getZ());
+    }
+    else {
+      return Math.abs(leftJoystick.getZ());
     }
   }
 
@@ -131,6 +147,7 @@ public class RobotContainer {
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
+    this.m_dunkCommand = new DunkCommand(m_armSubsystem);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
@@ -165,14 +182,25 @@ public class RobotContainer {
     JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armHighCommand);
 
-    Trigger ZeroTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kZeroTrigger);
-    ZeroTrigger.whileTrue(m_zeroCommand);
+    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
+    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+
+    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
+    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+
+    JoystickButton ZeroButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmZeroButton);
+    ZeroButton.whileTrue(m_zeroCommand);
+
+    Trigger DunkTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kDunkTrigger);
+    DunkTrigger.whileTrue(m_dunkCommand);
 
     JoystickButton GrabberForwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberFButton);
     GrabberForwardButton.whileTrue(this.m_grabberCommandForward);
 
     JoystickButton GrabberBackwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberRButton);
     GrabberBackwardButton.whileTrue(this.m_grabberCommandBackward);
+
+    
 
     
 
