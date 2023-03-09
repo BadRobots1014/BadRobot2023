@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 
 import com.revrobotics.CANSparkMax;
@@ -25,7 +27,7 @@ public class GrabberSubsystem extends SubsystemBase {
   private static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Grabber");
   private double m_currentAmps;
-  private String m_grabberState;
+  private String m_grabberState = ArmConstants.kGrabberEmpty;
   
 
   /** Creates a new ExampleSubsystem. */
@@ -34,7 +36,7 @@ public class GrabberSubsystem extends SubsystemBase {
     m_grabber.setIdleMode(IdleMode.kBrake);
 
     m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
-    m_tab.addString("Grabber State", this::getGrabberState);
+    m_tab.addString("Grabber State: ", this::getGrabberState);
   }  
   @Override
   public void periodic() {
@@ -56,7 +58,12 @@ public class GrabberSubsystem extends SubsystemBase {
   }
 
   public double getCurrent(){
-    m_grabberState = m_currentAmps >= ArmConstants.kGrabberAmpMax ? ArmConstants.kGrabberFilled : ArmConstants.kGrabberEmpty;
+    if (m_currentAmps >= ArmConstants.kGrabberAmpMax){
+      m_grabberState = ArmConstants.kGrabberFilled;
+    } else if (m_currentAmps < ArmConstants.kGrabberAmpMax && m_currentAmps > 1){
+      m_grabberState = ArmConstants.kGrabberEmpty;
+    }
+
     return m_grabber.getOutputCurrent();
   }
 

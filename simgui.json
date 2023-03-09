@@ -1,60 +1,21 @@
 {
-  "HALProvider": {
-    "Other Devices": {
-      "REV Color Sensor V3[1,82]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [2]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [3]": {
-        "header": {
-          "open": true
-        }
-      },
-      "navX-Sensor[0]": {
-        "header": {
-          "open": true
-        }
-      }
-    },
-    "PWM Outputs": {
-      "window": {
-        "visible": true
-      }
-    }
-  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@37b2ea9d": "DifferentialDrive",
-      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@7c7fb5fa": "DifferentialDrive"
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@56f3fd65": "DifferentialDrive"
     }
   },
   "NetworkTables": {
-    "Retained Values": {
-      "open": false
-    },
-    "Transitory Values": {
-      "open": false
-    },
     "transitory": {
       "Shuffleboard": {
-        "Drivetrain": {
-          "open": true
-        },
         "Grabber": {
           "open": true
-        }
+        },
+        "open": true
       }
     }
   },
   "NetworkTables Info": {
-    "open": true,
-    "visible": true
+    "open": false
   }
 }
