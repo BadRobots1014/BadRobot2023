@@ -23,13 +23,11 @@
       }
     }
   },
-
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@7c7fb5fa": "DifferentialDrive"
     }
-
   },
   "NetworkTables": {
     "transitory": {
@@ -44,6 +42,5 @@
   "NetworkTables Info": {
     "open": true,
     "visible": true
-
   }
 }

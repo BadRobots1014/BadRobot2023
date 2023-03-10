@@ -34,13 +34,13 @@ public class ZAxisArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_armSubsystem.getLeftZAxis() * m_armSubsystem.getExtenderUpperBound()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.setDunkState(false);
+    ArmSubsystem.setDunkState(false);
   }
 
   // Returns true when the command should end.

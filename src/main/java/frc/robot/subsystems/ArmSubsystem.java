@@ -39,10 +39,13 @@ public class ArmSubsystem extends SubsystemBase {
   public static int currArmExtenderEncoderPreset = ArmConstants.kArmStoredPos;
   public static boolean dunkState = false;
 
+  private final RobotContainer m_RobotContainer;
+
   
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
+    m_RobotContainer = new RobotContainer();
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kCoast);
 
@@ -61,7 +64,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
     m_tab.addBoolean("Dunking", this::getDunkState);
     m_tab.addDouble("ArmPresetHightTicks", this::getCurrArmExtenderEncoderPreset);
-   // m_tab.addDouble("Left Z Axis",RobotContiner.getLeftZ);
+    m_tab.addDouble("Left Z Axis",this::getLeftZAxis);
     
     
     
@@ -161,6 +164,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getExtenderEncoderPosition(){
     return (getEncoderPosition(m_extenderEncoder));
+  }
+
+  public double getLeftZAxis(){
+    return((m_RobotContainer.getLeftZ() + 1) / 2.0);
+  }
+
+  public double getExtenderUpperBound(){
+    return extenderUpperBound;
   }
   
   // public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {

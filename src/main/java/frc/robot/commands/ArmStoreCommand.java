@@ -42,7 +42,7 @@ public class ArmStoreCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+    m_armSubsystem.stopMotor(ArmSubsystem.m_extender);
   }
 
   // Returns true when the command should end.

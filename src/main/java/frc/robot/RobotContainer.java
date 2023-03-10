@@ -112,12 +112,7 @@ public class RobotContainer {
   }
 
   public double getLeftZ() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      return Math.abs(leftJoystick.getZ());
-    }
-    else {
-      return Math.abs(leftJoystick.getZ());
-    }
+    return Math.abs(leftJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getZ() : 0;
   }
 
   private double getThrottle() {
