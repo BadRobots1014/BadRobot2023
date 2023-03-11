@@ -30,7 +30,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public int winchTicks;
   public int extenderTicks;
-  public boolean grabber;
+  
 
   private DoubleSupplier m_zAxis;
 
@@ -75,13 +75,6 @@ public class ArmSubsystem extends SubsystemBase {
     motor.stopMotor();
   }
 
-  public void runGrabber(double power){
-    m_grabber.set(clampPower(power));
-  }
-
-  public void stopGrabber(){
-    m_grabber.stopMotor();
-  }
 
   public void runExtender(double power){
     m_extender.set(clampPower(power));

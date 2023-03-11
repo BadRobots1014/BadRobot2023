@@ -20,6 +20,9 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GrabberCommandBackward;
+import frc.robot.commands.ColorSensorCommand;
+import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.ZeroCommand;
@@ -40,6 +43,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(this::getLeftZ);
 
 
@@ -53,8 +57,8 @@ public class RobotContainer {
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
   
-  private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_armSubsystem);
-  private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_armSubsystem);
+  private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
+  private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
 
   private final BalanceCommand m_balancecommand;
   private DriveCommand teleopDriveCmd;

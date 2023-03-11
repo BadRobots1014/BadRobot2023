@@ -5,7 +5,10 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.GrabberSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class ZeroCommand extends CommandBase {
@@ -32,7 +35,7 @@ public class ZeroCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Kill motors");
+    m_armSubsystem.runExtender(0);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
   }
 

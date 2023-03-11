@@ -6,19 +6,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.GrabberSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class GrabberCommandBackward extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_subsystem;
+  private final GrabberSubsystem m_subsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GrabberCommandBackward(ArmSubsystem subsystem) {
+  public GrabberCommandBackward(GrabberSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -32,7 +32,6 @@ public class GrabberCommandBackward extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.runGrabber(ArmConstants.kGrabberPowerR);
-    System.out.println("Grabber Running Backwards");
   }
 
   // Called once the command ends or is interrupted.
@@ -45,5 +44,5 @@ public class GrabberCommandBackward extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
-  }
+  } 
 }
