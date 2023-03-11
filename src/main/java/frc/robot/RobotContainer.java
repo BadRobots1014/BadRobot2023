@@ -6,7 +6,6 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.DriverStation;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -20,21 +19,17 @@ import frc.robot.commands.ArmMediumCommand;
 import frc.robot.commands.ArmMoveDownCommand;
 import frc.robot.commands.ArmMoveUpCommand;
 import frc.robot.commands.ArmStoreCommand;
-import frc.robot.commands.GrabberCommandForward;
-import frc.robot.commands.RuntopositionCommand;
-import frc.robot.commands.ZeroCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.ExampleCommand;
-
 import frc.robot.commands.GrabberCommandBackward;
-import frc.robot.commands.ColorSensorCommand;
-import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.commands.GrabberCommandForward;
+import frc.robot.commands.RuntopositionCommand;
+import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
-
-
 import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
