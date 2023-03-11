@@ -15,15 +15,11 @@ public class BlinkinSubsystem extends SubsystemBase {
 
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Blinkin");
 
-  /** Creates a new ExampleSubsystem. */
-  public BlinkinSubsystem() {
-    m_tab.add(blinkin.toString(), blinkin);
-  }
-
   private final Spark blinkin;
 
   public BlinkinSubsystem() {
     blinkin = new Spark(BlinkinConstants.kBlinkinPort);
+    m_tab.add(blinkin.toString(), blinkin);
   }
 
   @Override
