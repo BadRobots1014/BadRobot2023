@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -133,50 +134,31 @@ public class RobotContainer {
 
     // Arm Setting Button Bindings
 
-    JoystickButton ArmStoredButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmStoreButton);
-    ArmStoredButton.whileTrue(this.m_armStoreCommand);
-    
-    JoystickButton ArmLowButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmLowButton);
-    ArmLowButton.whileTrue(this.m_armLowCommand);
-    
-    JoystickButton ArmMediumButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMediumButton);
-    ArmMediumButton.whileTrue(this.m_armMediumCommand);
-    
-    JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
-    ArmHighButton.whileTrue(this.m_armHighCommand);
+    if (xboxController.getBButton()) this.m_armStoreCommand.execute();
+    if (xboxController.getAButton()) this.m_armLowCommand.execute();
+    if (xboxController.getXButton()) this.m_armMediumCommand.execute();
+    if (xboxController.getYButton()) this.m_armHighCommand.execute();
 
-    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
-    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+    // JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
+    // ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
 
-    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
-    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+    // JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
+    // ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
 
-    JoystickButton ZeroButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmZeroButton);
-    ZeroButton.whileTrue(m_zeroCommand);
+    if (xboxController.getBackButton()) this.m_zeroCommand.execute();
 
-    Trigger DunkTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kDunkTrigger);
-    DunkTrigger.whileTrue(m_dunkCommand);
+    if (xboxController.getAButton()) this.m_dunkCommand.execute();
 
-    JoystickButton GrabberForwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberFButton);
-    GrabberForwardButton.whileTrue(this.m_grabberCommandForward);
+    if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
 
-    JoystickButton GrabberBackwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberRButton);
-    GrabberBackwardButton.whileTrue(this.m_grabberCommandBackward);
+    if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
 
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
-      balanceButton.whileTrue(this.m_balancecommand);
-      JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
-     
-      driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
-      
-      driveStraightButton.whileFalse(this.teleopDriveCmd);
-      balanceButton.whileTrue(this.m_balancecommand);
-    }
-    else {
-      JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
-      balanceButton.whileTrue(this.m_balancecommand);
-    }
+    JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+    balanceButton.whileTrue(this.m_balancecommand);
+
+    JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
+    driveStraightButton.whileTrue(this.m_drivestraightcommand);
+    driveStraightButton.whileFalse(this.teleopDriveCmd);
   }
 
   /**
