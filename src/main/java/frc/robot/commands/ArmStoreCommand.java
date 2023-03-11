@@ -33,6 +33,7 @@ public class ArmStoreCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     ArmSubsystem.setPresetPosition(ArmConstants.kArmStored);
     m_armSubsystem.runExtender(0);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
