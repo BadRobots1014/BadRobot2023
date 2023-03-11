@@ -21,8 +21,9 @@ public class LimelightSubsystem extends SubsystemBase{
     private NetworkTableEntry ta = table.getEntry("ta");
 
       /** Creates a new ExampleSubsystem. */
+    //public LimelightSubsystem(double limelightMountAngleDeg, double limelightMountHeight ) {
     public LimelightSubsystem() {
-        tx.getDouble(0.0);
+        //tx.getDouble(0.0);
   
         m_tab.addNumber("LimeLight X", () -> getTableX());
         m_tab.addNumber("LimeLight Y", () -> getTableY());
@@ -43,14 +44,26 @@ public class LimelightSubsystem extends SubsystemBase{
         table.getEntry("pipeline").setNumber(pipelineNum);
     }
 
-    // THIS NEEDS TO CHANGE (temp solution)
     public double getTableX() {
-        return tx.getDouble(0.0)/30;
+        return tx.getDouble(0.0);
+    }
+
+    public double getPIDTurnTableX()
+    {
+        return getTableX()/30;  // 30 degrees is the extremity of either side
     }
 
     public double getTableY() {
         return ty.getDouble(0.0);
     }
+
+    /*public double getAngleToTarget() {
+        double angleToTargetDeg = 
+    }
+
+    public double calculateDistance() {
+
+    }*/
 
     public double getTableA() {
         return ta.getDouble(0.0);

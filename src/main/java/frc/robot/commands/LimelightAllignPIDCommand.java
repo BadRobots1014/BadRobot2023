@@ -13,14 +13,14 @@ import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
-public class LimelightPIDCommand extends PIDCommand{
+public class LimelightAllignPIDCommand extends PIDCommand{
     public final static ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
     private static boolean isFirst = true;
     private static double[] lastVals;
 
-    public LimelightPIDCommand(LimelightSubsystem lS, DrivetrainSubsystem dS, double power) {
+    public LimelightAllignPIDCommand(LimelightSubsystem lS, DrivetrainSubsystem dS, double power) {
         super(new PIDController(LimelightConstants.kP, LimelightConstants.kI, LimelightConstants.kD),
-        lS::getTableX, 
+        lS::getPIDTurnTableX, 
         LimelightConstants.setpoint, 
         //output -> dS.tankDrive(power * output, power * -output),
         //output -> System.out.println(output),
@@ -31,7 +31,7 @@ public class LimelightPIDCommand extends PIDCommand{
     
     private static void driveAndLog(LimelightSubsystem lS, DrivetrainSubsystem dS, double power, double output) {
         //m_tab.addNumber("PID Output", output);
-        System.out.println("LL tX: " + lS.getTableX() + "\tControl Effort: " + output + "\tLMotor: " + (power * -output) + "\tRMotor: " + (power * output));
+        System.out.println("LL tX: " + lS.getPIDTurnTableX() + "\tControl Effort: " + output + "\tLMotor: " + (power * -output) + "\tRMotor: " + (power * output));
         if(isFirst) {
             isFirst = false;
             return;

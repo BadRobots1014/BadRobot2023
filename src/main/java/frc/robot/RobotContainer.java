@@ -14,7 +14,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.LimelightPIDCommand;
+import frc.robot.commands.LimelightAllignPIDCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -37,7 +37,7 @@ public class RobotContainer {
   private DriveCommand teleopDriveCmd;
 
   private LimelightSubsystem m_limelightSubsystem;
-  private LimelightPIDCommand m_limelightPIDCommand;
+  private LimelightAllignPIDCommand m_limelightAllignPIDCommand;
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
@@ -86,7 +86,7 @@ public class RobotContainer {
     //this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     this.m_limelightSubsystem = new LimelightSubsystem();
-    this.m_limelightPIDCommand = new LimelightPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .5);
+    this.m_limelightAllignPIDCommand = new LimelightAllignPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .5);
 
 
     // Configure the button bindings
@@ -113,7 +113,7 @@ public class RobotContainer {
     //lineUpButton.whileTrue(this.m_coneLineUpCommand);
 
     JoystickButton pidLineUpButton =  new JoystickButton(this.rightJoystick, ControllerConstants.kPIDLineUpButton);
-    pidLineUpButton.whileTrue(this.m_limelightPIDCommand);
+    pidLineUpButton.whileTrue(this.m_limelightAllignPIDCommand);
   }
 
   /**
