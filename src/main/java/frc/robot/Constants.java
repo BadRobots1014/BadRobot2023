@@ -30,19 +30,19 @@ public final class Constants {
         public final static int kThrottleButton = 2;
         public final static int kBalanceButton = 1; //Second joystick
 
-        public final static int kArmHighButton = 3;//left joystick middle top button
-        public final static int kArmMediumButton = 5;//left joystick top right button
-        public final static int kArmLowButton = 2;//left joystick middle bottom button
-        public final static int kArmStoreButton = 4;//left joystick top left button
-        public final static int kDunkTrigger = 1;//left trigger joystick
+        // public final static int kArmHighButton = 3;//left joystick middle top button
+        // public final static int kArmMediumButton = 5;//left joystick top right button
+        // public final static int kArmLowButton = 2;//left joystick middle bottom button
+        // public final static int kArmStoreButton = 4;//left joystick top left button
+        // public final static int kDunkTrigger = 1;//left trigger joystick
         public final static int kArmMoveUp = 11;
         public final static int kArmMoveDown = 10;
         public final static int kArmZeroButton = 7;
 
-        public final static int kGrabberFButton = 3; //right joystick middle top button
-        public final static int kGrabberRButton = 2; //right joystick middle bottom button
+        // public final static int kGrabberFButton = 3; //right joystick middle top button
+        // public final static int kGrabberRButton = 2; //right joystick middle bottom button
 
-        public final static int kDriveStraightButton = 3;//drive straight command  middle top button on left joystick
+        public final static int kDriveStraightButton = 1;//Right joystick trigger
         
         // For Xbox
         public final static int kXboxControllerPort = 2;

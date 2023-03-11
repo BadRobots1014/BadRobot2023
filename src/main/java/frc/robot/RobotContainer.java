@@ -134,24 +134,40 @@ public class RobotContainer {
 
     // Arm Setting Button Bindings
 
-    if (xboxController.getBButton()) this.m_armStoreCommand.execute();
-    if (xboxController.getAButton()) this.m_armLowCommand.execute();
-    if (xboxController.getXButton()) this.m_armMediumCommand.execute();
-    if (xboxController.getYButton()) this.m_armHighCommand.execute();
+    // if (xboxController.getBButton()) this.m_armStoreCommand.execute();
+    // if (xboxController.getAButton()) this.m_armLowCommand.execute();
+    // if (xboxController.getXButton()) this.m_armMediumCommand.execute();
+    // if (xboxController.getYButton()) this.m_armHighCommand.execute();
 
-    // JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
-    // ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+    JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
+    storeButton.whileTrue(m_armStoreCommand);
+    JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
+    lowButton.whileTrue(m_armLowCommand);
+    JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
+    mediumButton.whileTrue(m_armMediumCommand);
+    JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
+    highButton.whileTrue(m_armHighCommand);
 
-    // JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
-    // ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
+    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
 
-    if (xboxController.getBackButton()) this.m_zeroCommand.execute();
+    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
+    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
 
-    if (xboxController.getAButton()) this.m_dunkCommand.execute();
+    // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
+    JoystickButton zeroButton = new JoystickButton(this.xboxController, XboxController.Button.kBack.value);
+    zeroButton.whileTrue(m_zeroCommand);
 
-    if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
+    // if (xboxController.getAButton()) this.m_dunkCommand.execute();
+    JoystickButton dunkButton = new JoystickButton(this.xboxController, XboxController.Button.kStart.value);
+    dunkButton.whileTrue(m_dunkCommand);
 
-    if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
+    // if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
+    JoystickButton grabForwardButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
+    grabForwardButton.whileTrue(m_grabberCommandForward);
+    // if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
+    JoystickButton grabBackButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
+    grabBackButton.whileTrue(m_grabberCommandBackward);
 
     JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
     balanceButton.whileTrue(this.m_balancecommand);
