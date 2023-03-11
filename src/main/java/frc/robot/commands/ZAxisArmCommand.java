@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 /** An example command that uses an example subsystem. */
 public class ZAxisArmCommand extends CommandBase {
@@ -34,7 +32,7 @@ public class ZAxisArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_armSubsystem.getLeftZAxis() * m_armSubsystem.getExtenderUpperBound()));
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_armSubsystem.getLeftZAxis() * m_armSubsystem.getExtenderUpperBound()), .04);
   }
 
   // Called once the command ends or is interrupted.

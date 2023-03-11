@@ -30,11 +30,6 @@ public class ArmSubsystem extends SubsystemBase {
   public int extenderTicks;
   public boolean grabber;
 
-  public static final double extenderUpperBound = 33;
-  public static final double extenderLowerBound = 0;
-
-  public static boolean dunkState = false;
-
   private final RobotContainer m_RobotContainer;
 
   
@@ -112,29 +107,17 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getExtenderUpperBound(){
-    return extenderUpperBound;
+    return ArmConstants.kMaxHeight;
   }
 
   public void resetEncoder(RelativeEncoder encoder) {
     encoder.setPosition(0);
   }
 
-  public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos){
-    // if((dunkState == true) && (encoder.getPosition() < extenderUpperBound) && (encoder.getPosition() > extenderLowerBound)){
-    //   pos = pos - 3;
-    // }
-    // double distance = pos - encoder.getPosition();
-    // double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
-    // if(pos < encoder.getPosition()){
-    //   motor.set(0.05 * coefficient);
-    //   System.out.println(0.05 * coefficient);
-    // }else if(pos > encoder.getPosition()){
-    //   motor.set(-0.04 * coefficient);
-    //   System.out.println(-0.04 * coefficient);
-    // }
-
-    double speed = .04;
+  public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos, double speed){
+    
     double dis = pos - encoder.getPosition();
     motor.set(clampPower(dis * speed));
+
   }
 }

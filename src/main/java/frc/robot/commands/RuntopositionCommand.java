@@ -11,16 +11,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class RuntopositionCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+
   private final double m_position;
+  private final double m_speed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RuntopositionCommand(ArmSubsystem subsystem, double position) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed) {
     m_armSubsystem = subsystem;
     m_position = position;
+    m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -35,7 +38,7 @@ public class RuntopositionCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("RUNTOPOSITION");
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position);
+    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
     
   }
 

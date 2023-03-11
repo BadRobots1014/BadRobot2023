@@ -5,20 +5,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ArmMoveUpCommand extends CommandBase {
+public class ArmCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+
+  private final double m_power;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmMoveUpCommand(ArmSubsystem subsystem) {
+  public ArmCommand(ArmSubsystem subsystem, double power) {
     m_armSubsystem = subsystem;
+    m_power = power;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -30,14 +34,9 @@ public class ArmMoveUpCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_armSubsystem.getExtenderEncoderPosition() < 33){
-      m_armSubsystem.runExtender(0.08);
-     // System.out.println("Extending");
+    if((m_armSubsystem.getExtenderEncoderPosition() < ArmConstants.kMaxHeight && m_power > 0) || (m_armSubsystem.getExtenderEncoderPosition() > ArmConstants.kMinHeight && m_power < 0)){
+      m_armSubsystem.runExtender(m_power);
     }
-    
-    //System.out.println("EncoderCount: ");
-    //System.out.println(m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
-    //SmartDashboard.putNumber("Encoder", m_armSubsystem.getEncoderDistance(m_armSubsystem.m_extenderEncoder));
       
   }
 

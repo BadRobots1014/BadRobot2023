@@ -51,17 +51,22 @@ public final class Constants {
         //Xbox buttons in RobotContainer
     }
     public final class ArmConstants{
+
+        //Max + min positions
+        public final static double kMaxHeight = 30;
+        public final static double kMinHeight = 0;
+
         //set preset arm positions
-        public final static int kArmHighPos = 25;
+        public final static double kArmHighPos = 25;
         public final static String kArmHigh = "HIGH";
 
-        public final static int kArmMediumPos = 15;
+        public final static double kArmMediumPos = 15;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static int kArmLowPos = 5;
+        public final static double kArmLowPos = 5;
         public final static String kArmLow = "LOW";
 
-        public final static int kArmStoredPos = 0;
+        public final static double kArmStoredPos = 0;
         public final static String kArmStored = "STORED";
 
         // Grabber Running Modes
@@ -80,10 +85,7 @@ public final class Constants {
         // motor ports
         public final static int kGrabberPort = 7; 
         public final static int kExtenderPort = 5; 
-        public final static int kWinchPort = 6; 
-
-        
-
+        public final static int kWinchPort = 6;
 
     }
 

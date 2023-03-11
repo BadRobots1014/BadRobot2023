@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.ArmMoveDownCommand;
-import frc.robot.commands.ArmMoveUpCommand;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
@@ -46,12 +45,12 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos);
-  private final ArmMoveUpCommand m_ArmMoveUpCommand = new ArmMoveUpCommand(m_armSubsystem);
-  private final ArmMoveDownCommand m_ArmMoveDownCommand = new ArmMoveDownCommand(m_armSubsystem);
+  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .04);
+  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .04);
+  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .04);
+  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .04);
+  private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .04);
+  private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, .04);
   
   private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_armSubsystem);
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_armSubsystem);

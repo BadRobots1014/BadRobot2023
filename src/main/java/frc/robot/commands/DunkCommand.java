@@ -32,7 +32,7 @@ public class DunkCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // m_armSubsystem.setDunkState(true);
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_armSubsystem.getExtenderEncoderPosition() - 1, .04);
   }
 
   // Called once the command ends or is interrupted.
