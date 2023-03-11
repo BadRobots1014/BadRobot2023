@@ -93,6 +93,14 @@ public class RobotContainer {
     return Math.abs(leftJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getZ() : 0;
   }
 
+  public double getXboxRightY() {
+    return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
+  }
+
+  public double getXboxLeftY() {
+    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() : 0;
+  }
+
   private double getThrottle() {
       return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
   }
@@ -110,12 +118,11 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04);
+    this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getXboxLeftY(), .2);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
-
 
     // Configure the button bindings
     configureButtonBindings();
