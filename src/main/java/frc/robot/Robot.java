@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // REMEMBER TO MOVE THIS OUT OF ROBOT PERIODIC
+    // Logs the Robot Data
     if(m_logTime >= m_logInterval) {
       m_logTime = 0;
       m_logger.updateFields();
