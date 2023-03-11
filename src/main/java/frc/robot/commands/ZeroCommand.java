@@ -4,28 +4,24 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.GrabberSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class RuntopositionCommand extends CommandBase {
+public class ZeroCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-
-  private final double m_position;
-  private final double m_speed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed) {
+  public ZeroCommand(ArmSubsystem subsystem) {
     m_armSubsystem = subsystem;
-    m_position = position;
-    m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -33,21 +29,21 @@ public class RuntopositionCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("INIT");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
-    
+    m_armSubsystem.runExtender(0);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(ArmSubsystem.m_extender);
-
+    System.out.println("Zero Encoders");
+    m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
   }
 
   // Returns true when the command should end.

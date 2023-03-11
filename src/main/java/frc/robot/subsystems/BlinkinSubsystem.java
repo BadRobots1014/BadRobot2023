@@ -10,12 +10,12 @@ import frc.robot.Constants.BlinkinConstants;
 
 
 public class BlinkinSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  public BlinkinSubsystem() {}
 
-  private final Spark blinkin = new Spark(BlinkinConstants.kBlinkinPort);
+  private final Spark blinkin;
 
-  
+  public BlinkinSubsystem() {
+    blinkin = new Spark(BlinkinConstants.kBlinkinPort);
+  }
 
   @Override
   public void periodic() {

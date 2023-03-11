@@ -5,10 +5,7 @@
 package frc.robot;
 
 
-import java.util.function.IntSupplier;
-
 import edu.wpi.first.wpilibj.DriverStation;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -18,22 +15,20 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
-import frc.robot.commands.ArmHighCommand;
-import frc.robot.commands.ArmLowCommand;
-import frc.robot.commands.ArmMediumCommand;
-import frc.robot.commands.ArmStoreCommand;
-import frc.robot.commands.GrabberCommandForward;
-import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DunkCommand;
 import frc.robot.commands.ExampleCommand;
-
 import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.commands.ColorSensorCommand;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.commands.GrabberCommandForward;
+import frc.robot.commands.RuntopositionCommand;
+import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
@@ -48,17 +43,19 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem(this::getLeftZ);
 
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
-  private final ArmStoreCommand m_armStoreCommand = new ArmStoreCommand(m_armSubsystem);
-  private final ArmHighCommand m_armHighCommand = new ArmHighCommand(m_armSubsystem);
-  private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
-  private final ArmLowCommand m_armLowCommand = new ArmLowCommand(m_armSubsystem);
+  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1);
+  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
+  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
+  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1);
+  private final RuntopositionCommand m_manualPositionCommand;
+  private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
+  private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
   
   private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
@@ -68,12 +65,11 @@ public class RobotContainer {
 
   private DrivetrainSubsystem drivetrainSubsystem;
 
-
   private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
 
-  private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
+  private final ZeroCommand m_zeroCommand;
 
-  private final RuntopositionCommand runToPositionCommand;
+  private final DunkCommand m_dunkCommand;
 
   
   private Joystick rightJoystick;
@@ -92,6 +88,10 @@ public class RobotContainer {
     }
   }
 
+  public double getRightZ() {
+    return Math.abs(rightJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getZ() : 0;
+  }
+
   public double getLeftY() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
@@ -99,6 +99,10 @@ public class RobotContainer {
     else {
       return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
     }
+  }
+
+  public double getLeftZ() {
+    return Math.abs(leftJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getZ() : 0;
   }
 
   private double getThrottle() {
@@ -110,14 +114,8 @@ public class RobotContainer {
     }
   }
 
-  public double getRightZ() {
-    return Math.abs(rightJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getZ() : 0;
-  }
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    this.runToPositionCommand = new RuntopositionCommand(m_armSubsystem);
 
     this.drivetrainSubsystem = new DrivetrainSubsystem();
 
@@ -127,6 +125,9 @@ public class RobotContainer {
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+    this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
+    this.m_dunkCommand = new DunkCommand(m_armSubsystem);
+    this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
@@ -161,20 +162,23 @@ public class RobotContainer {
     JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
     ArmHighButton.whileTrue(this.m_armHighCommand);
 
-    Trigger RunToPositionTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kRunToPositionTrigger);
-    RunToPositionTrigger.whileTrue(runToPositionCommand);
+    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
+    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+
+    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
+    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+
+    JoystickButton ZeroButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmZeroButton);
+    ZeroButton.whileTrue(m_zeroCommand);
+
+    Trigger DunkTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kDunkTrigger);
+    DunkTrigger.whileTrue(m_dunkCommand);
 
     JoystickButton GrabberForwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberFButton);
     GrabberForwardButton.whileTrue(this.m_grabberCommandForward);
 
     JoystickButton GrabberBackwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberRButton);
     GrabberBackwardButton.whileTrue(this.m_grabberCommandBackward);
-
-    
-
-    
-
-
 
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
