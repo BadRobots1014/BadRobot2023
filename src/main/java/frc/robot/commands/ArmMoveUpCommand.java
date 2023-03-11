@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -31,7 +30,6 @@ public class ArmMoveUpCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmHigh);
     if(m_armSubsystem.getExtenderEncoderPosition() < 33){
       m_armSubsystem.runExtender(0.08);
      // System.out.println("Extending");

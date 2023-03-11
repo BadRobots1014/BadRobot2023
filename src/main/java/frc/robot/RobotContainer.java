@@ -12,13 +12,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.ArmHighCommand;
-import frc.robot.commands.ArmLowCommand;
-import frc.robot.commands.ArmMediumCommand;
 import frc.robot.commands.ArmMoveDownCommand;
 import frc.robot.commands.ArmMoveUpCommand;
-import frc.robot.commands.ArmStoreCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
@@ -49,10 +46,10 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final ArmStoreCommand m_armStoreCommand = new ArmStoreCommand(m_armSubsystem);
-  private final ArmHighCommand m_armHighCommand = new ArmHighCommand(m_armSubsystem);
-  private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
-  private final ArmLowCommand m_armLowCommand = new ArmLowCommand(m_armSubsystem);
+  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos);
+  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos);
+  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos);
+  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos);
   private final ArmMoveUpCommand m_ArmMoveUpCommand = new ArmMoveUpCommand(m_armSubsystem);
   private final ArmMoveDownCommand m_ArmMoveDownCommand = new ArmMoveDownCommand(m_armSubsystem);
   
@@ -66,8 +63,6 @@ public class RobotContainer {
 
 
   private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
-
-  private final RuntopositionCommand runToPositionCommand;
 
   private final ZeroCommand m_zeroCommand;
 
@@ -118,8 +113,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    this.runToPositionCommand = new RuntopositionCommand(m_armSubsystem);
 
     this.drivetrainSubsystem = new DrivetrainSubsystem();
 

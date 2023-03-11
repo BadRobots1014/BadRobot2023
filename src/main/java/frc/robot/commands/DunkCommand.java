@@ -32,13 +32,13 @@ public class DunkCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.setDunkState(true);
+    // m_armSubsystem.setDunkState(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.setDunkState(false);
+    // m_armSubsystem.setDunkState(false);
   }
 
   // Returns true when the command should end.

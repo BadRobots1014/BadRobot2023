@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -31,7 +30,6 @@ public class ArmMoveDownCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmLow);
     if(m_armSubsystem.getExtenderEncoderPosition() > 0){
       m_armSubsystem.runExtender(-0.05);
       //System.out.println("Extending Backwards");

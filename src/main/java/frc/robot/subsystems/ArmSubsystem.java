@@ -32,10 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public static final double extenderUpperBound = 33;
   public static final double extenderLowerBound = 0;
-  
 
-  public static String armPosition = ArmConstants.kArmStored;
-  public static int currArmExtenderEncoderPreset = ArmConstants.kArmStoredPos;
   public static boolean dunkState = false;
 
   private final RobotContainer m_RobotContainer;
@@ -59,10 +56,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_extenderEncoder = m_extender.getEncoder();
     resetEncoder(m_extenderEncoder);
 
-    m_tab.addString("PresetArmPosition", this::getArmState);
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
-    m_tab.addBoolean("Dunking", this::getDunkState);
-    m_tab.addDouble("ArmPresetHightTicks", this::getCurrArmExtenderEncoderPreset);
     m_tab.addDouble("Left Z Axis",this::getLeftZAxis);
 
     }
@@ -79,33 +73,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
     
-  }
-  
-  public static void setPresetPosition(String armPos){
-    //preset position stuff goes here
-
-    switch (armPos){
-      case ArmConstants.kArmStored:
-      armPosition = ArmConstants.kArmStored;
-      currArmExtenderEncoderPreset = ArmConstants.kArmStoredPos;
-      System.out.println("ARM IS STORED");
-      break;
-      case ArmConstants.kArmLow:
-      armPosition = ArmConstants.kArmLow;
-      currArmExtenderEncoderPreset = ArmConstants.kArmLowPos;
-      System.out.println("ARM IS LOW");
-      break;
-      case ArmConstants.kArmMedium:
-      armPosition = ArmConstants.kArmMedium;
-      currArmExtenderEncoderPreset = ArmConstants.kArmMediumPos;
-      System.out.println("ARM IS MEDIUM");
-      break;
-      case ArmConstants.kArmHigh:
-      armPosition = ArmConstants.kArmHigh;
-      currArmExtenderEncoderPreset = ArmConstants.kArmHighPos;
-      System.out.println("ARM IS HIGH");
-      break;
-    }
   }
 
   public void stopMotor(CANSparkMax motor){
@@ -128,24 +95,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.set(clampPower(power));
   }
 
-  private double clampPower(double power) {
+  private static double clampPower(double power) {
     return MathUtil.clamp(power, -1.0, 1.0);
-  }
-
-  public String getArmState(){
-    return armPosition;
-  } 
-
-  public boolean getDunkState(){
-    return dunkState;
-  }
-
-  public static void setDunkState(boolean state){
-    dunkState = state;
-  }
-
-  public int getCurrArmExtenderEncoderPreset(){
-    return currArmExtenderEncoderPreset;
   }
 
   public double getEncoderPosition(RelativeEncoder encoder) {return encoder.getPosition();} // In rotations
@@ -163,31 +114,27 @@ public class ArmSubsystem extends SubsystemBase {
   public double getExtenderUpperBound(){
     return extenderUpperBound;
   }
-  
-  // public void setupEncoder(Encoder encoder, double distancePerPulse, double minRate, boolean isReversed, int samplesToAverage) {
-  //   encoder.reset();
-  //   encoder.setDistancePerPulse(distancePerPulse);
-  //   encoder.setMinRate(minRate);
-  //   encoder.setReverseDirection(isReversed);
-  //   encoder.setSamplesToAverage(samplesToAverage);
-  // }
 
   public void resetEncoder(RelativeEncoder encoder) {
     encoder.setPosition(0);
   }
 
   public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos){
-    if((dunkState == true) && (encoder.getPosition() < extenderUpperBound) && (encoder.getPosition() > extenderLowerBound)){
-      pos = pos - 3;
-    }
-    double distance = pos - encoder.getPosition();
-    double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
-    if(pos < encoder.getPosition()){
-      motor.set(0.05 * coefficient);
-      System.out.println(0.05 * coefficient);
-    }else if(pos > encoder.getPosition()){
-      motor.set(-0.04 * coefficient);
-      System.out.println(-0.04 * coefficient);
-    }
+    // if((dunkState == true) && (encoder.getPosition() < extenderUpperBound) && (encoder.getPosition() > extenderLowerBound)){
+    //   pos = pos - 3;
+    // }
+    // double distance = pos - encoder.getPosition();
+    // double coefficient = MathUtil.clamp(distance, -1.0, 1.0);
+    // if(pos < encoder.getPosition()){
+    //   motor.set(0.05 * coefficient);
+    //   System.out.println(0.05 * coefficient);
+    // }else if(pos > encoder.getPosition()){
+    //   motor.set(-0.04 * coefficient);
+    //   System.out.println(-0.04 * coefficient);
+    // }
+
+    double speed = .04;
+    double dis = pos - encoder.getPosition();
+    motor.set(clampPower(dis * speed));
   }
 }
