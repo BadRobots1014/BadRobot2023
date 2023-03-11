@@ -42,13 +42,22 @@ public final class Constants {
         public final static int kGrabberFButton = 3; //right joystick middle top button
         public final static int kGrabberRButton = 2; //right joystick middle bottom button
 
-        
+        public final static int kDriveStraightButton = 3;//drive straight command  middle top button on left joystick
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
         public final static double kXboxDeadZoneRadius = .1;
+        public static final int kArmHighButton = 0;
+        public static final int kArmMediumButton = 0;
+        public static final int kArmLowButton = 0;
+        public static final int kArmStoreButton = 0;
 
         //Xbox buttons in RobotContainer
+
+        
+
+
+        
     }
     public final class ArmConstants{
 
@@ -104,6 +113,15 @@ public final class Constants {
 
     }
 
+    public final class ArmConstants{
+
+        public static final int kArmStoredPos = 0;
+        public static final int kArmLowPos = 0;
+        public static final int kArmMiddlePos = 0;
+        public static final int kArmHighPos = 0;
+
+    }
+
     public final class BlinkinConstants {
 
         public final static int kBlinkinPort = 0;
@@ -140,13 +158,18 @@ public final class Constants {
         public final static double breatheRed = -0.17;
         public final static double breatheBlue = -0.15;
         public final static double confetti = -0.87;
+        public final static double blinkingRed = -0.25; //Backward on the driveStraightCommand
+        public final static double blinkingBlue = -0.23; //Forward on the driveStraightCommand
         public final static double solidBlack = 0.99; // Primarily For Errors, when something goes boom with the lights
     }
 
     public final static class GyroConstants {
 
         public final static double kBalanceThreshold = 5; //In degrees off of upright
+        public final static double kOffsetThreshold = 0.25;
         public final static double kBalanceSpeed = 0.027;
+        public final static double kOffsetSpeed = 0.027;
+        
 
 
     }

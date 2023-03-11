@@ -18,6 +18,7 @@ import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
+import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -58,6 +59,7 @@ public class RobotContainer {
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
 
   private final BalanceCommand m_balancecommand;
+  private final DriveStraightCommand m_drivestraightcommand;
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
@@ -75,12 +77,7 @@ public class RobotContainer {
   private XboxController xboxController;
 
   public double getRightY() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
-    }
-    else {
-      return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
-    }
+    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
   }
 
   public double getRightZ() {
@@ -88,12 +85,7 @@ public class RobotContainer {
   }
 
   public double getLeftY() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
-    }
-    else {
-      return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
-    }
   }
 
   public double getLeftZ() {
@@ -101,12 +93,7 @@ public class RobotContainer {
   }
 
   private double getThrottle() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-    }
-    else {
-      return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-    }
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -124,7 +111,8 @@ public class RobotContainer {
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
     this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04);
 
-    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
+    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
+    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
 
@@ -177,6 +165,12 @@ public class RobotContainer {
 
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+      balanceButton.whileTrue(this.m_balancecommand);
+      JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
+     
+      driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
+      
+      driveStraightButton.whileFalse(this.teleopDriveCmd);
       balanceButton.whileTrue(this.m_balancecommand);
     }
     else {
