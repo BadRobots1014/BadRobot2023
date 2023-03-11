@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 /** An example command that uses an example subsystem. */
 public class DunkCommand extends CommandBase {

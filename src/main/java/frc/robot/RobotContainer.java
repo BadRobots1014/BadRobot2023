@@ -5,8 +5,6 @@
 package frc.robot;
 
 
-import java.util.function.IntSupplier;
-
 import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -15,9 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ArmHighCommand;
 import frc.robot.commands.ArmLowCommand;
 import frc.robot.commands.ArmMediumCommand;
@@ -58,7 +54,6 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
   private final ArmStoreCommand m_armStoreCommand = new ArmStoreCommand(m_armSubsystem);
   private final ArmHighCommand m_armHighCommand = new ArmHighCommand(m_armSubsystem);
   private final ArmMediumCommand m_armMediumCommand = new ArmMediumCommand(m_armSubsystem);
@@ -76,8 +71,6 @@ public class RobotContainer {
 
 
   private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
-
-  private ColorSensorCommand colorSensorCommand = new ColorSensorCommand(colorSensorSubsystem);
 
   private final RuntopositionCommand runToPositionCommand;
 
@@ -102,6 +95,10 @@ public class RobotContainer {
     }
   }
 
+  public double getRightZ() {
+    return Math.abs(rightJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getZ() : 0;
+  }
+
   public double getLeftY() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
@@ -122,10 +119,6 @@ public class RobotContainer {
     else {
       return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
     }
-  }
-
-  public double getRightZ() {
-    return Math.abs(rightJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getZ() : 0;
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -194,14 +187,6 @@ public class RobotContainer {
 
     JoystickButton GrabberBackwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberRButton);
     GrabberBackwardButton.whileTrue(this.m_grabberCommandBackward);
-
-    
-
-    
-
-    
-
-
 
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);

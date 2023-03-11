@@ -65,13 +65,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_tab.addBoolean("Dunking", this::getDunkState);
     m_tab.addDouble("ArmPresetHightTicks", this::getCurrArmExtenderEncoderPreset);
     m_tab.addDouble("Left Z Axis",this::getLeftZAxis);
-    
-    
-    
-    //this.setupEncoder(m_extenderEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kExtenderMinRate, EncoderConstants.kExtenderIsReversed, EncoderConstants.kExtenderSampleSize);
 
-    // this.setupEncoder(m_winchEncoder, EncoderConstants.kDefaultDPP, EncoderConstants.kWinchMinRate, EncoderConstants.kWinchIsReversed, EncoderConstants.kWinchSampleSize);
-  }
+    }
 
 
 
@@ -85,10 +80,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
     
-  }
-
-  public void IK(){
-    //inverse kinematics stuff goes here
   }
   
   public static void setPresetPosition(String armPos){
