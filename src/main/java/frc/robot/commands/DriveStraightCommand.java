@@ -7,9 +7,9 @@ package frc.robot.commands;
 import frc.robot.Constants.GyroConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
-
+import frc.robot.subsystems.BlinkinSubsystem;
 import java.util.function.DoubleSupplier;
-
+import frc.robot.Constants.BlinkinPatternConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
@@ -19,6 +19,7 @@ public class DriveStraightCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final NavXGyroSubsystem m_subsystem;
   private final DrivetrainSubsystem m_drivesubsystem;
+  private final BlinkinSubsystem m_ledSubsystem;
   private double initial_yaw;
   private DoubleSupplier m_leftSpeed;
   private DoubleSupplier m_rightSpeed;
@@ -30,16 +31,17 @@ public class DriveStraightCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
+  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
+    m_ledSubsystem = lightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem, drivesubsystem);
 
     m_leftSpeed = leftSpeed;
     m_rightSpeed = rightSpeed;
     m_throttle = throttle;
-    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble()))*m_throttle.getAsDouble();
+    m_driveSpeed = 0.0;
   }
 
   // Called when the command is initially scheduled.
@@ -51,25 +53,41 @@ public class DriveStraightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
-
+    m_driveSpeed = Math.max(Math.abs(m_leftSpeed.getAsDouble()), Math.abs(m_rightSpeed.getAsDouble())) * m_throttle.getAsDouble();
+    if (m_leftSpeed.getAsDouble() + m_rightSpeed.getAsDouble() < 0) m_driveSpeed = -m_driveSpeed;
     double angle = initial_yaw - m_subsystem.getYaw();
-    if(angle >= GyroConstants.kOffsetThreshold) {
-        // the formula that Noirit used, condensed down (even more now)
-        double speed = angle * GyroConstants.kOffsetSpeed;
-        m_drivesubsystem.tankDrive(m_driveSpeed,m_driveSpeed+speed);
+    double speed = angle * GyroConstants.kOffsetSpeed;
+    if (m_driveSpeed > 0) {
+      m_ledSubsystem.set(BlinkinPatternConstants.blinkingBlue);
+      if(angle >= GyroConstants.kOffsetThreshold) {
+          m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed + speed);
+      }
+      else if(angle <= -GyroConstants.kOffsetThreshold) {
+        m_drivesubsystem.tankDrive(m_driveSpeed + speed, m_driveSpeed);
+      }
+      else{
+       m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
+      }
     }
-    if(angle <= -1 * GyroConstants.kOffsetThreshold) {
-        // the formula that Noirit used, condensed down (even more now)
-        double speed = angle * GyroConstants.kOffsetSpeed;
-        m_drivesubsystem.tankDrive(m_driveSpeed+speed,m_driveSpeed);
+    else{
+      m_ledSubsystem.set(BlinkinPatternConstants.blinkingRed);
+      if(angle >= -GyroConstants.kOffsetThreshold) {
+        m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed - speed);
+      }
+      else if(angle <= GyroConstants.kOffsetThreshold) {
+        m_drivesubsystem.tankDrive(m_driveSpeed - speed, m_driveSpeed);
+      }
+      else{
+      m_drivesubsystem.tankDrive(m_driveSpeed, m_driveSpeed);
+      }
     }
-  }
+  } 
+  
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    m_drivesubsystem.tankDrive(0.0, 0.0);
   }
 
   // Returns true when the command should end.

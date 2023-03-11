@@ -54,30 +54,15 @@ public class RobotContainer {
   public static Turn15DegreesCommand m_Turn15DegreesCommand;
 
   public double getRightY() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
-    }
-    else {
-      return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
-    }
+    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
   }
 
   public double getLeftY() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
-    }
-    else {
-      return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
-    }
   }
 
   private double getThrottle() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      return RobotContainer.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-    }
-    else {
-      return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-    }
+      return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -100,9 +85,7 @@ public class RobotContainer {
     DrivetrainSubsystem.m_tab.addBoolean("button 4", turnLeft15Button::getAsBoolean);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
-    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
-
-    
+    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     // Configure the button bindings
