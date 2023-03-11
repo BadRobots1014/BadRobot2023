@@ -48,30 +48,15 @@ public class RobotContainer {
   private XboxController xboxController;
 
   public double getRightY() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
-    }
-    else {
-      return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
-    }
+    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
   }
 
   public double getLeftY() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
-    }
-    else {
-      return Math.abs(xboxController.getLeftY()) > ControllerConstants.kDeadZoneRadius ? -xboxController.getLeftY() : 0;
-    }
   }
 
   private double getThrottle() {
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-    }
-    else {
-      return this.xboxController.getBButton() ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-    }
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -85,7 +70,6 @@ public class RobotContainer {
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
-    
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
@@ -112,9 +96,6 @@ public class RobotContainer {
       
       driveStraightButton.whileFalse(this.teleopDriveCmd);
       balanceButton.whileTrue(this.m_balancecommand);
-
-      
-
     }
     else {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
