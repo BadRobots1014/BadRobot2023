@@ -28,6 +28,7 @@ public class DriveCommand extends CommandBase {
   private DoubleSupplier m_throttle;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
   private GenericEntry directionEntry = m_tab.add("Direction", "").getEntry();
+
   /**
    * Creates a new ExampleCommand.
    *

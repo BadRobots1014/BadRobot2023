@@ -20,9 +20,11 @@ public class BlinkinSubsystem extends SubsystemBase {
     m_tab.add(blinkin.toString(), blinkin);
   }
 
-  private final Spark blinkin = new Spark(BlinkinConstants.kBlinkinPort);
+  private final Spark blinkin;
 
-  
+  public BlinkinSubsystem() {
+    blinkin = new Spark(BlinkinConstants.kBlinkinPort);
+  }
 
   @Override
   public void periodic() {

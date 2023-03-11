@@ -30,6 +30,18 @@ public final class Constants {
         public final static int kThrottleButton = 2;
         public final static int kBalanceButton = 1; //Second joystick
 
+        public final static int kArmHighButton = 3;//left joystick middle top button
+        public final static int kArmMediumButton = 5;//left joystick top right button
+        public final static int kArmLowButton = 2;//left joystick middle bottom button
+        public final static int kArmStoreButton = 4;//left joystick top left button
+        public final static int kDunkTrigger = 1;//left trigger joystick
+        public final static int kArmMoveUp = 11;
+        public final static int kArmMoveDown = 10;
+        public final static int kArmZeroButton = 7;
+
+        public final static int kGrabberFButton = 3; //right joystick middle top button
+        public final static int kGrabberRButton = 2; //right joystick middle bottom button
+
         public final static int kDriveStraightButton = 3;//drive straight command  middle top button on left joystick
         
         // For Xbox
@@ -46,6 +58,50 @@ public final class Constants {
 
 
         
+    }
+    public final class ArmConstants{
+
+        //Max + min positions
+        public final static double kMaxHeight = 20;
+        public final static double kMinHeight = 0;
+
+        //set preset arm positions
+        public final static double kArmHighPos = 20;
+        public final static String kArmHigh = "HIGH";
+
+        public final static double kArmMediumPos = 10;
+        public final static String kArmMedium = "MEDIUM";
+        
+        public final static double kArmLowPos = 5;
+        public final static String kArmLow = "LOW";
+
+        public final static double kArmStoredPos = 0;
+        public final static String kArmStored = "STORED";
+
+        // Grabber Running Modes
+        public final static String kManualRunForward = "Manual Run Forward";
+        public final static String kManualRunBackward = "Manual Run Backward";
+        public final static String kPresetRunForward = "Preset Run Forward";
+        public final static String kPresetRunBackward = "Preset Run Backward";
+        public final static String kBrake = "Brake";
+
+
+        // Grabber power constants
+        public final static double kGrabberPowerF = 0.25;
+        public final static double kGrabberPowerR = -0.25;
+
+        // Grabber State Constants
+        public final static double kGrabberAmpMax = 35; //Approximately how min number of amps motor reads out when it fills
+        public final static String kGrabberFilled = "Grabber is Filled";
+        public final static String kGrabberEmpty = "Grabber is Empty";
+
+        
+
+        // motor ports
+        public final static int kGrabberPort = 7; 
+        public final static int kExtenderPort = 5; 
+        public final static int kWinchPort = 6;
+
     }
 
     public final class DriveConstants {
@@ -74,8 +130,8 @@ public final class Constants {
 
     public final static class SensorConstants {
 
-        public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
 
+        public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
     }
 
     public final static class MovementConstants {
