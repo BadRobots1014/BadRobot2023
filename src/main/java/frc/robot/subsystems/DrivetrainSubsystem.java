@@ -87,4 +87,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public void stop() {
         m_driveTrain.stopMotor();
     }
+
+    public double getMotorSpeed() {
+        return m_leftA.get();
+    }
 }
