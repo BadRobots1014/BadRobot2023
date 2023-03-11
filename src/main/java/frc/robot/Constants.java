@@ -51,17 +51,22 @@ public final class Constants {
         //Xbox buttons in RobotContainer
     }
     public final class ArmConstants{
+
+        //Max + min positions
+        public final static double kMaxHeight = 20;
+        public final static double kMinHeight = 0;
+
         //set preset arm positions
-        public final static int kArmHighPos = 25;
+        public final static double kArmHighPos = 20;
         public final static String kArmHigh = "HIGH";
 
-        public final static int kArmMediumPos = 15;
+        public final static double kArmMediumPos = 10;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static int kArmLowPos = 5;
+        public final static double kArmLowPos = 5;
         public final static String kArmLow = "LOW";
 
-        public final static int kArmStoredPos = 0;
+        public final static double kArmStoredPos = 0;
         public final static String kArmStored = "STORED";
 
         // Grabber Running Modes
@@ -80,10 +85,7 @@ public final class Constants {
         // motor ports
         public final static int kGrabberPort = 7; 
         public final static int kExtenderPort = 5; 
-        public final static int kWinchPort = 6; 
-
-        
-
+        public final static int kWinchPort = 6;
 
     }
 
@@ -140,24 +142,6 @@ public final class Constants {
         public final static double kBalanceThreshold = 5; //In degrees off of upright
         public final static double kBalanceSpeed = 0.027;
 
-
-    }
-
-    public final static class EncoderConstants {
-
-        public final static double kDefaultDPP = 4.0/256.0;
-
-        public final static int kExtenderChannelA = 0;
-        public final static int kExtenderChannelB = 1;
-        public final static double kExtenderMinRate = 10.0;
-        public final static boolean kExtenderIsReversed = false;
-        public final static int kExtenderSampleSize = 5;
-
-        public final static int kWinchChannelA = 0;
-        public final static int kWinchChannelB = 1;
-        public final static double kWinchMinRate = 10.0;
-        public final static boolean kWinchIsReversed = false;
-        public final static int kWinchSampleSize = 5;
 
     }
 

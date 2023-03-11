@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DunkCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+  private double dunkPos;
 
   /**
    * Creates a new ExampleCommand.
@@ -26,19 +27,21 @@ public class DunkCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-   // System.out.println("INIT");
+   dunkPos = -1000;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.setDunkState(true);
+    if (dunkPos == -1000) dunkPos = m_armSubsystem.getExtenderEncoderPosition();
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, dunkPos - 1, .1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.setDunkState(false);
+    dunkPos = -1000;
+    // m_armSubsystem.setDunkState(false);
   }
 
   // Returns true when the command should end.

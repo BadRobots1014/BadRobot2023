@@ -9,20 +9,22 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ArmLowCommand extends CommandBase {
+public class ArmCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-  private final RuntopositionCommand m_RuntopositionCommand;
+
+  private final double m_power;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmLowCommand(ArmSubsystem subsystem) {
+  public ArmCommand(ArmSubsystem subsystem, double power) {
     m_armSubsystem = subsystem;
+    m_power = power;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    m_RuntopositionCommand = new RuntopositionCommand(m_armSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -32,16 +34,17 @@ public class ArmLowCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.setPresetPosition(ArmConstants.kArmLow);
-    
+    if((m_armSubsystem.getExtenderEncoderPosition() < ArmConstants.kMaxHeight && m_power > 0) || (m_armSubsystem.getExtenderEncoderPosition() > ArmConstants.kMinHeight && m_power < 0)){
+      m_armSubsystem.runExtender(m_power);
+    }
+      
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_RuntopositionCommand.end(true);
     m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(ArmSubsystem.m_extender);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
   }
 
   // Returns true when the command should end.
