@@ -51,7 +51,7 @@ public class RobotContainer {
 
   private XboxController xboxController;
 
-  private final Turn15DegreesCommand m_Turn15DegreesCommand = new Turn15DegreesCommand(navxGyroSubsystem, drivetrainSubsystem, this::getRightY, this::getLeftY);
+  public static Turn15DegreesCommand m_Turn15DegreesCommand;
 
   public double getRightY() {
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
@@ -91,12 +91,18 @@ public class RobotContainer {
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
+    m_Turn15DegreesCommand = new Turn15DegreesCommand(navxGyroSubsystem, drivetrainSubsystem, this::getRightY, this::getLeftY);
     
-    turnLeft15Button = new JoystickButton(rightJoystick, 4);
     turnRight15Button = new JoystickButton(rightJoystick, 5);
+    turnLeft15Button = new JoystickButton(rightJoystick, 4);
+
+
+    DrivetrainSubsystem.m_tab.addBoolean("button 4", turnLeft15Button::getAsBoolean);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
+
+    
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     // Configure the button bindings
@@ -116,13 +122,20 @@ public class RobotContainer {
       JoystickButton balanceButton = new JoystickButton(rightJoystick, ControllerConstants.kBalanceButton);
       balanceButton.whileTrue(this.m_balancecommand);
       JoystickButton driveStraightButton = new JoystickButton(leftJoystick, ControllerConstants.kDriveStraightButton);
-     turnLeft15Button = new JoystickButton(leftJoystick, 4);
+     turnLeft15Button = new JoystickButton(rightJoystick, 4);
+     turnRight15Button = new JoystickButton(rightJoystick, 5);
       driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
       
       driveStraightButton.whileFalse(this.teleopDriveCmd);
       balanceButton.whileTrue(this.m_balancecommand);
 
-      turnLeft15Button.whileTrue(m_Turn15DegreesCommand);
+      if (turnLeft15Button == null)
+      {
+        System.out.println("Button is null");
+      }
+
+      turnLeft15Button.onTrue(m_Turn15DegreesCommand);
+      turnRight15Button.onTrue(m_Turn15DegreesCommand);
       System.out.println("Bindings Configured");
     }
     else {

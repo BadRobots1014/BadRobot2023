@@ -38,6 +38,7 @@ public class BalanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     double angle = m_subsystem.getRoll();
     double speed;
     if(Math.abs(angle) >= GyroConstants.kBalanceThreshold) {
