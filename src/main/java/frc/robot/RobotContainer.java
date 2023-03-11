@@ -99,10 +99,10 @@ public class RobotContainer {
 
     // Sets the data to
     {
-      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-      LocalDateTime now = LocalDateTime.now();
+      //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+      //LocalDateTime now = LocalDateTime.now();
 
-      m_logger.createStaticField("Time", dtf.format(now));  //DOESN'T WORK
+      //m_logger.createStaticField("Time", dtf.format(now));  //DOESN'T WORK
       m_logger.createStaticField("Event", "CORI Preliminaries 1");
       m_logger.recordFrequency(.250);
 
