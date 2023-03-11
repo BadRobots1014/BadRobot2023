@@ -49,6 +49,7 @@ public class RobotContainer {
   private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .04);
   private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .04);
   private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .04);
+  private final RuntopositionCommand m_manualPositionCommand;
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .04);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, .04);
   
@@ -123,6 +124,7 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
+    this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, m_blinkinSubsystem, drivetrainSubsystem);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
