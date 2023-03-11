@@ -39,7 +39,7 @@ public class Turn15DegreesCommand extends CommandBase {
     DrivetrainSubsystem.m_tab.addDouble("Yaw", gyroSubsystem::getYaw);
     DrivetrainSubsystem.m_tab.addBoolean("turn command", this::isRunning);
     DrivetrainSubsystem.m_tab.addBoolean("Is turning", this::isTurning);
-    DrivetrainSubsystem.m_tab.addDouble("current yaw", this::getTargetYaw);
+    DrivetrainSubsystem.m_tab.addDouble("Target yaw", this::getTargetYaw);
 
     this.rightSpeed = rightSpeed;
     this.leftSpeed = leftSpeed;
@@ -52,6 +52,8 @@ public class Turn15DegreesCommand extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Command Run");
+
+    m_subsystem.reset();
 
     hasrun = true;
     
@@ -83,7 +85,7 @@ public class Turn15DegreesCommand extends CommandBase {
     }
     else
     {
-      m_DrivetrainSubsystem.tankDrive(.25, -.25);
+      m_DrivetrainSubsystem.tankDrive(.5, -.5);
     }
   }
 
@@ -101,6 +103,7 @@ public class Turn15DegreesCommand extends CommandBase {
       if (currentYaw - 15 > m_subsystem.getYaw())
       {
         System.out.println("returns true left");
+        turning = false;
         return true;
       }
     }
@@ -109,10 +112,10 @@ public class Turn15DegreesCommand extends CommandBase {
       if (currentYaw + 15 < m_subsystem.getYaw())
       {
         System.out.println("Return right");
+        turning = false;
         return true;
       }
     }
-    turning = false;
     return false;
   }
 
