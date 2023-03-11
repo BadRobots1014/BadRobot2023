@@ -20,15 +20,12 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GrabberCommandBackward;
-import frc.robot.commands.ColorSensorCommand;
-import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
-import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
@@ -44,7 +41,7 @@ public class RobotContainer {
   private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem(this::getLeftZ);
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -64,8 +61,6 @@ public class RobotContainer {
   private DriveCommand teleopDriveCmd;
 
   private DrivetrainSubsystem drivetrainSubsystem;
-
-  private ColorSensorSubsystem colorSensorSubsystem = new ColorSensorSubsystem();
 
   private final ZeroCommand m_zeroCommand;
 

@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.RobotContainer;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -30,14 +29,9 @@ public class ArmSubsystem extends SubsystemBase {
 
   public int winchTicks;
   public int extenderTicks;
-  
-
-  private DoubleSupplier m_zAxis;
 
   /** Creates a new ExampleSubsystem. */
-  public ArmSubsystem(DoubleSupplier z) {
-
-    m_zAxis = z;
+  public ArmSubsystem() {
     
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kCoast);

@@ -4,16 +4,11 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
-import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
