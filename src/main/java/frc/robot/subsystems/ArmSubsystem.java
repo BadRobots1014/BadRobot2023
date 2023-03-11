@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -30,13 +32,13 @@ public class ArmSubsystem extends SubsystemBase {
   public int extenderTicks;
   public boolean grabber;
 
-  private final RobotContainer m_RobotContainer;
-
-  
+  private DoubleSupplier m_zAxis;
 
   /** Creates a new ExampleSubsystem. */
-  public ArmSubsystem() {
-    m_RobotContainer = new RobotContainer();
+  public ArmSubsystem(DoubleSupplier z) {
+
+    m_zAxis = z;
+    
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kCoast);
 
@@ -52,7 +54,6 @@ public class ArmSubsystem extends SubsystemBase {
     resetEncoder(m_extenderEncoder);
 
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
-    m_tab.addDouble("Left Z Axis",this::getLeftZAxis);
 
     }
 
@@ -100,10 +101,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getExtenderEncoderPosition(){
     return (getEncoderPosition(m_extenderEncoder));
-  }
-
-  public double getLeftZAxis(){
-    return((m_RobotContainer.getLeftZ() + 1) / 2.0);
   }
 
   public double getExtenderUpperBound(){
