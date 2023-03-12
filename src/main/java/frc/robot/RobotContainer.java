@@ -52,7 +52,7 @@ public class RobotContainer {
   private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
   private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
   private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1);
-  private final ArmCommand m_manualPositionCommand;
+  // private final ArmCommand m_manualPositionCommand;
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
   
@@ -118,8 +118,8 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, xboxController.getPOV() == 0 ? .1 : (xboxController.getPOV() == 180 ? -.1 : 0));
-    this.m_armSubsystem.setDefaultCommand(this.m_manualPositionCommand);
+    // this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, xboxController.getPOV() == 0 ? .1 : (xboxController.getPOV() == 180 ? -.1 : 0));
+    // this.m_armSubsystem.setDefaultCommand(this.m_manualPositionCommand);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
@@ -156,7 +156,10 @@ public class RobotContainer {
     JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
     highButton.whileTrue(m_armHighCommand);
 
-    JoystickButton ArmMoveDown = new JoystickButton(this.xboxController, ControllerConstants.kArmMoveDown);
+    JoystickButton ArmMoveUp = new JoystickButton(this.xboxController, XboxController.Button.kRightStick.value);
+    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+
+    JoystickButton ArmMoveDown = new JoystickButton(this.xboxController, XboxController.Button.kLeftStick.value);
     ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
 
     // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
