@@ -119,7 +119,7 @@ public class RobotContainer {
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
     // this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, xboxController.getPOV() == 0 ? .1 : (xboxController.getPOV() == 180 ? -.1 : 0));
-    // this.m_armSubsystem.setDefaultCommand(this.m_manualPositionCommand);
+    this.m_armSubsystem.setDefaultCommand(this.m_armStoreCommand);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
