@@ -118,7 +118,8 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, this.getXboxLeftY());
+    this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, xboxController.getPOV() == 0 ? .1 : (xboxController.getPOV() == 180 ? -.1 : 0));
+    this.m_armSubsystem.setDefaultCommand(this.m_manualPositionCommand);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
@@ -155,10 +156,7 @@ public class RobotContainer {
     JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
     highButton.whileTrue(m_armHighCommand);
 
-    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
-    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
-
-    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
+    JoystickButton ArmMoveDown = new JoystickButton(this.xboxController, ControllerConstants.kArmMoveDown);
     ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
 
     // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
