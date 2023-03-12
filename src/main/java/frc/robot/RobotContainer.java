@@ -182,6 +182,10 @@ public class RobotContainer {
     JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
     driveStraightButton.whileTrue(this.m_drivestraightcommand);
     driveStraightButton.whileFalse(this.teleopDriveCmd);
+
+    if((Math.abs(leftJoystick.getY()) - Math.abs(rightJoystick.getY())) <= ControllerConstants.kDeadZoneRadius){
+      this.m_drivestraightcommand.execute();
+    }
   }
 
   /**
