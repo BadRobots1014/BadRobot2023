@@ -21,7 +21,7 @@ public class BalancePIDCommand extends PIDCommand{
 
     private static void driveAndLog(NavXGyroSubsystem gyroSub, DrivetrainSubsystem driveSub, double output) {
         //m_tab.addNumber("PID Output", output);
-        System.out.println("Gyro Roll PID: " + gyroSub.getRollPID() + "\tControl Effort: " + output + "\tLMotor: " + (GyroConstants.kMaxBalanceSpeed * output) + "\tRMotor: " + (GyroConstants.kMaxBalanceSpeed * output));
+        System.out.println("Gyro Roll: " + gyroSub.getRollPID() + "\tControl Effort: " + output + "\tLMotor: " + (GyroConstants.kMaxBalanceSpeed * output) + "\tRMotor: " + (GyroConstants.kMaxBalanceSpeed * output));
         if(isFirst) {
             isFirst = false;
             return;
