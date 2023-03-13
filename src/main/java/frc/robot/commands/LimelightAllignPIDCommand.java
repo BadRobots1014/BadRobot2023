@@ -20,22 +20,25 @@ public class LimelightAllignPIDCommand extends PIDCommand{
 
     private static LimelightSubsystem m_LimelightSubsystem;
 
-    public LimelightAllignPIDCommand(LimelightSubsystem lS, DrivetrainSubsystem dS, double power) {
+    public LimelightAllignPIDCommand(LimelightSubsystem lS, DrivetrainSubsystem dS) {
         super(new PIDController(LimelightConstants.kAngleP, LimelightConstants.kAngleI, LimelightConstants.kAngleD),
         lS::getPIDTurnTableX, 
-        LimelightConstants.setpoint, 
+        LimelightConstants.angleSetpoint, 
         //output -> dS.tankDrive(power * output, power * -output),
         //output -> System.out.println(output),
         //output -> dS.tankDrive(power * output, power * (1-output)), 
-        output -> driveAndLog(lS,dS,power, output),
+        output -> driveAndLog(lS,dS, output),
         new Subsystem[]{lS, dS});
 
         m_LimelightSubsystem = lS;
     }
     
-    private static void driveAndLog(LimelightSubsystem lS, DrivetrainSubsystem dS, double power, double output) {
+    private static void driveAndLog(LimelightSubsystem lS, DrivetrainSubsystem dS, double output) {
         //m_tab.addNumber("PID Output", output);
-        System.out.println("LL tX: " + lS.getPIDTurnTableX() + "\tControl Effort: " + output + "\tLMotor: " + (power * -output) + "\tRMotor: " + (power * output));
+        System.out.println("LL tX: " + lS.getPIDTurnTableX() + 
+                            "\tControl Effort: " + output + 
+                            "\tLMotor: " + (LimelightConstants.kLineUpMaxSpeed * -output) + 
+                            "\tRMotor: " + (LimelightConstants.kLineUpMaxSpeed * output));
         if(isFirst) {
             isFirst = false;
             return;

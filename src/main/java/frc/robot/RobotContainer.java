@@ -88,7 +88,7 @@ public class RobotContainer {
     //this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     this.m_limelightSubsystem = new LimelightSubsystem();
-    this.m_limelightAllignPIDCommand = new LimelightAllignPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .5);
+    this.m_limelightAllignPIDCommand = new LimelightAllignPIDCommand(m_limelightSubsystem, drivetrainSubsystem);
 
 
     // Target Height is 1ft 11 1/2 inches
@@ -97,7 +97,7 @@ public class RobotContainer {
     // OPTIMAL DISTANCE FOR CONE IS 35 in
 
     //  double llMADeg, double llMH, double tH
-    this.m_LimelightDistancePIDCommand = new LimelightDistancePIDCommand(m_limelightSubsystem, drivetrainSubsystem, .25, 15, 12, 23.5);
+    this.m_LimelightDistancePIDCommand = new LimelightDistancePIDCommand(m_limelightSubsystem, drivetrainSubsystem, 15, 12, 23.5);
 
     // Configure the button bindings
     configureButtonBindings();

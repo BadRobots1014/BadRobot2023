@@ -63,20 +63,29 @@ public final class Constants {
     }
 
     public final class LimelightConstants {
+        // --------- Allign with Cone ------------------
 
         public final static double kLineUpMaxSpeed = 1;
+        public final static double kMaxSpeedAngle = 30;
+        public final static double kAngleDeadZone = 2;
+    
         public final static double kAngleP = 0.55;
         public final static double kAngleI = 0.4;
         public final static double kAngleD = 0.005;
-        public final static double setpoint = 0;
+        public final static double angleSetpoint = 0;
 
-        public final static double distSetpoint = 24;
+        // --------- Get in Distance ------------------
+
         public final static double kDistMaxSpeed = .2;
+        // 10 inches off the correct distance the robot will go full speed
+        public final static double kMaxSpeedDistOffset = 10; 
+        public final static double kDistDeadZone = 3;
+
         public final static double kDistP = 0.2;
         public final static double kDistI = 0.0;
         public final static double kDistD = 0.005;
-
-
+        public final static double kDistTarget = 24;
+        public final static double kDistSetpoint = 0; // the offset from target 
     }
 
     public final static class MovementConstants {

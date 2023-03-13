@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightConstants;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -57,7 +58,10 @@ public class LimelightSubsystem extends SubsystemBase{
 
     public double getPIDTurnTableX()
     {
-        return getTableX() / 30;  // 30 degrees is the extremity of either side
+        if(Math.abs(getTableX()) < LimelightConstants.kAngleDeadZone)
+            return 0.0;
+
+        return getTableX() / LimelightConstants.kMaxSpeedAngle;  // 30 degrees is the extremity of either side
     }
 
     public double getTableY() {
@@ -68,15 +72,29 @@ public class LimelightSubsystem extends SubsystemBase{
     public double getAngleToTargetDeg(double llMADeg) {
         return getTableY() + llMADeg;
     }
+    public double getAngleToTargetDegInverse(double llMADeg) {
+        return -1 * getTableY() + llMADeg;
+    }
 
     public double calculateDistanceInch(double llMADeg, double llMH, double tH) {
         // inverse the angle because the camera is tipped downwards
-        return (tH - llMH) / Math.tan(Math.toRadians(getAngleToTargetDeg(-1 * llMADeg)));
+        // might have to subtract the height.
+        return (llMH - tH) / Math.tan(Math.toRadians(getAngleToTargetDegInverse(llMADeg)));
     }
 
-    /*public double calculateDistanceInchPID(double llMADeg, double llMH, double tH) {
-        return calculateDistanceInch(llMADeg, llMH, tH);
-    }*/
+    public double calculateDistanceInchPID(double llMADeg, double llMH, double tH) {
+        // subtracting the distance target from the calculated distance allows us to 
+        // find the offset from the target
+
+        // deadzoning
+        if(Math.abs((calculateDistanceInch(llMADeg, llMH, tH) - LimelightConstants.kDistTarget)) < LimelightConstants.kDistDeadZone)
+            return 0;
+
+        // dividing the distance by the max offset
+        // this is done in order to make the robot compensate at max speed at the max offset, 
+        // and prevent the control effort from going over 1 in the range of -MaxOffset to MaxOffset
+        return (calculateDistanceInch(llMADeg, llMH, tH) - LimelightConstants.kDistTarget) / LimelightConstants.kMaxSpeedDistOffset;
+    }
     
     public double getTableA() {
         return ta.getDouble(0.0);
