@@ -20,11 +20,11 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
+  public static final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final RelativeEncoder m_extenderEncoder;
- // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
+  // public final RelativeEncoder m_winchEncoder;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
 
   public int winchTicks;
@@ -39,16 +39,18 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.setInverted(false); // Find out if needs to be T/F
     m_winch.setIdleMode(IdleMode.kBrake);
 
+    // m_winchEncoder = m_winch.getEncoder();
+    // resetEncoder(m_winchEncoder);
+
 
     m_extender.setInverted(true); //needs to be T
-
     m_extender.setIdleMode(IdleMode.kBrake);
 
     m_extenderEncoder = m_extender.getEncoder();
     resetEncoder(m_extenderEncoder);
 
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
-
+    // m_tab.addDouble("Winch Encoder:", this::getWinchEncoderPosition);
     }
 
 
@@ -83,12 +85,16 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getEncoderPosition(RelativeEncoder encoder) {return encoder.getPosition();} // In rotations
-
   public double getEncoderVelocity(RelativeEncoder encoder) {return encoder.getVelocity();}
+  
 
   public double getExtenderEncoderPosition(){
     return (getEncoderPosition(m_extenderEncoder));
   }
+
+  // public double getWinchEncoderPosition(){
+    // return (getEncoderPosition(m_winchEncoder));
+  // }
 
   public double getExtenderUpperBound(){
     return ArmConstants.kMaxHeight;
