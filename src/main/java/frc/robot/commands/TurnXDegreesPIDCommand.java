@@ -16,6 +16,7 @@ import frc.robot.subsystems.NavXGyroSubsystem;
 public class TurnXDegreesPIDCommand extends PIDCommand{
     public final static ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
     private static boolean isFirst = true;
+    private double setpoint;
 
     public TurnXDegreesPIDCommand(NavXGyroSubsystem gS, DrivetrainSubsystem dS, double setpoint) {
         super(new PIDController(GyroConstants.kP, GyroConstants.kI, GyroConstants.kD),
@@ -26,6 +27,8 @@ public class TurnXDegreesPIDCommand extends PIDCommand{
         //output -> dS.tankDrive(power * output, power * (1-output)), 
         output -> driveAndLog(gS,dS, output),
         new Subsystem[]{gS, dS});
+
+        this.setpoint = setpoint;
     }
     
     private static void driveAndLog(NavXGyroSubsystem gS, DrivetrainSubsystem dS, double output) {
@@ -43,6 +46,9 @@ public class TurnXDegreesPIDCommand extends PIDCommand{
     @Override
     public void initialize() {
         super.initialize();
+
+        super.getController().setSetpoint(setpoint);
+
         isFirst = true;
     }
 }
