@@ -20,67 +20,57 @@ public class ColorSensorSubsystem extends SubsystemBase {
 
     String colorString = "";
 
-
     public ShuffleboardTab mtab = Shuffleboard.getTab("ColorSensor");
 
     public ColorSensorSubsystem()
     {
-        mtab.addNumber("Blue", this::getBlue);
-        mtab.addNumber("Green", this::getGreen);
-        mtab.addNumber("Red", this::getRed);
-        mtab.addString("Color", this::getColorString);
+      // mtab.addNumber("Blue", this::getBlue);
+      // mtab.addNumber("Green", this::getGreen);
+      // mtab.addNumber("Red", this::getRed);
+      // mtab.addString("Color", this::getColorString);
+      mtab.add("Color", getColor());
+      mtab.add("Color Match", getClosestColor());
 
-        matcher.addColorMatch(kBlueTarget);
-        matcher.addColorMatch(kGreenTarget);
-        matcher.addColorMatch(kRedTarget);
-        matcher.addColorMatch(kYellowTarget);
+      // matcher.addColorMatch(kBlueTarget);
+      // matcher.addColorMatch(kGreenTarget);
+      // matcher.addColorMatch(kRedTarget);
+      // matcher.addColorMatch(kYellowTarget);
+      matcher.addColorMatch(kNeutralColor);
+      matcher.addColorMatch(kReachColor);
+      matcher.addColorMatch(kLowColor);
     }
 
-    private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
-    private final Color kGreenTarget = new Color(0.197, 0.561, 0.240);
-    private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
-    private final Color kYellowTarget = new Color(0.361, 0.524, 0.113);
+    // private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
+    // private final Color kGreenTarget = new Color(0.197, 0.561, 0.240);
+    // private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+    // private final Color kYellowTarget = new Color(0.361, 0.524, 0.113);
+
+    private final Color kNeutralColor = new Color(0,0,0);
+    private final Color kReachColor = new Color(0,0,0);
+    private final Color kLowColor = new Color(0,0,0);
 
     public Color getColor()
     {
-        detectedColor = sensor.getColor();
-        ir = sensor.getIR();
-
-        result = matcher.matchClosestColor(detectedColor);
-
-        
-        if (result.color == kBlueTarget) {
-            colorString = "Blue";
-          } else if (result.color == kRedTarget) {
-            colorString = "Red";
-          } else if (result.color == kGreenTarget) {
-            colorString = "Green";
-          } else if (result.color == kYellowTarget) {
-            colorString = "Yellow";
-          } else {
-            colorString = "Unknown";
-          }
-
-        return detectedColor;
+      return detectedColor;
     }
 
-    public double getBlue()
-    {
-        return detectedColor.blue;
+    public Color getClosestColor() {
+      detectedColor = sensor.getColor();
+      ir = sensor.getIR();
+
+      result = matcher.matchClosestColor(detectedColor);
+
+      return result.color;
     }
 
-    public double getRed()
-    {
-        return detectedColor.red;
-    }
+    public double getRed() {return detectedColor.red;}
 
-    public double getGreen()
-    {
-        return detectedColor.green;
-    }
+    public double getGreen() {return detectedColor.green;}
 
-    public String getColorString()
-    {
-        return colorString;
-    }
+    public double getBlue() {return detectedColor.blue;}
+
+    // public String getColorString()
+    // {
+    //     return colorString;
+    // }
 }
