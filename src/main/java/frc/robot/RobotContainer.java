@@ -48,11 +48,11 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1);
-  // private final ArmCommand m_manualPositionCommand;
+  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .2);
+  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .2);
+  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .2);
+  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .2);
+  private final ArmCommand m_manualPositionCommand;
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
   
@@ -118,8 +118,7 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    // this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, xboxController.getPOV() == 0 ? .1 : (xboxController.getPOV() == 180 ? -.1 : 0));
-    this.m_armSubsystem.setDefaultCommand(this.m_armStoreCommand);
+    this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, this.getXboxLeftY());
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
@@ -148,18 +147,18 @@ public class RobotContainer {
     // if (xboxController.getYButton()) this.m_armHighCommand.execute();
 
     JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
-    storeButton.whileTrue(m_armStoreCommand);
+    storeButton.toggleOnTrue(m_armStoreCommand);
     JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
-    lowButton.whileTrue(m_armLowCommand);
+    lowButton.toggleOnTrue(m_armLowCommand);
     JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
-    mediumButton.whileTrue(m_armMediumCommand);
+    mediumButton.toggleOnTrue(m_armMediumCommand);
     JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
-    highButton.whileTrue(m_armHighCommand);
+    highButton.toggleOnTrue(m_armHighCommand);
 
-    JoystickButton ArmMoveUp = new JoystickButton(this.xboxController, XboxController.Button.kRightStick.value);
+    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
     ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
 
-    JoystickButton ArmMoveDown = new JoystickButton(this.xboxController, XboxController.Button.kLeftStick.value);
+    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
     ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
 
     // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
@@ -183,10 +182,8 @@ public class RobotContainer {
     JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
     driveStraightButton.whileTrue(this.m_drivestraightcommand);
     driveStraightButton.whileFalse(this.teleopDriveCmd);
-
-    if((Math.abs(leftJoystick.getY()) - Math.abs(rightJoystick.getY())) <= ControllerConstants.kDeadZoneRadius){
-      this.m_drivestraightcommand.execute();
-    }
+   
+    
   }
 
   /**

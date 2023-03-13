@@ -36,6 +36,7 @@ public class ZeroCommand extends CommandBase {
   public void execute() {
     m_armSubsystem.m_extender.setIdleMode(IdleMode.kCoast);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+    System.out.println("ZERO");
   }
 
   // Called once the command ends or is interrupted.
