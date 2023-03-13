@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.AutoCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
@@ -45,9 +48,6 @@ public class RobotContainer {
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
   private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1);
   private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
   private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
@@ -68,6 +68,8 @@ public class RobotContainer {
   private final ZeroCommand m_zeroCommand;
 
   private final DunkCommand m_dunkCommand;
+  
+  private final AutoCommand m_autoCommand;
 
   
   private Joystick rightJoystick;
@@ -76,6 +78,7 @@ public class RobotContainer {
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
   private XboxController xboxController;
+  private DriveStraightCommand m_autoDriveCommand;
 
   public double getRightY() {
     return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
@@ -124,6 +127,9 @@ public class RobotContainer {
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
+    this.m_autoDriveCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, new DoubleSupplier() {public double getAsDouble(){ return .2;}}, new DoubleSupplier() {public double getAsDouble(){ return .2;}}, new DoubleSupplier() {public double getAsDouble(){ return 1;}});
+
+    this.m_autoCommand = new AutoCommand(m_autoDriveCommand, m_armHighCommand);
 
     // Configure the button bindings
     configureButtonBindings();
