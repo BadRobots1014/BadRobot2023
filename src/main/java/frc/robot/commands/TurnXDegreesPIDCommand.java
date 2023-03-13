@@ -18,6 +18,8 @@ public class TurnXDegreesPIDCommand extends PIDCommand{
     private static boolean isFirst = true;
     private double setpoint;
 
+    NavXGyroSubsystem m_gyroSubsystem;
+
     public TurnXDegreesPIDCommand(NavXGyroSubsystem gS, DrivetrainSubsystem dS, double setpoint) {
         super(new PIDController(GyroConstants.kP, GyroConstants.kI, GyroConstants.kD),
         gS::getPIDYaw, 
@@ -47,7 +49,7 @@ public class TurnXDegreesPIDCommand extends PIDCommand{
     public void initialize() {
         super.initialize();
 
-        super.getController().setSetpoint(setpoint);
+        super.getController().setSetpoint(m_gyroSubsystem.getPIDYaw() + setpoint/180);
 
         isFirst = true;
     }
