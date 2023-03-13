@@ -39,10 +39,10 @@ public class AutoCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (timer.get() < 10000) {
+    if (timer.get() < 1000) {
       new ScheduleCommand(m_drive);
     }
-    else if (timer.get() < 20000) {
+    else if (timer.get() < 3000) {
       new ScheduleCommand(m_arm);
     }
     else {
