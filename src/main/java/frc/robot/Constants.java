@@ -56,6 +56,8 @@ public final class Constants {
         //Max + min positions
         public final static double kMaxHeight = 20;
         public final static double kMinHeight = 0;
+        public final static double kMaxWinch = 10; //Note that this is the maximum pull (so downwards)
+        public final static double kMinWinch = 0; //This is the high position
 
         //set preset arm positions
         public final static double kArmHighPos = 20;
@@ -86,8 +88,6 @@ public final class Constants {
         public final static double kGrabberAmpMax = 35; //Approximately how min number of amps motor reads out when it fills
         public final static String kGrabberFilled = "Grabber is Filled";
         public final static String kGrabberEmpty = "Grabber is Empty";
-
-        
 
         // motor ports
         public final static int kGrabberPort = 7; 

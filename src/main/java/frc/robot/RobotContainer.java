@@ -47,11 +47,11 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1);
-  private final RuntopositionCommand m_manualPositionCommand;
+  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1, ArmConstants.kMinWinch, .1);
+  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1, ArmConstants.kMinWinch, .1);
+  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1, ArmConstants.kMinWinch, .1);
+  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1, ArmConstants.kMinWinch, .1);
+  // private final RuntopositionCommand m_manualPositionCommand;
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
   
@@ -109,7 +109,7 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04);
+    // this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04, this.getRightZ(), .1);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);

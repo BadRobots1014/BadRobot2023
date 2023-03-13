@@ -24,11 +24,8 @@ public class ArmSubsystem extends SubsystemBase {
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final RelativeEncoder m_extenderEncoder;
- // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
+  public final RelativeEncoder m_winchEncoder;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
-
-  public int winchTicks;
-  public int extenderTicks;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
@@ -39,13 +36,13 @@ public class ArmSubsystem extends SubsystemBase {
     m_winch.setInverted(false); // Find out if needs to be T/F
     m_winch.setIdleMode(IdleMode.kBrake);
 
-
     m_extender.setInverted(true); //needs to be T
-
     m_extender.setIdleMode(IdleMode.kBrake);
 
     m_extenderEncoder = m_extender.getEncoder();
     resetEncoder(m_extenderEncoder);
+    m_winchEncoder = m_winch.getEncoder();
+    resetEncoder(m_winchEncoder);
 
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
 
@@ -86,13 +83,13 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getEncoderVelocity(RelativeEncoder encoder) {return encoder.getVelocity();}
 
-  public double getExtenderEncoderPosition(){
-    return (getEncoderPosition(m_extenderEncoder));
-  }
+  public double getExtenderEncoderPosition(){return (getEncoderPosition(m_extenderEncoder));}
 
-  public double getExtenderUpperBound(){
-    return ArmConstants.kMaxHeight;
-  }
+  public double getExtenderUpperBound(){return ArmConstants.kMaxHeight;}
+
+  public double getWinchEncoderPosition(){return (getEncoderPosition(m_winchEncoder));}
+
+  public double getWinchUpperBound(){return ArmConstants.kMaxWinch;}
 
   public void resetEncoder(RelativeEncoder encoder) {
     encoder.setPosition(0);

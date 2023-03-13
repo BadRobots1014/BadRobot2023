@@ -34,6 +34,8 @@ public class ZeroCommand extends CommandBase {
   public void execute() {
     m_armSubsystem.runExtender(0);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+    m_armSubsystem.runWinch(0);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_winch);
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +43,7 @@ public class ZeroCommand extends CommandBase {
   public void end(boolean interrupted) {
     System.out.println("Zero Encoders");
     m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
+    m_armSubsystem.resetEncoder(m_armSubsystem.m_winchEncoder);
   }
 
   // Returns true when the command should end.

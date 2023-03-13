@@ -15,15 +15,20 @@ public class RuntopositionCommand extends CommandBase {
   private final double m_position;
   private final double m_speed;
 
+  private final double m_winchPosition;
+  private final double m_winchSpeed;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, double winchPosition, double winchSpeed) {
     m_armSubsystem = subsystem;
     m_position = position;
     m_speed = speed;
+    m_winchPosition = winchPosition;
+    m_winchSpeed = winchSpeed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -36,8 +41,8 @@ public class RuntopositionCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
-    
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
+    m_armSubsystem.runToPosition(m_armSubsystem.m_winch, m_armSubsystem.m_winchEncoder, m_winchPosition, m_winchSpeed);
   }
 
   // Called once the command ends or is interrupted.
