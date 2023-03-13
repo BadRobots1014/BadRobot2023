@@ -15,6 +15,7 @@ import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LimelightAllignPIDCommand;
+import frc.robot.commands.LimelightDistancePIDCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -38,6 +39,7 @@ public class RobotContainer {
 
   private LimelightSubsystem m_limelightSubsystem;
   private LimelightAllignPIDCommand m_limelightAllignPIDCommand;
+  private LimelightDistancePIDCommand m_LimelightDistancePIDCommand;
 
   private DrivetrainSubsystem drivetrainSubsystem;
   
@@ -89,6 +91,14 @@ public class RobotContainer {
     this.m_limelightAllignPIDCommand = new LimelightAllignPIDCommand(m_limelightSubsystem, drivetrainSubsystem, .5);
 
 
+    // Target Height is 1ft 11 1/2 inches
+    // LL angle is 75 degrees ? (actually 15)
+    // LL height is 12 in
+    // OPTIMAL DISTANCE FOR CONE IS 35 in
+
+    //  double llMADeg, double llMH, double tH
+    this.m_LimelightDistancePIDCommand = new LimelightDistancePIDCommand(m_limelightSubsystem, drivetrainSubsystem, .25, 15, 12, 23.5);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -114,6 +124,10 @@ public class RobotContainer {
 
     JoystickButton pidLineUpButton =  new JoystickButton(this.rightJoystick, ControllerConstants.kPIDLineUpButton);
     pidLineUpButton.whileTrue(this.m_limelightAllignPIDCommand);
+
+    JoystickButton pidDistButton =  new JoystickButton(this.rightJoystick, ControllerConstants.kPIDDistButton);
+    pidDistButton.whileTrue(this.m_LimelightDistancePIDCommand);
+    // 1ft. 11 1/2 in. is the height of the april tag
   }
 
   /**

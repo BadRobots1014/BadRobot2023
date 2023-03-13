@@ -18,8 +18,10 @@ public class LimelightAllignPIDCommand extends PIDCommand{
     private static boolean isFirst = true;
     private static double[] lastVals;
 
+    private static LimelightSubsystem m_LimelightSubsystem;
+
     public LimelightAllignPIDCommand(LimelightSubsystem lS, DrivetrainSubsystem dS, double power) {
-        super(new PIDController(LimelightConstants.kP, LimelightConstants.kI, LimelightConstants.kD),
+        super(new PIDController(LimelightConstants.kAngleP, LimelightConstants.kAngleI, LimelightConstants.kAngleD),
         lS::getPIDTurnTableX, 
         LimelightConstants.setpoint, 
         //output -> dS.tankDrive(power * output, power * -output),
@@ -27,6 +29,8 @@ public class LimelightAllignPIDCommand extends PIDCommand{
         //output -> dS.tankDrive(power * output, power * (1-output)), 
         output -> driveAndLog(lS,dS,power, output),
         new Subsystem[]{lS, dS});
+
+        m_LimelightSubsystem = lS;
     }
     
     private static void driveAndLog(LimelightSubsystem lS, DrivetrainSubsystem dS, double power, double output) {
@@ -45,5 +49,8 @@ public class LimelightAllignPIDCommand extends PIDCommand{
     public void initialize() {
         super.initialize();
         isFirst = true;
+
+        m_LimelightSubsystem.setPipeline(2);
     }
+
 }

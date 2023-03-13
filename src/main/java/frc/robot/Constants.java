@@ -38,6 +38,7 @@ public final class Constants {
 
         public final static int kLineUpButton = 3;
         public final static int kPIDLineUpButton = 4;
+        public final static int kPIDDistButton = 5;
     }
 
     public final class DriveConstants {
@@ -64,10 +65,17 @@ public final class Constants {
     public final class LimelightConstants {
 
         public final static double kLineUpMaxSpeed = 1;
-        public final static double kP = 0.55;
-        public final static double kI = 0.4;
-        public final static double kD = 0.005;
+        public final static double kAngleP = 0.55;
+        public final static double kAngleI = 0.4;
+        public final static double kAngleD = 0.005;
         public final static double setpoint = 0;
+
+        public final static double distSetpoint = 24;
+        public final static double kDistMaxSpeed = .2;
+        public final static double kDistP = 0.2;
+        public final static double kDistI = 0.0;
+        public final static double kDistD = 0.005;
+
 
     }
 

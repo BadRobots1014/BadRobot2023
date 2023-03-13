@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+import java.util.function.Supplier;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -20,10 +23,14 @@ public class LimelightSubsystem extends SubsystemBase{
     private NetworkTableEntry ty = table.getEntry("ty");
     private NetworkTableEntry ta = table.getEntry("ta");
 
+
+
       /** Creates a new ExampleSubsystem. */
-    //public LimelightSubsystem(double limelightMountAngleDeg, double limelightMountHeight ) {
+    //public LimelightSubsystem() {
     public LimelightSubsystem() {
         //tx.getDouble(0.0);
+
+
   
         m_tab.addNumber("LimeLight X", () -> getTableX());
         m_tab.addNumber("LimeLight Y", () -> getTableY());
@@ -50,21 +57,27 @@ public class LimelightSubsystem extends SubsystemBase{
 
     public double getPIDTurnTableX()
     {
-        return getTableX()/30;  // 30 degrees is the extremity of either side
+        return getTableX() / 30;  // 30 degrees is the extremity of either side
     }
 
     public double getTableY() {
         return ty.getDouble(0.0);
     }
 
-    /*public double getAngleToTarget() {
-        double angleToTargetDeg = 
+    
+    public double getAngleToTargetDeg(double llMADeg) {
+        return getTableY() + llMADeg;
     }
 
-    public double calculateDistance() {
+    public double calculateDistanceInch(double llMADeg, double llMH, double tH) {
+        // inverse the angle because the camera is tipped downwards
+        return (tH - llMH) / Math.tan(Math.toRadians(getAngleToTargetDeg(-1 * llMADeg)));
+    }
 
+    /*public double calculateDistanceInchPID(double llMADeg, double llMH, double tH) {
+        return calculateDistanceInch(llMADeg, llMH, tH);
     }*/
-
+    
     public double getTableA() {
         return ta.getDouble(0.0);
     }
