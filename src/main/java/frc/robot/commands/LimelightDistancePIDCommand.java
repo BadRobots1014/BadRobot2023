@@ -20,6 +20,7 @@ public class LimelightDistancePIDCommand extends PIDCommand{
 
     private static LimelightSubsystem m_LimelightSubsystem;
 
+    // TODO: remove power because it doesn't get used
     public LimelightDistancePIDCommand (LimelightSubsystem lS, DrivetrainSubsystem dS, double power, 
                                         double llMADeg, double llMH, double tH) {
 
