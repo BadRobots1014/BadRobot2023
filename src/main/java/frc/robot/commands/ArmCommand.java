@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -15,6 +17,7 @@ public class ArmCommand extends CommandBase {
   private final ArmSubsystem m_armSubsystem;
 
   private final double m_power;
+  private final DoubleSupplier m_powerSupplier;
 
   /**
    * Creates a new ExampleCommand.
@@ -24,7 +27,16 @@ public class ArmCommand extends CommandBase {
   public ArmCommand(ArmSubsystem subsystem, double power) {
     m_armSubsystem = subsystem;
     m_power = power;
+    m_powerSupplier = new DoubleSupplier() {public double getAsDouble() {return m_power;}};
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
+  }
+
+  public ArmCommand(ArmSubsystem subsystem, DoubleSupplier power) {
+    m_armSubsystem = subsystem;
+    m_powerSupplier = power;
+    m_power = m_powerSupplier.getAsDouble();
+
     addRequirements(subsystem);
   }
 
@@ -36,7 +48,7 @@ public class ArmCommand extends CommandBase {
   @Override
   public void execute() {
     if((m_armSubsystem.getExtenderEncoderPosition() < ArmConstants.kMaxHeight && m_power > 0) || (m_armSubsystem.getExtenderEncoderPosition() > ArmConstants.kMinHeight && m_power < 0)){
-      m_armSubsystem.runExtender(m_power);
+      m_armSubsystem.runExtender(m_powerSupplier.getAsDouble());
     }
       
   }

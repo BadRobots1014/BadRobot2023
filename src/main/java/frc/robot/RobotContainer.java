@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -47,11 +48,11 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1);
-  private final RuntopositionCommand m_manualPositionCommand;
+  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .2);
+  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .2);
+  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .2);
+  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .2);
+  private final ArmCommand m_manualPositionCommand;
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
   
@@ -92,6 +93,14 @@ public class RobotContainer {
     return Math.abs(leftJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getZ() : 0;
   }
 
+  public double getXboxRightY() {
+    return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
+  }
+
+  public double getXboxLeftY() {
+    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() : 0;
+  }
+
   private double getThrottle() {
       return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
   }
@@ -109,12 +118,11 @@ public class RobotContainer {
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    this.m_manualPositionCommand = new RuntopositionCommand(m_armSubsystem, this.getLeftZ(), .04);
+    this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, this.getXboxLeftY());
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
-
 
     // Configure the button bindings
     configureButtonBindings();
@@ -133,17 +141,19 @@ public class RobotContainer {
 
     // Arm Setting Button Bindings
 
-    JoystickButton ArmStoredButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmStoreButton);
-    ArmStoredButton.whileTrue(this.m_armStoreCommand);
-    
-    JoystickButton ArmLowButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmLowButton);
-    ArmLowButton.whileTrue(this.m_armLowCommand);
-    
-    JoystickButton ArmMediumButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMediumButton);
-    ArmMediumButton.whileTrue(this.m_armMediumCommand);
-    
-    JoystickButton ArmHighButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmHighButton);
-    ArmHighButton.whileTrue(this.m_armHighCommand);
+    // if (xboxController.getBButton()) this.m_armStoreCommand.execute();
+    // if (xboxController.getAButton()) this.m_armLowCommand.execute();
+    // if (xboxController.getXButton()) this.m_armMediumCommand.execute();
+    // if (xboxController.getYButton()) this.m_armHighCommand.execute();
+
+    JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
+    storeButton.toggleOnTrue(m_armStoreCommand);
+    JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
+    lowButton.toggleOnTrue(m_armLowCommand);
+    JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
+    mediumButton.toggleOnTrue(m_armMediumCommand);
+    JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
+    highButton.toggleOnTrue(m_armHighCommand);
 
     JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
     ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
@@ -151,32 +161,29 @@ public class RobotContainer {
     JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
     ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
 
-    JoystickButton ZeroButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmZeroButton);
-    ZeroButton.whileTrue(m_zeroCommand);
+    // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
+    JoystickButton zeroButton = new JoystickButton(this.xboxController, XboxController.Button.kBack.value);
+    zeroButton.whileTrue(m_zeroCommand);
 
-    Trigger DunkTrigger = new JoystickButton(this.leftJoystick, ControllerConstants.kDunkTrigger);
-    DunkTrigger.whileTrue(m_dunkCommand);
+    // if (xboxController.getAButton()) this.m_dunkCommand.execute();
+    JoystickButton dunkButton = new JoystickButton(this.xboxController, XboxController.Button.kStart.value);
+    dunkButton.whileTrue(m_dunkCommand);
 
-    JoystickButton GrabberForwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberFButton);
-    GrabberForwardButton.whileTrue(this.m_grabberCommandForward);
+    // if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
+    JoystickButton grabForwardButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
+    grabForwardButton.whileTrue(m_grabberCommandForward);
+    // if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
+    JoystickButton grabBackButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
+    grabBackButton.whileTrue(m_grabberCommandBackward);
 
-    JoystickButton GrabberBackwardButton = new JoystickButton(this.rightJoystick, ControllerConstants.kGrabberRButton);
-    GrabberBackwardButton.whileTrue(this.m_grabberCommandBackward);
+    JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
+    balanceButton.whileTrue(this.m_balancecommand);
 
-    if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
-      JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
-      balanceButton.whileTrue(this.m_balancecommand);
-      JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
-     
-      driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
-      
-      driveStraightButton.whileFalse(this.teleopDriveCmd);
-      balanceButton.whileTrue(this.m_balancecommand);
-    }
-    else {
-      JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
-      balanceButton.whileTrue(this.m_balancecommand);
-    }
+    JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
+    driveStraightButton.whileTrue(this.m_drivestraightcommand);
+    driveStraightButton.whileFalse(this.teleopDriveCmd);
+   
+    
   }
 
   /**

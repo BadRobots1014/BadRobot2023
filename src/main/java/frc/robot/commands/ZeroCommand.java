@@ -4,8 +4,10 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ArmSubsystem;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class ZeroCommand extends CommandBase {
@@ -32,14 +34,15 @@ public class ZeroCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.runExtender(0);
+    m_armSubsystem.m_extender.setIdleMode(IdleMode.kCoast);
     m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+    System.out.println("ZERO");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Zero Encoders");
+    m_armSubsystem.m_extender.setIdleMode(IdleMode.kBrake);
     m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
   }
 

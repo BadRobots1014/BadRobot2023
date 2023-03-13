@@ -30,19 +30,19 @@ public final class Constants {
         public final static int kThrottleButton = 2;
         public final static int kBalanceButton = 1; //Second joystick
 
-        public final static int kArmHighButton = 3;//left joystick middle top button
-        public final static int kArmMediumButton = 5;//left joystick top right button
-        public final static int kArmLowButton = 2;//left joystick middle bottom button
-        public final static int kArmStoreButton = 4;//left joystick top left button
-        public final static int kDunkTrigger = 1;//left trigger joystick
+        // public final static int kArmHighButton = 3;//left joystick middle top button
+        // public final static int kArmMediumButton = 5;//left joystick top right button
+        // public final static int kArmLowButton = 2;//left joystick middle bottom button
+        // public final static int kArmStoreButton = 4;//left joystick top left button
+        // public final static int kDunkTrigger = 1;//left trigger joystick
         public final static int kArmMoveUp = 11;
         public final static int kArmMoveDown = 10;
         public final static int kArmZeroButton = 7;
 
-        public final static int kGrabberFButton = 3; //right joystick middle top button
-        public final static int kGrabberRButton = 2; //right joystick middle bottom button
+        // public final static int kGrabberFButton = 3; //right joystick middle top button
+        // public final static int kGrabberRButton = 2; //right joystick middle bottom button
 
-        public final static int kDriveStraightButton = 3;//drive straight command  middle top button on left joystick
+        public final static int kDriveStraightButton = 1;//Right joystick trigger
         
         // For Xbox
         public final static int kXboxControllerPort = 2;
@@ -54,14 +54,14 @@ public final class Constants {
     public final class ArmConstants{
 
         //Max + min positions
-        public final static double kMaxHeight = 20;
+        public final static double kMaxHeight = 35;
         public final static double kMinHeight = 0;
 
         //set preset arm positions
-        public final static double kArmHighPos = 20;
+        public final static double kArmHighPos = 27;
         public final static String kArmHigh = "HIGH";
 
-        public final static double kArmMediumPos = 10;
+        public final static double kArmMediumPos = 16;
         public final static String kArmMedium = "MEDIUM";
         
         public final static double kArmLowPos = 5;
