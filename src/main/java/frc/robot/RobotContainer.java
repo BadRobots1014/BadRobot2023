@@ -129,7 +129,7 @@ public class RobotContainer {
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
     this.m_autoDriveCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, new DoubleSupplier() {public double getAsDouble(){ return .2;}}, new DoubleSupplier() {public double getAsDouble(){ return .2;}}, new DoubleSupplier() {public double getAsDouble(){ return 1;}});
 
-    this.m_autoCommand = new AutoCommand(m_autoDriveCommand, m_armHighCommand);
+    this.m_autoCommand = new AutoCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem);
 
     // Configure the button bindings
     configureButtonBindings();

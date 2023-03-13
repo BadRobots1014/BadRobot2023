@@ -4,12 +4,19 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.BlinkinConstants;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.NavXGyroSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class AutoCommand extends CommandBase {
+public class AutoCommand extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private DriveStraightCommand m_drive;
@@ -22,41 +29,12 @@ public class AutoCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoCommand(DriveStraightCommand drive, RuntopositionCommand arm) {
-    m_drive = drive;
-    m_arm = arm;
-    timer = new Timer();
+  public AutoCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm) {
+    super(
+      new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1).withTimeout(2000),
+      new RuntopositionCommand(arm, 20, .1)
+    );
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if (timer.get() < 1000) {
-      new ScheduleCommand(m_drive);
-    }
-    else if (timer.get() < 3000) {
-      new ScheduleCommand(m_arm);
-    }
-    else {
-      finish = true;
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return finish;
-  }
 }
