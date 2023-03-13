@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.GyroConstants;
 
 public class NavXGyroSubsystem extends SubsystemBase {
   
@@ -29,6 +30,15 @@ public class NavXGyroSubsystem extends SubsystemBase {
 
   public double getRoll() {
     return navx.getRoll();
+  }
+
+  public double getRollPID() {
+    // deadzoning
+    if(Math.abs(getRoll()) <= GyroConstants.kBalanceThreshold)
+      return 0.0;
+    // dividing by 20 means that if the robot is 20 deg off target, it will balance with max speed
+    // this prevents having controll effort of over one within -20 to 20 range
+    return navx.getRoll() / GyroConstants.kMaxSpeedAngle;
   }
 
   public void reset() {

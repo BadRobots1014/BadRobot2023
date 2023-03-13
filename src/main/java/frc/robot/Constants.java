@@ -148,13 +148,19 @@ public final class Constants {
 
     public final static class GyroConstants {
 
-        public final static double kBalanceThreshold = 5; //In degrees off of upright
         public final static double kOffsetThreshold = 0.25;
         public final static double kBalanceSpeed = 0.027;
         public final static double kOffsetSpeed = 0.027;
         
 
+        public final static double kBalanceThreshold = 5; //In degrees off of upright
+        public final static double kMaxSpeedAngle = 20; //In degrees off of upright (the angle at whic the robot balances with max speed)
 
+        public final static double kGyroP = 0.1;
+        public final static double kGyroI = 0.0;
+        public final static double kGyroD = 0.0;
+        public final static double kGyroSetpoint = 0.0;
+
+        public final static double kMaxBalanceSpeed = .25; 
     }
-
 }
