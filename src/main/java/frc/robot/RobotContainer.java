@@ -16,6 +16,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
+import frc.robot.commands.BalancePIDCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.DriveStraightCommand;
@@ -59,6 +60,8 @@ public class RobotContainer {
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
 
   private final BalanceCommand m_balancecommand;
+  private final BalancePIDCommand m_BalancePIDCommand;
+
   private final DriveStraightCommand m_drivestraightcommand;
   private DriveCommand teleopDriveCmd;
 
@@ -115,7 +118,7 @@ public class RobotContainer {
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
-
+    this.m_BalancePIDCommand = new BalancePIDCommand(navxGyroSubsystem, drivetrainSubsystem);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -165,13 +168,15 @@ public class RobotContainer {
 
     if (!DriverStation.isJoystickConnected(ControllerConstants.kXboxControllerPort)) {
       JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
-      balanceButton.whileTrue(this.m_balancecommand);
+      balanceButton.whileTrue(this.m_BalancePIDCommand);
+      //balanceButton.whileTrue(this.m_balancecommand);
+
       JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
      
       driveStraightButton.whileTrue(this.m_drivestraightcommand);//drivestraight button
       
       driveStraightButton.whileFalse(this.teleopDriveCmd);
-      balanceButton.whileTrue(this.m_balancecommand);
+      //balanceButton.whileTrue(this.m_balancecommand);
     }
     else {
       JoystickButton balanceButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
