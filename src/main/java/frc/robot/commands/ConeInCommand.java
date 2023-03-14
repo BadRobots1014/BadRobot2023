@@ -9,7 +9,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.GrabberSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class GrabberCommandBackward extends CommandBase {
+public class ConeInCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final GrabberSubsystem m_subsystem;
 
@@ -18,7 +18,7 @@ public class GrabberCommandBackward extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GrabberCommandBackward(GrabberSubsystem subsystem) {
+  public ConeInCommand(GrabberSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -31,7 +31,7 @@ public class GrabberCommandBackward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.runGrabber(ArmConstants.kGrabberPowerR);
+    m_subsystem.runGrabber(ArmConstants.kGrabberPowerF);
   }
 
   // Called once the command ends or is interrupted.
@@ -45,4 +45,5 @@ public class GrabberCommandBackward extends CommandBase {
   public boolean isFinished() {
     return false;
   } 
+
 }
