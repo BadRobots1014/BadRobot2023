@@ -1,5 +1,5 @@
 // Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
+// Open Source Software; you can modify and/or share it under the term
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
@@ -31,6 +31,8 @@ import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -69,6 +71,7 @@ public class RobotContainer {
 
   private final DunkCommand m_dunkCommand;
 
+  final static ShuffleboardTab m_tab = Shuffleboard.getTab("Controls");
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -148,40 +151,52 @@ public class RobotContainer {
 
     JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
     storeButton.toggleOnTrue(m_armStoreCommand);
+    m_tab.add("Store Button", "Left Joystick " + XboxController.Button.kB.value);
     JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
     lowButton.toggleOnTrue(m_armLowCommand);
+    m_tab.add("Low Button", XboxController.Button.kA.value);
     JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
     mediumButton.toggleOnTrue(m_armMediumCommand);
+    m_tab.add("Medium Button", XboxController.Button.kX.value);
     JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
     highButton.toggleOnTrue(m_armHighCommand);
+    m_tab.add("High Button", XboxController.Button.kY.value);
 
     JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
     ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+    m_tab.add("Move Arm Up", ControllerConstants.kArmMoveUp);
 
     JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
     ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+    m_tab.add("Move Arm Down", ControllerConstants.kArmMoveDown);
 
     // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
     JoystickButton zeroButton = new JoystickButton(this.xboxController, XboxController.Button.kBack.value);
     zeroButton.whileTrue(m_zeroCommand);
+    m_tab.add("Zero Button", XboxController.Button.kBack.value);
 
     // if (xboxController.getAButton()) this.m_dunkCommand.execute();
     JoystickButton dunkButton = new JoystickButton(this.xboxController, XboxController.Button.kStart.value);
     dunkButton.whileTrue(m_dunkCommand);
+    m_tab.add("Dunk Button", XboxController.Button.kStart.value);
 
     // if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
     JoystickButton grabForwardButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
     grabForwardButton.whileTrue(m_grabberCommandForward);
+    m_tab.add("Grabber Forward Button", XboxController.Button.kLeftBumper.value);
     // if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
     JoystickButton grabBackButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
     grabBackButton.whileTrue(m_grabberCommandBackward);
+    m_tab.add("Grabber Back Button", XboxController.Button.kRightBumper.value);
 
     JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
     balanceButton.whileTrue(this.m_balancecommand);
+    m_tab.add("Balance Button", ControllerConstants.kBalanceButton);
 
     JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
     driveStraightButton.whileTrue(this.m_drivestraightcommand);
     driveStraightButton.whileFalse(this.teleopDriveCmd);
+    m_tab.add("Drive Straight Button", ControllerConstants.kDriveStraightButton);
    
     
   }
