@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,6 +26,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.commands.GrabberCommandForward;
+import frc.robot.commands.ManualCommand;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -44,17 +47,20 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-
+  private DoubleSupplier m_dunkValue;
+  private DoubleSupplier m_dunkUpValue;
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .2);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .2);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .2);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .2);
+  private final RuntopositionCommand m_armStoreCommand;
+  private final RuntopositionCommand m_armHighCommand;
+  private final RuntopositionCommand m_armMediumCommand;
+  private final RuntopositionCommand m_armLowCommand;
   private final ArmCommand m_manualPositionCommand;
   private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
   private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
+  private final ManualCommand m_ManualCommandUP = new ManualCommand(m_armSubsystem, true);
+  private final ManualCommand m_ManualCommandDOWN = new ManualCommand(m_armSubsystem, false);
   
   private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
@@ -68,6 +74,8 @@ public class RobotContainer {
   private final ZeroCommand m_zeroCommand;
 
   private final DunkCommand m_dunkCommand;
+
+  
 
   
   private Joystick rightJoystick;
@@ -105,6 +113,14 @@ public class RobotContainer {
       return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
   }
 
+  private double getLeftTrigger(){
+    return xboxController.getLeftTriggerAxis();
+  }
+  
+  private double getRightTrigger(){
+    return xboxController.getRightTriggerAxis();
+  }
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -121,7 +137,17 @@ public class RobotContainer {
     this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, this.getXboxLeftY());
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
+
+    m_dunkValue = this::getRightTrigger;
+    m_dunkUpValue = this::getLeftTrigger;
+
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
+    this.m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .25, m_dunkValue, m_dunkUpValue);
+    this.m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .25, m_dunkValue, m_dunkUpValue);
+    this.m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .25, m_dunkValue, m_dunkUpValue);
+    this.m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .25, m_dunkValue, m_dunkUpValue);
+    
+    
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
 
     // Configure the button bindings
@@ -155,11 +181,11 @@ public class RobotContainer {
     JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
     highButton.toggleOnTrue(m_armHighCommand);
 
-    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
-    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+    JoystickButton ArmMoveUp = new JoystickButton(this.xboxController, XboxController.Button.kRightStick.value);
+    ArmMoveUp.toggleOnTrue(this.m_ManualCommandUP);
 
-    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
-    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+    JoystickButton ArmMoveDown = new JoystickButton(this.xboxController, XboxController.Button.kLeftStick.value);
+    ArmMoveDown.toggleOnTrue(this.m_ManualCommandDOWN);
 
     // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
     JoystickButton zeroButton = new JoystickButton(this.xboxController, XboxController.Button.kBack.value);

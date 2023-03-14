@@ -97,7 +97,11 @@ public class ArmSubsystem extends SubsystemBase {
   public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos, double speed){
     
     double dis = pos - encoder.getPosition();
-    motor.set(clampPower(dis) * speed);
+    if(dis < 0){
+      speed = 0.12;
+    }
+    double motorspeed = clampPower(dis) * speed;
+    motor.set(motorspeed);
 
   }
 }
