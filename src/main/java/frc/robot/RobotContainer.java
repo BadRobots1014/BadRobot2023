@@ -23,9 +23,9 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.CubeInCommand;
+import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.commands.ConeInCommand;
+import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.ManualCommand;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.ZeroCommand;
@@ -62,8 +62,8 @@ public class RobotContainer {
   private final ManualCommand m_ManualCommandUP = new ManualCommand(m_armSubsystem, true);
   private final ManualCommand m_ManualCommandDOWN = new ManualCommand(m_armSubsystem, false);
   
-  private final ConeInCommand m_coneInCommand = new ConeInCommand(m_grabberSubsystem);
-  private final CubeInCommand m_cubeInCommand = new CubeInCommand(m_grabberSubsystem);
+  private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
+  private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
 
   private final BalanceCommand m_balancecommand;
   private final DriveStraightCommand m_drivestraightcommand;
@@ -196,11 +196,11 @@ public class RobotContainer {
     dunkButton.whileTrue(m_dunkCommand);
 
     // if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
-    JoystickButton coneInButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
-    coneInButton.whileTrue(m_coneInCommand);
+    JoystickButton grabForwardButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
+    grabForwardButton.whileTrue(m_grabberCommandForward);
     // if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
-    JoystickButton cubeInButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
-    cubeInButton.whileTrue(m_cubeInCommand);
+    JoystickButton grabBackButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
+    grabBackButton.whileTrue(m_grabberCommandBackward);
 
     JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
     balanceButton.whileTrue(this.m_balancecommand);
