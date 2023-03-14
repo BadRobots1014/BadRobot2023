@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -41,16 +42,16 @@ public class ManualCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(armUp && armTicks <= 39 && firstLoop){
+    if(armUp && armTicks <= ArmConstants.kMaxHeight && firstLoop){
       System.out.println("UP");
       armTicks += 4;
     }
-    if(!armUp && armTicks >= 2 && firstLoop){
+    if(!armUp && armTicks >= ArmConstants.kMinHeight && firstLoop){
       System.out.println("DOWN");
       armTicks = armTicks - 4;
     }
     System.out.println(armTicks);
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, armTicks, 0.2);
+    if ((armUp && armTicks <= ArmConstants.kMaxHeight) || (!armUp && armTicks <= ArmConstants.kMinHeight)) ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, armTicks, 0.2);
     firstLoop = false;
   }
 

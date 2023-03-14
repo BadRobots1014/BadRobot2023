@@ -54,7 +54,7 @@ public final class Constants {
     public final class ArmConstants{
 
         //Max + min positions
-        public final static double kMaxHeight = 35;
+        public final static double kMaxHeight = 28;
         public final static double kMinHeight = 0;
 
         //set preset arm positions
