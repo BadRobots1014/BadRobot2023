@@ -70,8 +70,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_extender.set(clampPower(power));
   }
 
-  public void runWinch(double power){
-    m_winch.set(clampPower(power));
+  public void runWinch(double m_winchUp){
+    m_winch.set(clampPower(m_winchUp));
   }
 
   private static double clampPower(double power) {

@@ -77,7 +77,6 @@ public final class Constants {
         public final static String kPresetRunBackward = "Preset Run Backward";
         public final static String kBrake = "Brake";
 
-
         // Grabber power constants
         public final static double kGrabberPowerF = 0.25;
         public final static double kGrabberPowerR = -0.25;
@@ -87,12 +86,14 @@ public final class Constants {
         public final static String kGrabberFilled = "Grabber is Filled";
         public final static String kGrabberEmpty = "Grabber is Empty";
 
-        
-
         // motor ports
         public final static int kGrabberPort = 7; 
         public final static int kExtenderPort = 5; 
         public final static int kWinchPort = 6;
+
+        //Winch
+        public final static double kWinchUpSpeed = .3;
+        public final static double kWinchDownSpeed = -.5;
 
     }
 

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -14,16 +15,18 @@ public class RuntopositionCommand extends CommandBase {
 
   private final double m_position;
   private final double m_speed;
+  private final boolean m_winchUp;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, boolean winchUp) {
     m_armSubsystem = subsystem;
     m_position = position;
     m_speed = speed;
+    m_winchUp = winchUp;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -36,7 +39,9 @@ public class RuntopositionCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
+    m_armSubsystem.runWinch(m_winchUp ? ArmConstants.kWinchUpSpeed : ArmConstants.kWinchDownSpeed);
+
     //System.out.println(m_position);
   }
 
