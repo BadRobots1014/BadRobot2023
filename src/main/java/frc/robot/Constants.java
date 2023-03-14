@@ -16,6 +16,15 @@ import edu.wpi.first.wpilibj.I2C;
  */
 public final class Constants {
 
+    public static final class VisionConstants{
+        public static final int kVisionProcessorCamMode = 0;
+        public static final int kRedCargoPipelineId = 1;
+        public static final int kBlueCargoPipelineId = 2;
+        public static final int kHubPipelineId = 3;
+        
+    }
+
+
     public final class ControllerConstants {
 
         // For Joystick

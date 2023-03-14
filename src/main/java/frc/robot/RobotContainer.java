@@ -5,10 +5,13 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -44,6 +47,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+
 
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -114,7 +118,7 @@ public class RobotContainer {
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
+    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
     this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
@@ -123,6 +127,10 @@ public class RobotContainer {
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
+    HttpCamera httpCamera = new HttpCamera("CoprocessorCamera", "http://10.10.14.11:5800");
+    //CameraServer.getInstance().addCamera(httpCamera);
+    CameraServer.addCamera(httpCamera);
+    Shuffleboard.getTab("Camera").add(httpCamera);
 
     // Configure the button bindings
     configureButtonBindings();
