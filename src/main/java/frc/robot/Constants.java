@@ -39,6 +39,9 @@ public final class Constants {
         public final static int kArmMoveDown = 10;
         public final static int kArmZeroButton = 7;
 
+        public static final int kRaiseWinchButton = 3;
+        public static final int kLowerWinchButton = 2;
+
         // public final static int kGrabberFButton = 3; //right joystick middle top button
         // public final static int kGrabberRButton = 2; //right joystick middle bottom button
 
@@ -47,6 +50,7 @@ public final class Constants {
         // For Xbox
         public final static int kXboxControllerPort = 2;
         public final static double kXboxDeadZoneRadius = .1;
+        
 
         //Xbox buttons in RobotContainer
         

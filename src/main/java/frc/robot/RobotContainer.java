@@ -17,6 +17,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
+import frc.robot.commands.DownWinchCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.DriveStraightCommand;
@@ -25,6 +26,7 @@ import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
+import frc.robot.commands.UpWinchCommand;
 import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
@@ -58,6 +60,9 @@ public class RobotContainer {
   
   private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
+
+  private final UpWinchCommand m_UpWinchCommand = new UpWinchCommand(m_armSubsystem);
+  private final DownWinchCommand m_DownWinchCommand = new DownWinchCommand(m_armSubsystem);
 
   private final BalanceCommand m_balancecommand;
   private final DriveStraightCommand m_drivestraightcommand;
@@ -175,6 +180,12 @@ public class RobotContainer {
     // if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
     JoystickButton grabBackButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
     grabBackButton.whileTrue(m_grabberCommandBackward);
+
+    JoystickButton raiseWinchButton = new JoystickButton(this.leftJoystick, ControllerConstants.kRaiseWinchButton);
+    raiseWinchButton.whileTrue(m_ArmMoveUpCommand);
+
+    JoystickButton lowerWinchButton = new JoystickButton(this.leftJoystick, ControllerConstants.kLowerWinchButton);
+    lowerWinchButton.whileTrue(m_ArmMoveDownCommand);
 
     JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
     balanceButton.whileTrue(this.m_balancecommand);
