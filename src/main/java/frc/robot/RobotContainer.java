@@ -142,8 +142,8 @@ public class RobotContainer {
     // Autonomous commands
     this.m_autoDriveForwardCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, ()-> 0.3 , ()-> 0.3, ()-> 1);
     this.m_autoDriveBackwardCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, ()-> -0.3 , ()-> -0.3, ()-> 1);
-    this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem);
-    this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem);
+    this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem);
+    this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem);
 
     this.m_auto_command_chooser.setDefaultOption("Drive backwards for 2 seconds", m_autoDriveBackwardCommand.withTimeout(2));
     this.m_auto_command_chooser.addOption("Drive forward 2 seconds", m_autoDriveForwardCommand.withTimeout(2));

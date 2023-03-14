@@ -4,19 +4,17 @@
 
 package frc.robot.commands.auto;
 
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.BlinkinConstants;
 import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.DunkCommand;
+import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -28,12 +26,13 @@ public class DriveAndScoreCubeCommand extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveAndScoreCubeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm) {
+  public DriveAndScoreCubeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber) {
     super(
       // TODO: Make this drive distance and/or line up with the cone before the RunToPosition command should run
-      new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1).withTimeout(2),
-      new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .3),
-      new DunkCommand(arm)
+      new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .25).withTimeout(2),
+      new DunkCommand(arm).withTimeout(1),
+      new ParallelRaceGroup(new DunkCommand(arm), new GrabberCommandBackward(grabber)).withTimeout(.5),
+      new ParallelRaceGroup(new DriveStraightCommand(gyro, drive, blinkin, .5, .5, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2))
     );
   }
 
