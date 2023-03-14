@@ -146,10 +146,10 @@ public class RobotContainer {
     ArmHighButton.whileTrue(this.m_armHighCommand);
 
     JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
-    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
+    // ArmMoveUp.whileTrue(this.m_winchUpCommand);
 
     JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
-    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
+    // ArmMoveDown.whileTrue(this.m_winchDownCommand);
 
     JoystickButton ZeroButton = new JoystickButton(this.leftJoystick, ControllerConstants.kArmZeroButton);
     ZeroButton.whileTrue(m_zeroCommand);

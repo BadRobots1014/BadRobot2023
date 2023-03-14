@@ -43,7 +43,6 @@ public class ZeroCommand extends CommandBase {
   public void end(boolean interrupted) {
     System.out.println("Zero Encoders");
     m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
-    m_armSubsystem.resetEncoder(m_armSubsystem.m_winchEncoder);
   }
 
   // Returns true when the command should end.

@@ -4,53 +4,48 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
+
 /** An example command that uses an example subsystem. */
-public class RuntopositionCommand extends CommandBase {
+public class WinchCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
 
-  private final double m_position;
-  private final double m_speed;
-
-  private final double m_winchPosition;
-  private final double m_winchSpeed;
+  private final double m_power;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, double winchPosition, double winchSpeed) {
+  public WinchCommand(ArmSubsystem subsystem, double power) {
     m_armSubsystem = subsystem;
-    m_position = position;
-    m_speed = speed;
-    m_winchPosition = winchPosition;
-    m_winchSpeed = winchSpeed;
+    m_power = power;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, m_position, m_speed);
-    // m_armSubsystem.runToPosition(m_armSubsystem.m_winch, m_armSubsystem.m_winchEncoder, m_winchPosition, m_winchSpeed);
+    if((m_armSubsystem.getExtenderEncoderPosition() < ArmConstants.kMaxHeight && m_power > 0) || (m_armSubsystem.getExtenderEncoderPosition() > ArmConstants.kMinHeight && m_power < 0)){
+      m_armSubsystem.runExtender(m_power);
+    }
+      
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(ArmSubsystem.m_extender);
-
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
   }
 
   // Returns true when the command should end.
