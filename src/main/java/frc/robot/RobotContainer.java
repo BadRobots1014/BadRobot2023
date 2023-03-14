@@ -182,10 +182,10 @@ public class RobotContainer {
     grabBackButton.whileTrue(m_grabberCommandBackward);
 
     JoystickButton raiseWinchButton = new JoystickButton(this.leftJoystick, ControllerConstants.kRaiseWinchButton);
-    raiseWinchButton.whileTrue(m_ArmMoveUpCommand);
+    raiseWinchButton.whileTrue(m_UpWinchCommand);
 
     JoystickButton lowerWinchButton = new JoystickButton(this.leftJoystick, ControllerConstants.kLowerWinchButton);
-    lowerWinchButton.whileTrue(m_ArmMoveDownCommand);
+    lowerWinchButton.whileTrue(m_DownWinchCommand);
 
     JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
     balanceButton.whileTrue(this.m_balancecommand);

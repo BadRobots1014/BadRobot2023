@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -32,20 +30,20 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
 
-    m_winch.setInverted(false); // Find out if needs to be T/F
-    m_winch.setIdleMode(IdleMode.kBrake);
+  m_winch.setInverted(false); // Find out if needs to be T/F
+  m_winch.setIdleMode(IdleMode.kBrake);
 
 
-    m_extender.setInverted(true); //needs to be T
+  m_extender.setInverted(true); //needs to be T
 
-    m_extender.setIdleMode(IdleMode.kBrake);
+  m_extender.setIdleMode(IdleMode.kBrake);
 
-    m_extenderEncoder = m_extender.getEncoder();
-    resetEncoder(m_extenderEncoder);
+  m_extenderEncoder = m_extender.getEncoder();
+  resetEncoder(m_extenderEncoder);
 
-    m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
+  m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
 
-    }
+  }
 
 
 
