@@ -73,15 +73,23 @@ public class RuntopositionCommand extends CommandBase {
     if(Math.abs(m_dunkUpValue) <= 0.05){
       m_dunkUpValue = 0;
     }
+
+   // m_dunkUpValue = 1;
+   //System.out.println(m_dunkValue);
     armAdjustValue = m_dunkValue - m_dunkUpValue;
+
+    
+
     if(m_armSubsystem.getExtenderEncoderPosition() <= 0){
       armAdjustValue = 0;
     }
     if(m_armSubsystem.getExtenderEncoderPosition() >= 40){
-      armAdjustValue = 40;
+      armAdjustValue = 0;
     }
 
-    if(m_armSubsystem.getExtenderEncoderPosition() != m_position - (4 * armAdjustValue) && (m_dunkUpValue != 0 || m_dunkValue != 0)){
+
+
+    if(m_armSubsystem.getExtenderEncoderPosition() != m_position - (6 * armAdjustValue) && (m_dunkUpValue != 0 || m_dunkValue != 0)){
       m_speed = 0.05;
     }else{
       m_speed = normalSpeed;
@@ -90,7 +98,8 @@ public class RuntopositionCommand extends CommandBase {
 
     //System.out.println(m_dunkValue);
     //System.out.println(m_position - (2 * m_dunkValue));
-    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (4 * armAdjustValue)), m_speed);
+    System.out.println((m_position - 6 * armAdjustValue));
+    ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (6 * armAdjustValue)), m_speed);
     //System.out.println(m_position);
   }
 

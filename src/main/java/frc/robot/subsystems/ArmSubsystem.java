@@ -22,7 +22,9 @@ public class ArmSubsystem extends SubsystemBase {
 
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public final GrabberSubsystem m_GrabberSubsystem = new GrabberSubsystem();
   public final RelativeEncoder m_extenderEncoder;
+  
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
 
@@ -44,6 +46,11 @@ public class ArmSubsystem extends SubsystemBase {
     resetEncoder(m_extenderEncoder);
 
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
+    m_tab.addString("Arm Preset Position", this::getArmPresetLocation);
+    m_tab.addNumber("Grabber Amp Output: ", m_GrabberSubsystem::getCurrent);
+    m_tab.addString("Grabber State: ", m_GrabberSubsystem::getGrabberState);
+    m_tab.addBoolean("Grabber Filled?", m_GrabberSubsystem::isGrabberFilled);
+    
 
     }
 
@@ -84,6 +91,28 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getExtenderEncoderPosition(){
     return (getEncoderPosition(m_extenderEncoder));
+  }
+
+  public String getArmPresetLocation(){
+    if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmHighPos) <= 1){
+      return ArmConstants.kArmHigh;
+    }
+    else if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmMediumPos) <= 1){
+      return ArmConstants.kArmMedium;
+    }
+    else if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmLowPos) <= 1){
+      return ArmConstants.kArmLow;
+    }
+    else if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmStoredPos) <= 1){
+      //return "WEEE";
+      return ArmConstants.kArmStored;
+    }
+    else {
+      return ArmConstants.kArmManual;
+    }
+    
+
+     
   }
 
   public double getExtenderUpperBound(){

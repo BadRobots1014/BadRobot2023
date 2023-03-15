@@ -70,6 +70,8 @@ public final class Constants {
         public final static double kArmStoredPos = 0;
         public final static String kArmStored = "STORED";
 
+        public final static String kArmManual = "MANUAL CONTROL";
+
         // Grabber Running Modes
         public final static String kManualRunForward = "Manual Run Forward";
         public final static String kManualRunBackward = "Manual Run Backward";
