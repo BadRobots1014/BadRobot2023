@@ -37,6 +37,7 @@ public class RuntopositionCommand extends CommandBase {
     System.out.println(dunkValue);
     dunkVal = dunkValue;
     dunkUpVal = dunkUpValue;
+    armAdjustValue = 0;
     
     
    
@@ -73,7 +74,9 @@ public class RuntopositionCommand extends CommandBase {
     if(Math.abs(m_dunkUpValue) <= 0.05){
       m_dunkUpValue = 0;
     }
+
     armAdjustValue = m_dunkValue - m_dunkUpValue;
+
     if(m_armSubsystem.getExtenderEncoderPosition() <= 0){
       armAdjustValue = 0;
     }
@@ -88,8 +91,8 @@ public class RuntopositionCommand extends CommandBase {
     }
     //System.out.println(armAdjustValue);
 
-    //System.out.println(m_dunkValue);
-    //System.out.println(m_position - (2 * m_dunkValue));
+    //System.out.println(m_dunkValue - m_dunkUpValue);
+    //System.out.println(m_position - (4 * armAdjustValue));
     ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (4 * armAdjustValue)), m_speed);
     //System.out.println(m_position);
   }
