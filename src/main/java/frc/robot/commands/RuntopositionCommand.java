@@ -37,6 +37,7 @@ public class RuntopositionCommand extends CommandBase {
     System.out.println(dunkValue);
     dunkVal = dunkValue;
     dunkUpVal = dunkUpValue;
+    armAdjustValue = 0;
     
     
    
