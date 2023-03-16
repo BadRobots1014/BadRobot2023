@@ -45,6 +45,19 @@ public class DriveStraightCommand extends CommandBase {
     m_driveSpeed = 0.0;
   }
 
+  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, double leftSpeed, double rightSpeed, double throttle) {
+    m_subsystem = subsystem;
+    m_drivesubsystem = drivesubsystem;
+    m_ledSubsystem = lightSubsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem, drivesubsystem);
+
+    m_leftSpeed = new DoubleSupplier() {public double getAsDouble() {return leftSpeed;}};
+    m_rightSpeed = new DoubleSupplier() {public double getAsDouble() {return rightSpeed;}};
+    m_throttle = new DoubleSupplier() {public double getAsDouble() {return throttle;}};
+    m_driveSpeed = 0.0;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
