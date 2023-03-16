@@ -58,20 +58,20 @@ public final class Constants {
     public final class ArmConstants{
 
         //Max + min positions
-        public final static double kMaxHeight = 28;
+        public final static double kMaxHeight = 42;
         public final static double kMinHeight = 0;
 
         //set preset arm positions
-        public final static double kArmHighPos = 27;
+        public final static double kArmHighPos = 41;
         public final static String kArmHigh = "HIGH";
 
-        public final static double kArmMediumPos = 16;
+        public final static double kArmMediumPos = 28;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static double kArmLowPos = 16;
+        public final static double kArmLowPos = 28;
         public final static String kArmLow = "LOW";
 
-        public final static double kArmStoredPos = 0;
+        public final static double kArmStoredPos = 12;
         public final static String kArmStored = "STORED";
 
         public final static String kArmManual = "MANUAL CONTROL";
@@ -98,8 +98,8 @@ public final class Constants {
         public final static int kWinchPort = 6;
 
         //Winch
-        public final static double kWinchUpSpeed = .3;
-        public final static double kWinchDownSpeed = -.5;
+        public final static double kWinchUpSpeed = -.3;
+        public final static double kWinchDownSpeed = .5;
 
         public final static double kWinchLowerDeadzone = 10;
 

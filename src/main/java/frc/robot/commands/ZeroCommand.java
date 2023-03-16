@@ -37,16 +37,17 @@ public class ZeroCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.m_extender.setIdleMode(IdleMode.kCoast);
-    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
-    System.out.println("ZERO");
+    // m_armSubsystem.m_extender.setIdleMode(IdleMode.kCoast);
+    // m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
+    // System.out.println("ZERO");
+    m_armSubsystem.runExtender(-.3);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.m_extender.setIdleMode(IdleMode.kBrake);
-    m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
+    // m_armSubsystem.m_extender.setIdleMode(IdleMode.kBrake);
+    // m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
   }
 
   // Returns true when the command should end.

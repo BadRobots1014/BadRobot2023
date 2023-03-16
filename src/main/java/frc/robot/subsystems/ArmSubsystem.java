@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -19,10 +20,14 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
+  public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushed); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final GrabberSubsystem m_GrabberSubsystem = new GrabberSubsystem();
   public final RelativeEncoder m_extenderEncoder;
+
+  private SparkMaxLimitSwitch m_winch_forwardLimit;
+  private SparkMaxLimitSwitch m_winch_reverseLimit;
+  private SparkMaxLimitSwitch m_extender_reverseLimit;
   
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
@@ -33,15 +38,14 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
 
-  m_winch.setInverted(true); // Find out if needs to be T/F
+  m_winch.setInverted(true);
   m_winch.setIdleMode(IdleMode.kBrake);
-  m_winch.getForwardLimitSwitch(Type.kNormallyOpen);
-  m_winch.getReverseLimitSwitch(Type.kNormallyOpen);
-
+  m_winch_forwardLimit = m_winch.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+  m_winch_reverseLimit = m_winch.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 
   m_extender.setInverted(true); //needs to be T
   m_extender.setIdleMode(IdleMode.kBrake);
-  m_extender.getReverseLimitSwitch(Type.kNormallyOpen);
+  m_extender_reverseLimit = m_extender.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 
   m_extenderEncoder = m_extender.getEncoder();
   resetEncoder(m_extenderEncoder);
@@ -60,7 +64,7 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+    if (m_extender_reverseLimit.isPressed()) resetEncoder(m_extenderEncoder);
   }
 
   @Override
@@ -79,8 +83,8 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void runWinch(double m_winchUp){
-    // m_winch.set(clampPower(m_winchUp));
-    // System.out.print(m_winchUp);
+    m_winch.set(clampPower(m_winchUp));
+    System.out.println("Winch up " + m_winchUp);
   }
 
   private static double clampPower(double power) {

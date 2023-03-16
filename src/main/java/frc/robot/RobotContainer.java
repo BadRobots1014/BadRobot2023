@@ -56,7 +56,6 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  private final ArmSubsystem m_winchSubsystem = new ArmSubsystem();
 
   // private final ArmCommand m_manualPositionCommand;
   private DoubleSupplier m_dunkValue;
@@ -79,8 +78,8 @@ public class RobotContainer {
   private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
   private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
 
-  private final UpWinchCommand m_UpWinchCommand = new UpWinchCommand(m_winchSubsystem);
-  private final DownWinchCommand m_DownWinchCommand = new DownWinchCommand(m_winchSubsystem);
+  private final UpWinchCommand m_UpWinchCommand = new UpWinchCommand(m_armSubsystem);
+  private final DownWinchCommand m_DownWinchCommand = new DownWinchCommand(m_armSubsystem);
 
   private final BalanceCommand m_balancecommand;
   private final DriveStraightCommand m_drivestraightcommand;
@@ -166,10 +165,10 @@ public class RobotContainer {
     m_dunkUpValue = this::getLeftTrigger;
 
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
-    this.m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .25, m_dunkValue, m_dunkUpValue, true, m_winchSubsystem);
-    this.m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .25, m_dunkValue, m_dunkUpValue, true, m_winchSubsystem);
-    this.m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .25, m_dunkValue, m_dunkUpValue, true, m_winchSubsystem);
-    this.m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .25, m_dunkValue, m_dunkUpValue, false, m_winchSubsystem);
+    this.m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .25, m_dunkValue, m_dunkUpValue, true, m_armSubsystem);
+    this.m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .25, m_dunkValue, m_dunkUpValue, true, m_armSubsystem);
+    this.m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .25, m_dunkValue, m_dunkUpValue, true, m_armSubsystem);
+    this.m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .25, m_dunkValue, m_dunkUpValue, false, m_armSubsystem);
     
     
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
@@ -177,8 +176,8 @@ public class RobotContainer {
     // Autonomous commands
     this.m_autoDriveForwardCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, ()-> 0.3 , ()-> 0.3, ()-> 1);
     this.m_autoDriveBackwardCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, ()-> -0.3 , ()-> -0.3, ()-> 1);
-    this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_winchSubsystem);
-    this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_winchSubsystem);
+    this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_armSubsystem);
+    this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_armSubsystem);
 
     this.m_auto_command_chooser.setDefaultOption("Drive backwards for 2 seconds", m_autoDriveBackwardCommand.withTimeout(2));
     this.m_auto_command_chooser.addOption("Drive forward 2 seconds", m_autoDriveForwardCommand.withTimeout(2));
