@@ -56,11 +56,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .1);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .1);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .1);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .1);
+  
   // private final ArmCommand m_manualPositionCommand;
   private DoubleSupplier m_dunkValue;
   private DoubleSupplier m_dunkUpValue;
