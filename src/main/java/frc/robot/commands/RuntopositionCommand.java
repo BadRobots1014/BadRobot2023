@@ -24,6 +24,7 @@ public class RuntopositionCommand extends CommandBase {
   private double m_dunkValue;
   private double m_dunkUpValue;
   private double armAdjustValue;
+  private boolean m_winchUp;
 
 
   /**
@@ -32,8 +33,7 @@ public class RuntopositionCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
 
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue) {
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, boolean winchUp) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue, boolean winchUp) {
 
     m_armSubsystem = subsystem;
     m_position = position;
