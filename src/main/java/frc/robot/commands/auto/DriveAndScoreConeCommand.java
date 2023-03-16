@@ -35,11 +35,11 @@ public class DriveAndScoreConeCommand extends SequentialCommandGroup {
     super(
       // TODO: Make this drive distance and/or line up with the cone before the RunToPosition command should run
 
-      new ZeroCommand(arm).withTimeout(3),
+      new ZeroCommand(arm).withTimeout(2),
       new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch).withTimeout(2),
-      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1),  new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(1),
+      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, .3, .3, 1),  new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(3),
       new ParallelCommandGroup(new GrabberCommandForward(grabber).withTimeout(1.5), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(2),
-      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, -.2, -.2, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true, winch)).withTimeout(5)
+      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, -.45, -.45, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .4, null, null, true, winch)).withTimeout(3)
     );
   }
 
