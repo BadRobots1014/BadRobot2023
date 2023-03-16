@@ -6,6 +6,7 @@ package frc.robot.commands.auto;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
@@ -36,9 +37,9 @@ public class DriveAndScoreConeCommand extends SequentialCommandGroup {
 
       new ZeroCommand(arm).withTimeout(3),
       new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch).withTimeout(2),
-      new ParallelRaceGroup(new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1),  new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(1),
-      new ParallelRaceGroup(new GrabberCommandForward(grabber).withTimeout(1.5), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(2),
-      new ParallelRaceGroup(new DriveStraightCommand(gyro, drive, blinkin, -.2, -.2, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true, winch)).withTimeout(5)
+      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1),  new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(1),
+      new ParallelCommandGroup(new GrabberCommandForward(grabber).withTimeout(1.5), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(2),
+      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, -.2, -.2, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true, winch)).withTimeout(5)
     );
   }
 
