@@ -14,6 +14,7 @@ import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
+import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -32,7 +33,9 @@ public class DriveAndScoreConeCommand extends SequentialCommandGroup {
   public DriveAndScoreConeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber, ArmSubsystem winch) {
     super(
       // TODO: Make this drive distance and/or line up with the cone before the RunToPosition command should run
-      new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .25, null, null, true, winch).withTimeout(2),
+
+      new ZeroCommand(arm).withTimeout(3),
+      new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .2, null, null, true, winch).withTimeout(2),
       new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1).withTimeout(1),
       new ParallelRaceGroup(new GrabberCommandForward(grabber).withTimeout(.75), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(2),
       new ParallelRaceGroup(new DriveStraightCommand(gyro, drive, blinkin, -.2, -.2, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true, winch)).withTimeout(5)
