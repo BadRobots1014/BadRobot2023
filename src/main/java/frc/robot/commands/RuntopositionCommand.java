@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
@@ -24,23 +25,26 @@ public class RuntopositionCommand extends CommandBase {
   private double m_dunkUpValue;
   private double armAdjustValue;
 
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
+
   public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, boolean winchUp) {
+
     m_armSubsystem = subsystem;
     m_position = position;
     normalSpeed = speed;
     m_speed = speed;
+
     System.out.println(dunkValue);
     dunkVal = dunkValue;
     dunkUpVal = dunkUpValue;
     armAdjustValue = 0;
-    
-    
-   
+    m_winchUp = winchUp;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -101,6 +105,9 @@ public class RuntopositionCommand extends CommandBase {
     //System.out.println(m_position - (2 * m_dunkValue));
     System.out.println((m_position - 6 * armAdjustValue));
     ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (6 * armAdjustValue)), m_speed);
+
+    m_armSubsystem.runWinch(m_winchUp ? ArmConstants.kWinchUpSpeed : ArmConstants.kWinchDownSpeed);
+
     //System.out.println(m_position);
   }
 

@@ -39,6 +39,9 @@ public final class Constants {
         public final static int kArmMoveDown = 10;
         public final static int kArmZeroButton = 7;
 
+        public static final int kRaiseWinchButton = 3;
+        public static final int kLowerWinchButton = 2;
+
         // public final static int kGrabberFButton = 3; //right joystick middle top button
         // public final static int kGrabberRButton = 2; //right joystick middle bottom button
 
@@ -47,6 +50,7 @@ public final class Constants {
         // For Xbox
         public final static int kXboxControllerPort = 2;
         public final static double kXboxDeadZoneRadius = .1;
+        
 
         //Xbox buttons in RobotContainer
         
@@ -79,7 +83,6 @@ public final class Constants {
         public final static String kPresetRunBackward = "Preset Run Backward";
         public final static String kBrake = "Brake";
 
-
         // Grabber power constants
         public final static double kGrabberPowerF = 0.25;
         public final static double kGrabberPowerR = -0.25;
@@ -89,12 +92,14 @@ public final class Constants {
         public final static String kGrabberFilled = "Grabber is Filled";
         public final static String kGrabberEmpty = "Grabber is Empty";
 
-        
-
         // motor ports
         public final static int kGrabberPort = 7; 
         public final static int kExtenderPort = 5; 
         public final static int kWinchPort = 6;
+
+        //Winch
+        public final static double kWinchUpSpeed = .3;
+        public final static double kWinchDownSpeed = -.5;
 
     }
 

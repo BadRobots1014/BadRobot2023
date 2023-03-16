@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -34,25 +32,25 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
 
-    m_winch.setInverted(false); // Find out if needs to be T/F
-    m_winch.setIdleMode(IdleMode.kBrake);
+  m_winch.setInverted(false); // Find out if needs to be T/F
+  m_winch.setIdleMode(IdleMode.kBrake);
 
 
-    m_extender.setInverted(true); //needs to be T
+  m_extender.setInverted(true); //needs to be T
 
-    m_extender.setIdleMode(IdleMode.kBrake);
+  m_extender.setIdleMode(IdleMode.kBrake);
 
-    m_extenderEncoder = m_extender.getEncoder();
-    resetEncoder(m_extenderEncoder);
+  m_extenderEncoder = m_extender.getEncoder();
+  resetEncoder(m_extenderEncoder);
 
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
     m_tab.addString("Arm Preset Position", this::getArmPresetLocation);
     m_tab.addNumber("Grabber Amp Output: ", m_GrabberSubsystem::getCurrent);
     m_tab.addString("Grabber State: ", m_GrabberSubsystem::getGrabberState);
     m_tab.addBoolean("Grabber Filled?", m_GrabberSubsystem::isGrabberFilled);
-    
+  
 
-    }
+  }
 
 
 
@@ -77,8 +75,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_extender.set(clampPower(power));
   }
 
-  public void runWinch(double power){
-    m_winch.set(clampPower(power));
+  public void runWinch(double m_winchUp){
+    m_winch.set(clampPower(m_winchUp));
   }
 
   private static double clampPower(double power) {
