@@ -14,6 +14,7 @@ import frc.robot.Constants.MovementConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -21,6 +22,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final CANSparkMax m_leftB = new CANSparkMax(DriveConstants.kLeftBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax m_rightA = new CANSparkMax(DriveConstants.kRightAPort, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax m_rightB = new CANSparkMax(DriveConstants.kRightBPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+    private final RelativeEncoder m_leftEncoder;
+    private final RelativeEncoder m_rightEncoder;
 
     private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
 
@@ -42,6 +46,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         m_leftB.follow(m_leftA);
         m_rightB.follow(m_rightA);
+
+        m_leftEncoder = m_leftA.getEncoder();
+        m_rightEncoder = m_rightA.getEncoder();
 
         m_tab.addNumber("Left Power", m_leftA::get);
         m_tab.addNumber("Right Power", m_rightA::get);
@@ -88,5 +95,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void stop() {
         m_driveTrain.stopMotor();
+    }
+
+    public void resetEncoders() {
+        m_leftEncoder.setPosition(0);
+        m_rightEncoder.setPosition(0);
+    }
+
+    public double getLeftEncoder() {
+        return m_leftEncoder.getPosition();
+    }
+
+    public double getRightEncoder() {
+        return m_rightEncoder.getPosition();
     }
 }

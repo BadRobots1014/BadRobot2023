@@ -110,7 +110,7 @@ public final class Constants {
         public final static int kLeftAPort = 3;
         public final static int kLeftBPort = 4;
 
-        public final static double inchesPerTic = .0557;
+        public final static double kInchesPerTic = .0557;
 
     }
 
