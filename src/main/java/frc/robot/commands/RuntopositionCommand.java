@@ -85,12 +85,12 @@ public class RuntopositionCommand extends CommandBase {
 
     
 
-    // if(m_armSubsystem.getExtenderEncoderPosition() <= 0){
-    //   armAdjustValue = 0;
-    // }
-    // if(m_armSubsystem.getExtenderEncoderPosition() >= 40){
-    //   armAdjustValue = 0;
-    // }
+    if(m_armSubsystem.getExtenderEncoderPosition() <= 0){
+      armAdjustValue = 0;
+    }
+    if(m_armSubsystem.getExtenderEncoderPosition() >= 40){
+      armAdjustValue = 0;
+    }
 
 
 
@@ -117,7 +117,7 @@ public class RuntopositionCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_armSubsystem.runExtender(0);
-    m_armSubsystem.stopMotor(ArmSubsystem.m_extender);
+    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
 
   }
 

@@ -37,7 +37,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 
   m_extender.setInverted(true); //needs to be T
-
   m_extender.setIdleMode(IdleMode.kBrake);
 
   m_extenderEncoder = m_extender.getEncoder();

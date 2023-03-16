@@ -68,7 +68,7 @@ public final class Constants {
         public final static double kArmMediumPos = 16;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static double kArmLowPos = 25;
+        public final static double kArmLowPos = 16;
         public final static String kArmLow = "LOW";
 
         public final static double kArmStoredPos = 0;
