@@ -31,9 +31,7 @@ import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.GrabberCommandForward;
-import frc.robot.commands.LimelightPIDCommand;
 import frc.robot.commands.ManualCommand;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.UpWinchCommand;
@@ -103,9 +101,6 @@ public class RobotContainer {
   private Joystick leftJoystick;
 
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
-  private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
-
-  private final LimelightPIDCommand m_LimelightConeCommand;
 
   private XboxController xboxController;
   private DriveStraightCommand m_autoDriveForwardCommand;
@@ -193,8 +188,6 @@ public class RobotContainer {
     Shuffleboard.getTab("Autonomous").add(drivetrainSubsystem);
     Shuffleboard.getTab("Autonomous").add(m_armSubsystem);
     
-    m_LimelightConeCommand = new LimelightPIDCommand(m_LimelightSubsystem, drivetrainSubsystem, 0);
-
     // Configure the button bindings
     configureButtonBindings();
 
@@ -261,8 +254,7 @@ public class RobotContainer {
     driveStraightButton.whileTrue(this.m_drivestraightcommand);
     driveStraightButton.whileFalse(this.teleopDriveCmd);
    
-    JoystickButton LimelightConeButton = new JoystickButton(this.leftJoystick, 0);
-    LimelightConeButton.whileTrue(m_ArmMoveDownCommand);
+    
   }
 
   /**
