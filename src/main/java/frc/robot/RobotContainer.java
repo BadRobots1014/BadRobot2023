@@ -106,7 +106,15 @@ public class RobotContainer {
       m_logger.createStaticField("Event", "CORI Preliminaries 1");
       m_logger.recordFrequency(.250);
 
-      m_logger.createDynamicFieldDouble("Motor Speed", drivetrainSubsystem.getMotorSpeed(), drivetrainSubsystem::getMotorSpeed);
+      /*
+      *      m_leftB(0)     m_rightB(1)
+      * 
+      *      m_leftA(2)     m_rightA(3)
+      */
+      m_logger.createDynamicFieldDouble("Left B Motor Speed", drivetrainSubsystem.getMotorSpeed(0), () -> drivetrainSubsystem.getMotorSpeed(0));
+      m_logger.createDynamicFieldDouble("Right B Motor Speed", drivetrainSubsystem.getMotorSpeed(1), () -> drivetrainSubsystem.getMotorSpeed(1));
+      m_logger.createDynamicFieldDouble("Left A Motor Speed", drivetrainSubsystem.getMotorSpeed(2), () -> drivetrainSubsystem.getMotorSpeed(2));
+      m_logger.createDynamicFieldDouble("Right A Motor Speed", drivetrainSubsystem.getMotorSpeed(3), () -> drivetrainSubsystem.getMotorSpeed(3));
 
       m_logger.setup();
     }

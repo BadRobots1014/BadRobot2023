@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.MovementConstants;
 
+import java.io.IOException;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -88,7 +90,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_driveTrain.stopMotor();
     }
 
-    public double getMotorSpeed() {
-        return m_leftA.get();
+    /*
+     *      m_leftB(0)     m_rightB(1)
+     * 
+     *      m_leftA(2)     m_rightA(3)
+     */
+    public double[] getMotorSpeeds() {
+        return new double[]{m_leftB.get(), m_rightB.get(), m_leftA.get(), m_rightA.get()};
+    }
+
+    public double getMotorSpeed(int index) {
+        if(index < 0 || index > getMotorSpeeds().length-1)
+            return -999;
+
+        return getMotorSpeeds()[index];
     }
 }
