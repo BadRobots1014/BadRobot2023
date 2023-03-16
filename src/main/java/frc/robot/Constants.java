@@ -68,7 +68,7 @@ public final class Constants {
         public final static double kArmMediumPos = 16;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static double kArmLowPos = 5;
+        public final static double kArmLowPos = 25;
         public final static String kArmLow = "LOW";
 
         public final static double kArmStoredPos = 0;
@@ -100,6 +100,8 @@ public final class Constants {
         //Winch
         public final static double kWinchUpSpeed = .3;
         public final static double kWinchDownSpeed = -.5;
+
+        public final static double kWinchLowerDeadzone = 1;
 
     }
 
