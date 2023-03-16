@@ -29,8 +29,8 @@ public class GrabberSubsystem extends SubsystemBase {
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kBrake);
 
-    m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
-    m_tab.addString("Grabber State: ", this::getGrabberState);
+    // m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
+    // m_tab.addString("Grabber State: ", this::getGrabberState);
   }  
   @Override
   public void periodic() {
@@ -63,6 +63,14 @@ public class GrabberSubsystem extends SubsystemBase {
 
   public String getGrabberState(){
     return m_grabberState;
+  }
+
+  public boolean isGrabberFilled(){
+    if(getGrabberState() == ArmConstants.kGrabberFilled){
+      return true;
+    } else{
+      return false;
+    }
   }
 
   private double clampPower(double power) {

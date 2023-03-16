@@ -26,7 +26,17 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@56f3fd65": "DifferentialDrive"
+      "/LiveWindow/BlinkinSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Spark[0]": "Motor Controller",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/Shuffleboard/Blinkin/edu.wpi.first.wpilibj.motorcontrol.Spark@1cc6baeb": "Motor Controller",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@4ec70467": "DifferentialDrive",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@56f3fd65": "DifferentialDrive",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@7134c348": "DifferentialDrive",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@76b7c970": "DifferentialDrive",
+      "/Shuffleboard/Drivetrain/edu.wpi.first.wpilibj.drive.DifferentialDrive@76f37722": "DifferentialDrive"
     }
   },
   "NetworkTables": {
@@ -40,7 +50,9 @@
     }
   },
   "NetworkTables Info": {
-    "open": true,
-    "visible": true
+    "open": true
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

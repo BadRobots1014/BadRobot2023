@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -22,7 +20,9 @@ public class ArmSubsystem extends SubsystemBase {
 
   public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushless); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public final GrabberSubsystem m_GrabberSubsystem = new GrabberSubsystem();
   public final RelativeEncoder m_extenderEncoder;
+  
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
 
@@ -32,20 +32,25 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
 
-    m_winch.setInverted(false); // Find out if needs to be T/F
-    m_winch.setIdleMode(IdleMode.kBrake);
+  m_winch.setInverted(false); // Find out if needs to be T/F
+  m_winch.setIdleMode(IdleMode.kBrake);
 
 
-    m_extender.setInverted(true); //needs to be T
+  m_extender.setInverted(true); //needs to be T
 
-    m_extender.setIdleMode(IdleMode.kBrake);
+  m_extender.setIdleMode(IdleMode.kBrake);
 
-    m_extenderEncoder = m_extender.getEncoder();
-    resetEncoder(m_extenderEncoder);
+  m_extenderEncoder = m_extender.getEncoder();
+  resetEncoder(m_extenderEncoder);
 
     m_tab.addDouble("Extender Encoder:", this::getExtenderEncoderPosition);
+    m_tab.addString("Arm Preset Position", this::getArmPresetLocation);
+    m_tab.addNumber("Grabber Amp Output: ", m_GrabberSubsystem::getCurrent);
+    m_tab.addString("Grabber State: ", m_GrabberSubsystem::getGrabberState);
+    m_tab.addBoolean("Grabber Filled?", m_GrabberSubsystem::isGrabberFilled);
+  
 
-    }
+  }
 
 
 
@@ -70,8 +75,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_extender.set(clampPower(power));
   }
 
-  public void runWinch(double power){
-    m_winch.set(clampPower(power));
+  public void runWinch(double m_winchUp){
+    m_winch.set(clampPower(m_winchUp));
   }
 
   private static double clampPower(double power) {
@@ -86,6 +91,28 @@ public class ArmSubsystem extends SubsystemBase {
     return (getEncoderPosition(m_extenderEncoder));
   }
 
+  public String getArmPresetLocation(){
+    if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmHighPos) <= 1){
+      return ArmConstants.kArmHigh;
+    }
+    else if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmMediumPos) <= 1){
+      return ArmConstants.kArmMedium;
+    }
+    else if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmLowPos) <= 1){
+      return ArmConstants.kArmLow;
+    }
+    else if(Math.abs(getExtenderEncoderPosition() - ArmConstants.kArmStoredPos) <= 1){
+      //return "WEEE";
+      return ArmConstants.kArmStored;
+    }
+    else {
+      return ArmConstants.kArmManual;
+    }
+    
+
+     
+  }
+
   public double getExtenderUpperBound(){
     return ArmConstants.kMaxHeight;
   }
@@ -97,7 +124,11 @@ public class ArmSubsystem extends SubsystemBase {
   public static void runToPosition(CANSparkMax motor, RelativeEncoder encoder, double pos, double speed){
     
     double dis = pos - encoder.getPosition();
-    motor.set(clampPower(dis) * speed);
+    if(dis < 0){
+      speed = 0.12;
+    }
+    double motorspeed = clampPower(dis) * speed;
+    motor.set(motorspeed);
 
   }
 }

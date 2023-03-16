@@ -9,20 +9,25 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ZeroCommand extends CommandBase {
+public class ManualCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-  private DoubleSupplier ZeroTrigger;
+  private double armTicks;
+  private boolean armUp;
+  private boolean firstLoop;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ZeroCommand(ArmSubsystem subsystem) {
+  public ManualCommand(ArmSubsystem subsystem, boolean up) {
     m_armSubsystem = subsystem;
+    armTicks = m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder);
+    armUp = up;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -30,23 +35,30 @@ public class ZeroCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("INIT");
-    
+    //System.out.println("INIT");
+    firstLoop = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.m_extender.setIdleMode(IdleMode.kCoast);
-    m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
-    System.out.println("ZERO");
+    if(armUp && armTicks <= ArmConstants.kMaxHeight && firstLoop){
+      System.out.println("UP");
+      armTicks += 4;
+    }
+    if(!armUp && armTicks >= ArmConstants.kMinHeight && firstLoop){
+      System.out.println("DOWN");
+      armTicks = armTicks - 4;
+    }
+    System.out.println(armTicks);
+    if ((armUp && armTicks <= ArmConstants.kMaxHeight) || (!armUp && armTicks <= ArmConstants.kMinHeight)) ArmSubsystem.runToPosition(ArmSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, armTicks, 0.2);
+    firstLoop = false;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.m_extender.setIdleMode(IdleMode.kBrake);
-    m_armSubsystem.resetEncoder(m_armSubsystem.m_extenderEncoder);
+   
   }
 
   // Returns true when the command should end.
