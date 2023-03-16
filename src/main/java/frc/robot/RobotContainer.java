@@ -56,7 +56,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  
+
   // private final ArmCommand m_manualPositionCommand;
   private DoubleSupplier m_dunkValue;
   private DoubleSupplier m_dunkUpValue;
@@ -181,8 +181,8 @@ public class RobotContainer {
 
     this.m_auto_command_chooser.setDefaultOption("Drive backwards for 2 seconds", m_autoDriveBackwardCommand.withTimeout(2));
     this.m_auto_command_chooser.addOption("Drive forward 2 seconds", m_autoDriveForwardCommand.withTimeout(2));
-    m_auto_command_chooser.addOption("Drive forward and score cube", m_autoDriveAndScoreCube);
-    m_auto_command_chooser.addOption("Drive forward and score cone", m_autoDriveAndScoreCone);
+    m_auto_command_chooser.addOption("Score cube then drive backward", m_autoDriveAndScoreCube);
+    m_auto_command_chooser.addOption("Score cone then drive backward", m_autoDriveAndScoreCone);
     m_auto_command_chooser.addOption("Do nothing", new PrintCommand("Do nothing"));
     Shuffleboard.getTab("Autonomous").add("Choose Autonomous Mode", m_auto_command_chooser).withSize(3, 1);
     Shuffleboard.getTab("Autonomous").add(drivetrainSubsystem);
