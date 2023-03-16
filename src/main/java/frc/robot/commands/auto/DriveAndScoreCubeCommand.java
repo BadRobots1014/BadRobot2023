@@ -27,12 +27,12 @@ public class DriveAndScoreCubeCommand extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveAndScoreCubeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber) {
+  public DriveAndScoreCubeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber, ArmSubsystem winch) {
     super(
       // TODO: Make this drive distance and/or line up with the cone before the RunToPosition command should run
-      new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .25, null, null, true).withTimeout(2),
-      new ParallelRaceGroup(new GrabberCommandBackward(grabber).withTimeout(.75), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true)),
-      new ParallelRaceGroup(new DriveDistanceCommand(gyro, drive, blinkin, -.2, -.2, 1, 145), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true)).withTimeout(2)
+      new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .25, null, null, true, winch).withTimeout(2),
+      new ParallelRaceGroup(new GrabberCommandBackward(grabber).withTimeout(.75), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)),
+      new ParallelRaceGroup(new DriveDistanceCommand(gyro, drive, blinkin, -.2, -.2, 1, 145), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true, winch)).withTimeout(2)
     );
   }
 

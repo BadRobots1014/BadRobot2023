@@ -14,7 +14,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class RuntopositionCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
-  
+  private final ArmSubsystem m_winchSubsystem;
 
   private final double m_position;
   private double m_speed;
@@ -33,9 +33,10 @@ public class RuntopositionCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
 
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue, boolean winchUp) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue, boolean winchUp, ArmSubsystem winchSubsystem) {
 
     m_armSubsystem = subsystem;
+    m_winchSubsystem = winchSubsystem;
     m_position = position;
     normalSpeed = speed;
     m_speed = speed;
@@ -104,11 +105,11 @@ public class RuntopositionCommand extends CommandBase {
     //System.out.println(m_dunkValue);
     //System.out.println(m_position - (2 * m_dunkValue));
     System.out.println((m_position - 6 * armAdjustValue));
-    ArmSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (6 * armAdjustValue)), m_speed);
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (6 * armAdjustValue)), m_speed);
 
     //Note that this only runs if the extender is within X units of the correct position to prevent collisions
-    //m_armSubsystem.runWinch(m_winchUp ? ((Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) ? ArmConstants.kWinchUpSpeed : 0) : ArmConstants.kWinchDownSpeed);
-    m_armSubsystem.runWinch(ArmConstants.kWinchUpSpeed);
+    m_winchSubsystem.runWinch(m_winchUp ? ((Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) ? ArmConstants.kWinchUpSpeed : 0) : ArmConstants.kWinchDownSpeed);
+    // m_armSubsystem.runWinch(ArmConstants.kWinchUpSpeed);
 
     if (Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) System.out.print((m_position - (6 * armAdjustValue)));
     //System.out.println(m_position);

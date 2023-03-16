@@ -33,7 +33,7 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
 
-  m_winch.setInverted(false); // Find out if needs to be T/F
+  m_winch.setInverted(true); // Find out if needs to be T/F
   m_winch.setIdleMode(IdleMode.kBrake);
   m_winch.getForwardLimitSwitch(Type.kNormallyOpen);
   m_winch.getReverseLimitSwitch(Type.kNormallyOpen);
@@ -79,8 +79,8 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void runWinch(double m_winchUp){
-    m_winch.set(clampPower(m_winchUp));
-    System.out.print(m_winchUp);
+    // m_winch.set(clampPower(m_winchUp));
+    // System.out.print(m_winchUp);
   }
 
   private static double clampPower(double power) {
@@ -114,7 +114,6 @@ public class ArmSubsystem extends SubsystemBase {
     }
     
 
-     
   }
 
   public double getExtenderUpperBound(){
