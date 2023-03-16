@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
@@ -32,12 +33,15 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
 
-  m_winch.setInverted(false); // Find out if needs to be T/F
+  m_winch.setInverted(true); // Find out if needs to be T/F
   m_winch.setIdleMode(IdleMode.kBrake);
+  m_winch.getForwardLimitSwitch(Type.kNormallyOpen);
+  m_winch.getReverseLimitSwitch(Type.kNormallyOpen);
 
 
   m_extender.setInverted(true); //needs to be T
   m_extender.setIdleMode(IdleMode.kBrake);
+  m_extender.getReverseLimitSwitch(Type.kNormallyOpen);
 
   m_extenderEncoder = m_extender.getEncoder();
   resetEncoder(m_extenderEncoder);
@@ -76,6 +80,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void runWinch(double m_winchUp){
     m_winch.set(clampPower(m_winchUp));
+    System.out.print(m_winchUp);
   }
 
   private static double clampPower(double power) {
