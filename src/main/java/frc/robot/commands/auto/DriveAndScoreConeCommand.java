@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.GrabberCommandForward;
@@ -31,9 +32,10 @@ public class DriveAndScoreConeCommand extends SequentialCommandGroup {
   public DriveAndScoreConeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber) {
     super(
       // TODO: Make this drive distance and/or line up with the cone before the RunToPosition command should run
+      new DriveStraightCommand(gyro, drive, blinkin, .2, .2, 1).withTimeout(1),
       new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .25, null, null, true).withTimeout(2),
-      new ParallelRaceGroup(new GrabberCommandForward(grabber).withTimeout(.75), new RuntopositionCommand(arm, ArmConstants.kArmMediumPos, .25, null, null, true)),
-      new ParallelRaceGroup(new DriveStraightCommand(gyro, drive, blinkin, -.2, -.2, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true)).withTimeout(2)
+      new ParallelRaceGroup(new GrabberCommandForward(grabber).withTimeout(.75), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true)).withTimeout(2),
+      new ParallelRaceGroup(new DriveStraightCommand(gyro, drive, blinkin, -.2, -.2, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .2, null, null, true)).withTimeout(5)
     );
   }
 
