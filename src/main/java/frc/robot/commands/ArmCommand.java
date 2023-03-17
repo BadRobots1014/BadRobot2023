@@ -47,7 +47,7 @@ public class ArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if((m_armSubsystem.getExtenderEncoderPosition() < ArmConstants.kMaxHeight && m_power > 0) || (m_armSubsystem.getExtenderEncoderPosition() > ArmConstants.kMinHeight && m_power < 0)){
+    if((m_armSubsystem.getExtenderEncoderPosition() < ArmConstants.kMaxHeight && m_powerSupplier.getAsDouble() > 0) || (m_armSubsystem.getExtenderEncoderPosition() > ArmConstants.kMinHeight && m_powerSupplier.getAsDouble() < 0)){
       m_armSubsystem.runExtender(m_powerSupplier.getAsDouble());
     }
       
