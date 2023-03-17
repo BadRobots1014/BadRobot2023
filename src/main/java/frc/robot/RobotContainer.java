@@ -89,16 +89,13 @@ public class RobotContainer {
   
   private final DriveAndScoreConeCommand m_autoDriveAndScoreCone;
   private final DriveAndScoreCubeCommand m_autoDriveAndScoreCube;
-
-  
-
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
 
   private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
 
-  private XboxController xboxController;
+  private XboxController xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
   private DriveStraightCommand m_autoDriveForwardCommand;
   private DriveStraightCommand m_autoDriveBackwardCommand;  
 
@@ -121,11 +118,11 @@ public class RobotContainer {
   }
 
   public double getXboxRightY() {
-    return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
+    return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() / 5 : 0;
   }
 
   public double getXboxLeftY() {
-    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() : 0;
+    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() / 5 : 0;
   }
 
   private double getThrottle() {
@@ -150,7 +147,6 @@ public class RobotContainer {
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
-    this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
@@ -158,6 +154,8 @@ public class RobotContainer {
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
+    
+    this.m_armSubsystem.setDefaultCommand(m_manualPositionCommand);
 
     m_dunkValue = this::getRightTrigger;
     m_dunkUpValue = this::getLeftTrigger;
