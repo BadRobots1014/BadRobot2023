@@ -9,11 +9,13 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class RuntopositionCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+  private final WinchSubsystem m_winchSubsystem;
 
   private final double m_position;
   private double m_speed;
@@ -32,9 +34,10 @@ public class RuntopositionCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
 
-  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue, boolean winchUp, ArmSubsystem armSubsystem) {
+  public RuntopositionCommand(ArmSubsystem subsystem, double position, double speed, DoubleSupplier dunkValue, DoubleSupplier dunkUpValue, boolean winchUp, WinchSubsystem winchSubsystem) {
 
     m_armSubsystem = subsystem;
+    m_winchSubsystem = winchSubsystem;
     m_position = position;
     normalSpeed = speed;
     m_speed = speed;
