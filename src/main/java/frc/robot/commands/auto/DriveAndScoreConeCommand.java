@@ -21,7 +21,6 @@ import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
-import frc.robot.subsystems.WinchSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class DriveAndScoreConeCommand extends SequentialCommandGroup {
@@ -32,11 +31,11 @@ public class DriveAndScoreConeCommand extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveAndScoreConeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber, WinchSubsystem winch) {
+  public DriveAndScoreConeCommand(NavXGyroSubsystem gyro, DrivetrainSubsystem drive, BlinkinSubsystem blinkin, ArmSubsystem arm, GrabberSubsystem grabber, ArmSubsystem winch) {
     super(
       // TODO: Make this drive distance and/or line up with the cone before the RunToPosition command should run
 
-      new ZeroCommand(arm, winch).withTimeout(2),
+      new ZeroCommand(arm).withTimeout(2),
       new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch).withTimeout(2),
       new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, .3, .3, 1),  new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(3),
       new ParallelCommandGroup(new GrabberCommandForward(grabber).withTimeout(1.5), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(2),

@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.WinchSubsystem;
 
 import java.util.function.DoubleSupplier;
 
@@ -15,14 +14,14 @@ import frc.robot.Constants.ArmConstants;
 /** An example command that uses an example subsystem. */
 public class WinchCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final WinchSubsystem m_armSubsystem;
+  private final ArmSubsystem m_armSubsystem;
   private DoubleSupplier m_speed;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public WinchCommand(WinchSubsystem subsystem, DoubleSupplier speed) {
+  public WinchCommand(ArmSubsystem subsystem, DoubleSupplier speed) {
     m_armSubsystem = subsystem;
     m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
