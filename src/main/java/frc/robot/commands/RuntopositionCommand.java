@@ -45,7 +45,6 @@ public class RuntopositionCommand extends CommandBase {
     System.out.println(dunkValue);
     dunkVal = dunkValue;
     dunkUpVal = dunkUpValue;
-    armAdjustValue = 0;
     m_winchUp = winchUp;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -105,8 +104,8 @@ public class RuntopositionCommand extends CommandBase {
 
     //System.out.println(m_dunkValue);
     //System.out.println(m_position - (2 * m_dunkValue));
-    System.out.println((m_position - 6 * armAdjustValue));
-    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (6 * armAdjustValue)), m_speed);
+    System.out.println((m_position - 8 * armAdjustValue));
+    m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (8 * armAdjustValue)), m_speed);
 
     //Note that this only runs if the extender is within X units of the correct position to prevent collisions
     // m_armSubsystem.runWinch(m_winchUp ? ((Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) ? ArmConstants.kWinchUpSpeed : 0) : ArmConstants.kWinchDownSpeed);
