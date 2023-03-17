@@ -31,7 +31,9 @@ import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GrabberCommandBackward;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.GrabberCommandForward;
+import frc.robot.commands.LimelightPIDCommand;
 import frc.robot.commands.ManualCommand;
 import frc.robot.commands.RuntopositionCommand;
 import frc.robot.commands.WinchCommand;
@@ -102,6 +104,9 @@ public class RobotContainer {
 
   private SendableChooser<Command> m_auto_command_chooser = new SendableChooser<>();
   private WinchSubsystem m_winchSubsystem = new WinchSubsystem();
+
+  private LimelightSubsystem m_LimelightSubsystem;
+  private LimelightPIDCommand m_LimelightPIDCommand;
 
   public double getRightY() {
     return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
@@ -187,6 +192,9 @@ public class RobotContainer {
     Shuffleboard.getTab("Autonomous").add(drivetrainSubsystem);
     Shuffleboard.getTab("Autonomous").add(m_armSubsystem);
     
+    m_LimelightSubsystem = new LimelightSubsystem();
+    m_LimelightPIDCommand = new LimelightPIDCommand(m_LimelightSubsystem, drivetrainSubsystem, 0);
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -256,7 +264,8 @@ public class RobotContainer {
     driveStraightButton.whileTrue(this.m_drivestraightcommand);
     driveStraightButton.whileFalse(this.teleopDriveCmd);
    
-    
+    JoystickButton limelightAllignButton = new JoystickButton(this.leftJoystick, 2);
+    limelightAllignButton.whileTrue(m_LimelightPIDCommand);
   }
 
   /**
