@@ -20,28 +20,19 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  public final CANSparkMax m_winch = new CANSparkMax(ArmConstants.kWinchPort, CANSparkMaxLowLevel.MotorType.kBrushed); // Assume Brushless, unknown currently
   public static final CANSparkMax m_extender = new CANSparkMax(ArmConstants.kExtenderPort, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final GrabberSubsystem m_GrabberSubsystem = new GrabberSubsystem();
   public final RelativeEncoder m_extenderEncoder;
 
-  private SparkMaxLimitSwitch m_winch_forwardLimit;
-  private SparkMaxLimitSwitch m_winch_reverseLimit;
   private SparkMaxLimitSwitch m_extender_reverseLimit;
   
  // public final Encoder m_winchEncoder = new Encoder(EncoderConstants.kWinchChannelA, EncoderConstants.kExtenderChannelB);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Arm");
 
-  public int winchTicks;
   public int extenderTicks;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
-
-  m_winch.setInverted(true);
-  m_winch.setIdleMode(IdleMode.kBrake);
-  m_winch_forwardLimit = m_winch.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-  m_winch_reverseLimit = m_winch.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
 
   m_extender.setInverted(true); //needs to be T
   m_extender.setIdleMode(IdleMode.kBrake);
@@ -80,11 +71,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void runExtender(double power){
     m_extender.set(clampPower(power));
-  }
-
-  public void runWinch(double m_winchUp){
-    m_winch.set(clampPower(m_winchUp));
-    System.out.println("Winch up " + m_winchUp);
   }
 
   private static double clampPower(double power) {

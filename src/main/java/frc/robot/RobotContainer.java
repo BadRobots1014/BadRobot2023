@@ -25,7 +25,6 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.BalanceCommand;
-import frc.robot.commands.DownWinchCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.DriveStraightCommand;
@@ -44,6 +43,7 @@ import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NavXGyroSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -101,6 +101,7 @@ public class RobotContainer {
   private DriveStraightCommand m_autoDriveBackwardCommand;  
 
   private SendableChooser<Command> m_auto_command_chooser = new SendableChooser<>();
+  private WinchSubsystem m_winchSubsystem = new WinchSubsystem();
 
   public double getRightY() {
     return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
@@ -138,7 +139,7 @@ public class RobotContainer {
     return xboxController.getRightTriggerAxis();
   }
 
-  private final WinchCommand m_winchCommand = new WinchCommand(m_armSubsystem, this::getXboxLeftY);
+  private final WinchCommand m_winchCommand = new WinchCommand(m_winchSubsystem, this::getXboxLeftY);
   private final ArmCommand m_manualPositionCommand = new ArmCommand(m_armSubsystem, this::getXboxRightY);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -151,7 +152,7 @@ public class RobotContainer {
     
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
-    this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
+    this.m_zeroCommand = new ZeroCommand(m_armSubsystem, m_winchSubsystem);
     this.m_dunkCommand = new DunkCommand(m_armSubsystem);
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
@@ -162,10 +163,10 @@ public class RobotContainer {
     m_dunkUpValue = this::getLeftTrigger;
 
     this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
-    this.m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .25, m_dunkValue, m_dunkUpValue, true, m_armSubsystem);
-    this.m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .25, m_dunkValue, m_dunkUpValue, true, m_armSubsystem);
-    this.m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .25, m_dunkValue, m_dunkUpValue, true, m_armSubsystem);
-    this.m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .25, m_dunkValue, m_dunkUpValue, false, m_armSubsystem);
+    this.m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .25, m_dunkValue, m_dunkUpValue, true, m_winchSubsystem);
+    this.m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .25, m_dunkValue, m_dunkUpValue, true, m_winchSubsystem);
+    this.m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .25, m_dunkValue, m_dunkUpValue, true, m_winchSubsystem);
+    this.m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .25, m_dunkValue, m_dunkUpValue, false, m_winchSubsystem);
     
     
     // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
@@ -173,8 +174,8 @@ public class RobotContainer {
     // Autonomous commands
     this.m_autoDriveForwardCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, ()-> 0.3 , ()-> 0.3, ()-> 1);
     this.m_autoDriveBackwardCommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, ()-> -0.3 , ()-> -0.3, ()-> 1);
-    this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_armSubsystem);
-    this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_armSubsystem);
+    this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_winchSubsystem);
+    this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_winchSubsystem);
 
     this.m_auto_command_chooser.setDefaultOption("Drive backwards for 2 seconds", m_autoDriveBackwardCommand.withTimeout(2));
     this.m_auto_command_chooser.addOption("Drive forward 2 seconds", m_autoDriveForwardCommand.withTimeout(2));
@@ -209,7 +210,7 @@ public class RobotContainer {
     // if (xboxController.getYButton()) this.m_armHighCommand.execute();
 
     JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
-    storeButton.toggleOnTrue(new ParallelCommandGroup(m_armStoreCommand, m_winchCommand));
+    storeButton.toggleOnTrue(new ParallelCommandGroup(m_zeroCommand, m_winchCommand));
     JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
     lowButton.toggleOnTrue(new ParallelCommandGroup(m_armLowCommand, m_winchCommand));
     JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
