@@ -37,6 +37,7 @@ public class WinchCommand extends CommandBase {
   @Override
   public void execute() {
     m_armSubsystem.runWinch(ArmConstants.kWinchUpSpeed * m_speed.getAsDouble());
+    System.out.print("Winch moving");
   }
 
   // Called once the command ends or is interrupted.

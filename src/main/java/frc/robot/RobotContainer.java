@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -122,7 +123,7 @@ public class RobotContainer {
   }
 
   public double getXboxLeftY() {
-    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() / 5 : 0;
+    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() : 0;
   }
 
   private double getThrottle() {
@@ -155,7 +156,7 @@ public class RobotContainer {
 
     this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
     
-    this.m_armSubsystem.setDefaultCommand(m_manualPositionCommand);
+    this.m_armSubsystem.setDefaultCommand(m_winchCommand);
 
     m_dunkValue = this::getRightTrigger;
     m_dunkUpValue = this::getLeftTrigger;
@@ -208,13 +209,13 @@ public class RobotContainer {
     // if (xboxController.getYButton()) this.m_armHighCommand.execute();
 
     JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
-    storeButton.toggleOnTrue(m_armStoreCommand);
+    storeButton.toggleOnTrue(new ParallelCommandGroup(m_armStoreCommand, m_winchCommand));
     JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
-    lowButton.toggleOnTrue(m_armLowCommand);
+    lowButton.toggleOnTrue(new ParallelCommandGroup(m_armLowCommand, m_winchCommand));
     JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
-    mediumButton.toggleOnTrue(m_armMediumCommand);
+    mediumButton.toggleOnTrue(new ParallelCommandGroup(m_armMediumCommand, m_winchCommand));
     JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
-    highButton.toggleOnTrue(m_armHighCommand);
+    highButton.toggleOnTrue(new ParallelCommandGroup(m_armHighCommand, m_winchCommand));
 
     JoystickButton ArmMoveUp = new JoystickButton(this.xboxController, XboxController.Button.kRightStick.value);
     ArmMoveUp.toggleOnTrue(this.m_ManualCommandUP);

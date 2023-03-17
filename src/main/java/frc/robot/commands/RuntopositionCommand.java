@@ -106,7 +106,7 @@ public class RuntopositionCommand extends CommandBase {
     m_armSubsystem.runToPosition(m_armSubsystem.m_extender, m_armSubsystem.m_extenderEncoder, (m_position - (6 * armAdjustValue)), m_speed);
 
     //Note that this only runs if the extender is within X units of the correct position to prevent collisions
-    m_armSubsystem.runWinch(m_winchUp ? ((Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) ? ArmConstants.kWinchUpSpeed : 0) : ArmConstants.kWinchDownSpeed);
+    // m_armSubsystem.runWinch(m_winchUp ? ((Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) ? ArmConstants.kWinchUpSpeed : 0) : ArmConstants.kWinchDownSpeed);
     // m_armSubsystem.runWinch(ArmConstants.kWinchUpSpeed);
 
     if (Math.abs(m_armSubsystem.getEncoderPosition(m_armSubsystem.m_extenderEncoder) - m_position) < ArmConstants.kWinchLowerDeadzone) System.out.print((m_position - (6 * armAdjustValue)));
