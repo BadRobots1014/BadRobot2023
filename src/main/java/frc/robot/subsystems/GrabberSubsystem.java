@@ -26,7 +26,7 @@ public class GrabberSubsystem extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public GrabberSubsystem() {
-    m_grabber.setInverted(true); // Find out if needs to be T/F Later
+    m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kBrake);
 
     // m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
@@ -44,7 +44,7 @@ public class GrabberSubsystem extends SubsystemBase {
   } 
 
   public void runGrabber(double power){
-    m_grabber.set(clampPower(power));
+    m_grabber.set(clampPower(-power)); //For VEX Pro put a negative here, otherwise don't
   }
 
   public void stopGrabber(){
