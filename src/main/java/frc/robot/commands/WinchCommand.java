@@ -21,12 +21,13 @@ public class WinchCommand extends CommandBase {
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
+   * 
    */
   public WinchCommand(WinchSubsystem subsystem, DoubleSupplier speed) {
     m_armSubsystem = subsystem;
     m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_armSubsystem);
   }
 
 

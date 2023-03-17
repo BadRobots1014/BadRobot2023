@@ -58,14 +58,14 @@ public final class Constants {
     public final class ArmConstants{
 
         //Max + min positions
-        public final static double kMaxHeight = 44;
+        public final static double kMaxHeight = 43;
         public final static double kMinHeight = 0;
 
         //set preset arm positions
-        public final static double kArmHighPos = 43;
+        public final static double kArmHighPos = 42;
         public final static String kArmHigh = "HIGH";
 
-        public final static double kArmMediumPos = 28;
+        public final static double kArmMediumPos = 30;
         public final static String kArmMedium = "MEDIUM";
         
         public final static double kArmLowPos = 28;

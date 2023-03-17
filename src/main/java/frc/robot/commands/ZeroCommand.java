@@ -44,7 +44,7 @@ public class ZeroCommand extends CommandBase {
     // m_armSubsystem.stopMotor(m_armSubsystem.m_extender);
     // System.out.println("ZERO");
     m_armSubsystem.runExtender(-.3);
-    m_winchSubsystem.runWinch(1);
+    m_winchSubsystem.runWinch(-1);
   }
 
   // Called once the command ends or is interrupted.
