@@ -84,8 +84,8 @@ public final class Constants {
         public final static String kBrake = "Brake";
 
         // Grabber power constants
-        public final static double kGrabberPowerF = 0.25;
-        public final static double kGrabberPowerR = -0.25;
+        public final static double kGrabberPowerF = 0.5;
+        public final static double kGrabberPowerR = -0.5;
 
         // Grabber State Constants
         public final static double kGrabberAmpMax = 35; //Approximately how min number of amps motor reads out when it fills
