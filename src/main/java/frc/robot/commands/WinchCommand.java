@@ -31,7 +31,19 @@ public class WinchCommand extends CommandBase {
   }
 
 
-  // Called when the command is initially scheduled.
+  public WinchCommand(WinchSubsystem subsystem, double speed) {
+    m_armSubsystem = subsystem;
+    m_speed = new DoubleSupplier() {
+      public double getAsDouble() {
+        return speed;
+      }
+    };
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_armSubsystem);
+  }
+
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 

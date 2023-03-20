@@ -15,6 +15,7 @@ import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.DunkCommand;
 import frc.robot.commands.GrabberCommandForward;
 import frc.robot.commands.RuntopositionCommand;
+import frc.robot.commands.WinchCommand;
 import frc.robot.commands.ZeroCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
@@ -39,8 +40,9 @@ public class DriveAndScoreConeCommand extends SequentialCommandGroup {
       new ZeroCommand(arm, winch).withTimeout(2),
       new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch).withTimeout(2),
       new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, .3, .3, 1),  new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(3),
+      new ParallelCommandGroup(new WinchCommand(winch, -.8), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(1),
       new ParallelCommandGroup(new GrabberCommandForward(grabber).withTimeout(1.5), new RuntopositionCommand(arm, ArmConstants.kArmHighPos, .25, null, null, true, winch)).withTimeout(2),
-      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, -.45, -.45, 1), new RuntopositionCommand(arm, ArmConstants.kArmStoredPos, .4, null, null, true, winch)).withTimeout(4)
+      new ParallelCommandGroup(new DriveStraightCommand(gyro, drive, blinkin, -.45, -.45, 1), new ZeroCommand(arm, winch)).withTimeout(4)
     );
   }
 
