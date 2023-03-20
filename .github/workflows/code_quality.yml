@@ -2,16 +2,7 @@ name: Qodana
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
-      - kitbot
-      - BowlesCR-Qodana-Test
   push:
-    branches:
-      - main
-      - kitbot
-      - BowlesCR-Qodana-Test
-      - 'releases/*'
 
 jobs:
   qodana:
