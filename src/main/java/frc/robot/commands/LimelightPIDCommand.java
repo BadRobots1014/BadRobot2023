@@ -28,12 +28,12 @@ public class LimelightPIDCommand extends PIDCommand{
     
     private static void driveAndLog(LimelightSubsystem lS, DrivetrainSubsystem dS, double power, double output) {
         //m_tab.addNumber("PID Output", output);
-        //System.out.println("LL tX: " + lS.getTableX() + "\tControl Effort: " + output + "\tLMotor: " + (power * -output) + "\tRMotor: " + (power * output));
+        System.out.println("LL tX: " + lS.getTableX() + "\tControl Effort: " + output + "\tLMotor: " + (LimelightConstants.kLineUpMaxSpeed * -output) + "\tRMotor: " + (LimelightConstants.kLineUpMaxSpeed * output));
         if(isFirst) {
             isFirst = false;
             return;
         }
-        dS.tankDrive(LimelightConstants.kLineUpMaxSpeed * -output, LimelightConstants.kLineUpMaxSpeed * output);
+        //dS.tankDrive(LimelightConstants.kLineUpMaxSpeed * -output, LimelightConstants.kLineUpMaxSpeed * output);
         //dS.tankDrive(.5, .5);
         
     }
