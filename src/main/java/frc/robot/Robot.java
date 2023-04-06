@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    // REMEMBER TO MOVE THIS OUT OF ROBOT PERIODIC
     // Logs the Robot Data
     if(m_logTime >= m_logInterval) {
       m_logTime = 0;
