@@ -111,6 +111,8 @@ public class DriveDistanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //m_inches >= 0 ? 
     return m_drivesubsystem.getLeftEncoder() > m_inches / DriveConstants.kInchesPerTic;
+    // : m_drivesubsystem.getLeftEncoder() < m_inches / DriveConstants.kInchesPerTic
   }
 }
