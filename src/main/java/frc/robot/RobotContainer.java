@@ -42,6 +42,7 @@ public class RobotContainer {
   private SpinUpCommand shootCommand;
 
   private FlipperCommand flipperCommand;
+  private FlipperCommand flipperBackCommand;
   private FlipperSubsystem flipperSubsystem;
 
   public double getRightY() {
@@ -73,6 +74,7 @@ public class RobotContainer {
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
     this.shootCommand = new SpinUpCommand(this.shooterSubsystem, this::getRightZ);
     this.flipperCommand = new FlipperCommand(this.flipperSubsystem, ShooterConstants.kFlipperPower);
+    this.flipperBackCommand = new FlipperCommand(this.flipperSubsystem, -0.3);
 
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
@@ -93,6 +95,10 @@ public class RobotContainer {
 
     JoystickButton shootButton = new JoystickButton(this.leftJoystick, ControllerConstants.kShootButton);
     shootButton.whileHeld(this.flipperCommand);
+
+    JoystickButton pullBackButton = new JoystickButton(this.leftJoystick, 3);
+    pullBackButton.whileHeld(this.flipperBackCommand);
+    //pullBackButton.whileHeld(this.flipperBackCommand);
 
   }
 
