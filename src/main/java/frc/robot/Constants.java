@@ -48,4 +48,11 @@ public final class Constants {
 
     }
 
+    public final class BlinkinConstants {
+        
+        public final static int kBlinkinPort = -1;
+        public final static double kDefaultColor = -1.0;
+        
+    }
+
 }
