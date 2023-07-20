@@ -15,6 +15,9 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlipperCommand;
 import frc.robot.commands.SpinUpCommand;
+import frc.robot.commands.blinkin.ShootBlinkinCommand;
+import frc.robot.commands.blinkin.SpinUpBlinkinCommand;
+import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FlipperSubsystem;
@@ -45,6 +48,11 @@ public class RobotContainer {
   private FlipperCommand flipperBackCommand;
   private FlipperSubsystem flipperSubsystem;
 
+  private BlinkinSubsystem blinkinSubsystem;
+
+  private SpinUpBlinkinCommand spinUpBlinkinCommand;
+  private ShootBlinkinCommand shootBlinkinCommand;
+
   public double getRightY() {
     return -rightJoystick.getY();
   }
@@ -67,6 +75,7 @@ public class RobotContainer {
     this.drivetrainSubsystem = new DrivetrainSubsystem();
     this.shooterSubsystem = new ShooterSubsystem();
     this.flipperSubsystem = new FlipperSubsystem();
+    this.blinkinSubsystem = new BlinkinSubsystem();
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
@@ -75,6 +84,8 @@ public class RobotContainer {
     this.shootCommand = new SpinUpCommand(this.shooterSubsystem, this::getRightZ);
     this.flipperCommand = new FlipperCommand(this.flipperSubsystem, ShooterConstants.kFlipperPower);
     this.flipperBackCommand = new FlipperCommand(this.flipperSubsystem, -0.3);
+    this.spinUpBlinkinCommand = new SpinUpBlinkinCommand(this.blinkinSubsystem);
+    this.shootBlinkinCommand = new ShootBlinkinCommand(this.blinkinSubsystem);
 
     this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
 
@@ -91,14 +102,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     JoystickButton spinUpButton = new JoystickButton(this.rightJoystick, ControllerConstants.kSpinUpButton);
-    spinUpButton.whileHeld(this.shootCommand);
+    spinUpButton.whileTrue(this.shootCommand);
+    spinUpButton.whileTrue(this.spinUpBlinkinCommand);
 
     JoystickButton shootButton = new JoystickButton(this.leftJoystick, ControllerConstants.kShootButton);
-    shootButton.whileHeld(this.flipperCommand);
+    shootButton.whileTrue(this.flipperCommand);
+    shootButton.whileTrue(this.shootBlinkinCommand);
 
-    JoystickButton pullBackButton = new JoystickButton(this.leftJoystick, 3);
-    pullBackButton.whileHeld(this.flipperBackCommand);
-    //pullBackButton.whileHeld(this.flipperBackCommand);
+    JoystickButton pullBackButton = new JoystickButton(this.leftJoystick, ControllerConstants.kShootBackButton);
+    pullBackButton.whileTrue(this.flipperBackCommand);
 
   }
 
