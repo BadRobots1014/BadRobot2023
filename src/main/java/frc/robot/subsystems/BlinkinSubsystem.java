@@ -28,7 +28,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   }
 
   public void setDefault(){
-    setBlinkin(.09);
+    setBlinkin(.69);
   }
 
   public void setSpinUp() {
@@ -36,31 +36,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   }
 
   public void setShoot() {
-    setBlinkin(.61);
-  }
-
-  public void setOcean(){
-    setBlinkin(-.95);
-  }
-
-  public void setRainbow(){
-    setBlinkin(-.99);
-  }
-
-  public void setBlue(){
-    setBlinkin(.87);
-  }
-
-  public void setGreen(){
     setBlinkin(.77);
-  }
-
-  public void setRed(){
-    setBlinkin(.61);
-  }
-
-  public void setWhite(){
-    setBlinkin(.93);
   }
 
 }

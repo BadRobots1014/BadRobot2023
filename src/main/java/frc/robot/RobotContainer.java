@@ -75,6 +75,7 @@ public class RobotContainer {
     this.drivetrainSubsystem = new DrivetrainSubsystem();
     this.shooterSubsystem = new ShooterSubsystem();
     this.flipperSubsystem = new FlipperSubsystem();
+    this.flipperSubsystem.setDefaultCommand(flipperBackCommand);
     this.blinkinSubsystem = new BlinkinSubsystem();
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
@@ -83,7 +84,7 @@ public class RobotContainer {
     this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle);
     this.shootCommand = new SpinUpCommand(this.shooterSubsystem, this::getRightZ);
     this.flipperCommand = new FlipperCommand(this.flipperSubsystem, ShooterConstants.kFlipperPower);
-    this.flipperBackCommand = new FlipperCommand(this.flipperSubsystem, -0.3);
+    this.flipperBackCommand = new FlipperCommand(this.flipperSubsystem, ShooterConstants.kFlipperBackPower);
     this.spinUpBlinkinCommand = new SpinUpBlinkinCommand(this.blinkinSubsystem);
     this.shootBlinkinCommand = new ShootBlinkinCommand(this.blinkinSubsystem);
 

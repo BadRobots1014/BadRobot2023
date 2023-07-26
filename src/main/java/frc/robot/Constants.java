@@ -45,6 +45,7 @@ public final class Constants {
         public final static int kBackPort = 21;
         public final static int kFlipperPort = 22;
         public final static double kFlipperPower = .3;
+        public final static double kFlipperBackPower = -.3;
         public final static int kWinchPort = 23;
 
     }
