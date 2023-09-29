@@ -41,12 +41,14 @@ public final class Constants {
 
     public final class ShooterConstants {
 
-        public final static int kFrontPort = 12;
+        // public final static int kWinchPort = 23;
+        public final static int kWinchPort = 12;
+        // public final static int kFrontPort = 12;
+        public final static int kFrontPort = 23;
         public final static int kBackPort = 21;
         public final static int kFlipperPort = 22;
         public final static double kFlipperPower = .3;
         public final static double kFlipperBackPower = -.3;
-        public final static int kWinchPort = 23;
 
     }
 
