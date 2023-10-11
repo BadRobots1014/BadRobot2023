@@ -26,7 +26,7 @@ public final class Constants {
 
         public final static int kSpinUpButton = 1;
         public final static int kShootButton = 1; //Note that this is on the left joystick.
-        public final static int kShootBackButton = 3;
+        public final static int kShootBackButton = 3; //Lefty
         
     }
 
