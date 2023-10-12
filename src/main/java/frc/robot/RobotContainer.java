@@ -38,6 +38,7 @@ import frc.robot.commands.WinchCommand;
 import frc.robot.commands.ZeroCommand;
 import frc.robot.commands.auto.DriveAndScoreConeCommand;
 import frc.robot.commands.auto.DriveAndScoreCubeCommand;
+import frc.robot.commands.auto.DriveAtSpeedAuto;
 import frc.robot.commands.auto.DriveDistanceAuto;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
@@ -92,6 +93,7 @@ public class RobotContainer {
   private final DriveAndScoreConeCommand m_autoDriveAndScoreCone;
   private final DriveAndScoreCubeCommand m_autoDriveAndScoreCube;
   private final DriveDistanceAuto m_autoDriveDistance;
+  private final DriveAtSpeedAuto m_autoDriveSpeed;
   
   private Joystick rightJoystick;
   private Joystick leftJoystick;
@@ -147,7 +149,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    this.drivetrainSubsystem = new DrivetrainSubsystem();
+    this.drivetrainSubsystem = new DrivetrainSubsystem(navxGyroSubsystem);
 
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
@@ -180,12 +182,14 @@ public class RobotContainer {
     this.m_autoDriveAndScoreCone = new DriveAndScoreConeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_winchSubsystem);
     this.m_autoDriveAndScoreCube = new DriveAndScoreCubeCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, m_armSubsystem, m_grabberSubsystem, m_winchSubsystem);
     this.m_autoDriveDistance = new DriveDistanceAuto(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, 144);
+    this.m_autoDriveSpeed = new DriveAtSpeedAuto(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem);
 
     this.m_auto_command_chooser.setDefaultOption("Drive backwards for 2 seconds", m_autoDriveBackwardCommand.withTimeout(2));
     this.m_auto_command_chooser.addOption("Drive forward 2 seconds", m_autoDriveForwardCommand.withTimeout(2));
     m_auto_command_chooser.addOption("Score cube then drive backward", m_autoDriveAndScoreCube);
     m_auto_command_chooser.addOption("Score cone then drive backward", m_autoDriveAndScoreCone);
     m_auto_command_chooser.addOption("Drive X Inches", m_autoDriveDistance);
+    m_auto_command_chooser.addOption("Drive at speed", m_autoDriveSpeed);
     m_auto_command_chooser.addOption("Do nothing", new PrintCommand("Do nothing"));
     Shuffleboard.getTab("Autonomous").add("Choose Autonomous Mode", m_auto_command_chooser).withSize(3, 1);
     Shuffleboard.getTab("Autonomous").add(drivetrainSubsystem);

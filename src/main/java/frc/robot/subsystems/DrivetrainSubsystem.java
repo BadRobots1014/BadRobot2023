@@ -5,13 +5,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.MovementConstants;
+import frc.robot.subsystems.NavXGyroSubsystem;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
@@ -29,9 +33,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftA, m_rightA);
 
     final static ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
-    
 
-    public DrivetrainSubsystem() {
+    // Odometry class for tracking robot pose
+    private final DifferentialDriveOdometry m_odometry;
+    private final NavXGyroSubsystem m_navx;
+    private final AHRS m_gyro;
+
+    public DrivetrainSubsystem(NavXGyroSubsystem navx) {
+
+        m_navx = navx;
+        m_gyro = m_navx.navx;
 
         m_leftA.setInverted(false);
         m_leftB.setInverted(true);
@@ -54,6 +65,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_tab.addNumber("Right Power", m_rightA::get);
 
         m_tab.add(m_driveTrain.toString(), m_driveTrain);
+
+        m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), getLeftEncoder(), getRightEncoder());
+    }
+
+    public Pose2d getPose() {
+        return m_odometry.getPoseMeters();
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        m_odometry.resetPosition(m_gyro.getRotation2d(), getLeftEncoder(), getRightEncoder(), pose);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
