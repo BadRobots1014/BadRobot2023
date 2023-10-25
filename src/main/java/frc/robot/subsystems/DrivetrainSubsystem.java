@@ -84,7 +84,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public String getDirection(double leftSpeed, double rightSpeed){
 
-        if (leftSpeed == 0 && rightSpeed == 0){ // If both motors arent moving
+        if (leftSpeed == 0 && rightSpeed == 0){ // If both motors aren't moving
             return MovementConstants.kStationary;
         }
 
