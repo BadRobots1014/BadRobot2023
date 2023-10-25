@@ -5,34 +5,53 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
+
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 
 /** An example command that uses an example subsystem. */
-public class UpWinchCommand extends CommandBase {
+public class WinchCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_armSubsystem;
+  private final WinchSubsystem m_armSubsystem;
+  private DoubleSupplier m_speed;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
+   * 
    */
-  public UpWinchCommand(ArmSubsystem subsystem) {
+  public WinchCommand(WinchSubsystem subsystem, DoubleSupplier speed) {
     m_armSubsystem = subsystem;
+    m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_armSubsystem);
   }
 
 
-  // Called when the command is initially scheduled.
+  public WinchCommand(WinchSubsystem subsystem, double speed) {
+    m_armSubsystem = subsystem;
+    m_speed = new DoubleSupplier() {
+      public double getAsDouble() {
+        return speed;
+      }
+    };
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_armSubsystem);
+  }
+
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_armSubsystem.runWinch(ArmConstants.kWinchUpSpeed);
+    m_armSubsystem.runWinch(ArmConstants.kWinchUpSpeed * m_speed.getAsDouble());
+    System.out.print("Winch moving");
   }
 
   // Called once the command ends or is interrupted.

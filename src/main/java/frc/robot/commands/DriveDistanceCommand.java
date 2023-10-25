@@ -10,12 +10,13 @@ import frc.robot.subsystems.NavXGyroSubsystem;
 import frc.robot.subsystems.BlinkinSubsystem;
 import java.util.function.DoubleSupplier;
 import frc.robot.Constants.BlinkinPatternConstants;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
 
 /** An example command that uses an example subsystem. */
-public class DriveStraightCommand extends CommandBase {
+public class DriveDistanceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final NavXGyroSubsystem m_subsystem;
   private final DrivetrainSubsystem m_drivesubsystem;
@@ -25,6 +26,7 @@ public class DriveStraightCommand extends CommandBase {
   private DoubleSupplier m_rightSpeed;
   private DoubleSupplier m_throttle;
   private Double m_driveSpeed;
+  private double m_inches;
 
 
   /**
@@ -32,7 +34,7 @@ public class DriveStraightCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle) {
+  public DriveDistanceCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DoubleSupplier throttle, double inches) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
     m_ledSubsystem = lightSubsystem;
@@ -43,9 +45,10 @@ public class DriveStraightCommand extends CommandBase {
     m_rightSpeed = rightSpeed;
     m_throttle = throttle;
     m_driveSpeed = 0.0;
+    m_inches = inches;
   }
 
-  public DriveStraightCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, double leftSpeed, double rightSpeed, double throttle) {
+  public DriveDistanceCommand(NavXGyroSubsystem subsystem, DrivetrainSubsystem drivesubsystem, BlinkinSubsystem lightSubsystem, double leftSpeed, double rightSpeed, double throttle, double inches) {
     m_subsystem = subsystem;
     m_drivesubsystem = drivesubsystem;
     m_ledSubsystem = lightSubsystem;
@@ -56,6 +59,7 @@ public class DriveStraightCommand extends CommandBase {
     m_rightSpeed = new DoubleSupplier() {public double getAsDouble() {return rightSpeed;}};
     m_throttle = new DoubleSupplier() {public double getAsDouble() {return throttle;}};
     m_driveSpeed = 0.0;
+    m_inches = inches;
   }
 
   // Called when the command is initially scheduled.
@@ -107,6 +111,8 @@ public class DriveStraightCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //m_inches >= 0 ? 
+    return m_drivesubsystem.getLeftEncoder() > m_inches / DriveConstants.kInchesPerTic;
+    // : m_drivesubsystem.getLeftEncoder() < m_inches / DriveConstants.kInchesPerTic
   }
 }

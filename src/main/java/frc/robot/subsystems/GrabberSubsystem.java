@@ -18,7 +18,7 @@ import frc.robot.Constants.ArmConstants;
 public class GrabberSubsystem extends SubsystemBase {
 
  
-  private static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private static final CANSparkMax m_grabber = new CANSparkMax(ArmConstants.kGrabberPort, CANSparkMaxLowLevel.MotorType.kBrushed);
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Grabber");
   private double m_currentAmps;
   private String m_grabberState = ArmConstants.kGrabberEmpty;
@@ -29,8 +29,8 @@ public class GrabberSubsystem extends SubsystemBase {
     m_grabber.setInverted(false); // Find out if needs to be T/F Later
     m_grabber.setIdleMode(IdleMode.kBrake);
 
-    m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
-    m_tab.addString("Grabber State: ", this::getGrabberState);
+    // m_tab.addNumber("Grabber Amp Output: ", this::getCurrent);
+    // m_tab.addString("Grabber State: ", this::getGrabberState);
   }  
   @Override
   public void periodic() {
@@ -44,7 +44,7 @@ public class GrabberSubsystem extends SubsystemBase {
   } 
 
   public void runGrabber(double power){
-    m_grabber.set(clampPower(power));
+    m_grabber.set(clampPower(-power)); //For VEX Pro put a negative here, otherwise don't
   }
 
   public void stopGrabber(){
@@ -63,6 +63,14 @@ public class GrabberSubsystem extends SubsystemBase {
 
   public String getGrabberState(){
     return m_grabberState;
+  }
+
+  public boolean isGrabberFilled(){
+    if(getGrabberState() == ArmConstants.kGrabberFilled){
+      return true;
+    } else{
+      return false;
+    }
   }
 
   private double clampPower(double power) {

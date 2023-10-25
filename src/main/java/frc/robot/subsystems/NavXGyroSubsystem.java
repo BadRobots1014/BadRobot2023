@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class NavXGyroSubsystem extends SubsystemBase {
   
-  private final AHRS navx;
+  public final AHRS navx;
 
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Navx");
 

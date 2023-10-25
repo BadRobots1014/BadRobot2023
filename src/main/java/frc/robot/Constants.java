@@ -58,21 +58,23 @@ public final class Constants {
     public final class ArmConstants{
 
         //Max + min positions
-        public final static double kMaxHeight = 35;
+        public final static double kMaxHeight = 45;
         public final static double kMinHeight = 0;
 
         //set preset arm positions
-        public final static double kArmHighPos = 27;
+        public final static double kArmHighPos = 44;
         public final static String kArmHigh = "HIGH";
 
-        public final static double kArmMediumPos = 16;
+        public final static double kArmMediumPos = 32;
         public final static String kArmMedium = "MEDIUM";
         
-        public final static double kArmLowPos = 5;
+        public final static double kArmLowPos = 28;
         public final static String kArmLow = "LOW";
 
-        public final static double kArmStoredPos = 0;
+        public final static double kArmStoredPos = 12;
         public final static String kArmStored = "STORED";
+
+        public final static String kArmManual = "MANUAL CONTROL";
 
         // Grabber Running Modes
         public final static String kManualRunForward = "Manual Run Forward";
@@ -82,8 +84,8 @@ public final class Constants {
         public final static String kBrake = "Brake";
 
         // Grabber power constants
-        public final static double kGrabberPowerF = 0.25;
-        public final static double kGrabberPowerR = -0.25;
+        public final static double kGrabberPowerF = 0.5;
+        public final static double kGrabberPowerR = -0.5;
 
         // Grabber State Constants
         public final static double kGrabberAmpMax = 35; //Approximately how min number of amps motor reads out when it fills
@@ -96,8 +98,10 @@ public final class Constants {
         public final static int kWinchPort = 6;
 
         //Winch
-        public final static double kWinchUpSpeed = .3;
-        public final static double kWinchDownSpeed = -.5;
+        public final static double kWinchUpSpeed = -.5;
+        public final static double kWinchDownSpeed = .7;
+
+        public final static double kWinchLowerDeadzone = 10;
 
     }
 
@@ -107,6 +111,8 @@ public final class Constants {
         public final static int kRightBPort = 2;
         public final static int kLeftAPort = 3;
         public final static int kLeftBPort = 4;
+
+        public final static double kInchesPerTic = .0557;
 
     }
 
@@ -155,10 +161,8 @@ public final class Constants {
 
         public final static double kBalanceThreshold = 5; //In degrees off of upright
         public final static double kOffsetThreshold = 0.25;
-        public final static double kBalanceSpeed = 0.027;
-        public final static double kOffsetSpeed = 0.027;
-        
-
+        public final static double kBalanceSpeed = 0.02;
+        public final static double kOffsetSpeed = 0.02;
 
     }
 
