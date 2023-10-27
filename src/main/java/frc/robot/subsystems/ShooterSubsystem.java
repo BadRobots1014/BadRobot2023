@@ -35,4 +35,12 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopFlywheel() {
     m_front.stopMotor();
   }
+
+  public double getFrontCurrent() {
+    return m_front.getStatorCurrent();
+  }
+
+  public double getBackCurrent() {
+    return m_back.getStatorCurrent();
+  }
 }
