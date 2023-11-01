@@ -5,10 +5,8 @@
 
 package frc.robot.commands;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.Constants.BlinkinPatternConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.MovementConstants;
-import frc.robot.subsystems.BlinkinSubsystem;
 
 import java.util.function.DoubleSupplier;
 
@@ -21,12 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DrivetrainSubsystem m_subsystem;
-  private final BlinkinSubsystem m_ledSubsystem;
-  private DoubleSupplier m_rightSpeed;
-  private DoubleSupplier m_leftSpeed;
-  private DoubleSupplier m_throttle;
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Drivetrain");
-  private GenericEntry directionEntry = m_tab.add("Direction", "").getEntry();
 
   /**
    * Creates a new ExampleCommand.
