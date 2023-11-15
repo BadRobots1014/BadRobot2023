@@ -4,197 +4,74 @@
 
 package frc.robot;
 
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.ArmCommand;
-import frc.robot.commands.BalanceCommand;
-import frc.robot.commands.DownWinchCommand;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.DunkCommand;
-import frc.robot.commands.DriveStraightCommand;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.GrabberCommandBackward;
-import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.commands.GrabberCommandForward;
-import frc.robot.commands.RuntopositionCommand;
-import frc.robot.commands.UpWinchCommand;
-import frc.robot.commands.ZeroCommand;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.BlinkinSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.NavXGyroSubsystem;
+import java.util.List;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
+/*
+ * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
+ * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
+ * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final BlinkinSubsystem m_blinkinSubsystem = new BlinkinSubsystem();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem();
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  // The robot's subsystems
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
+  // The driver's controller
+  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-  private final RuntopositionCommand m_armStoreCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmStoredPos, .2, true);
-  private final RuntopositionCommand m_armHighCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmHighPos, .2, true);
-  private final RuntopositionCommand m_armMediumCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmMediumPos, .2, true);
-  private final RuntopositionCommand m_armLowCommand = new RuntopositionCommand(m_armSubsystem, ArmConstants.kArmLowPos, .2, false);
-  private final ArmCommand m_manualPositionCommand;
-  private final ArmCommand m_ArmMoveUpCommand = new ArmCommand(m_armSubsystem, .1);
-  private final ArmCommand m_ArmMoveDownCommand = new ArmCommand(m_armSubsystem, -.05);
-  
-  private final GrabberCommandForward m_grabberCommandForward = new GrabberCommandForward(m_grabberSubsystem);
-  private final GrabberCommandBackward m_grabberCommandBackward = new GrabberCommandBackward(m_grabberSubsystem);
-
-  private final UpWinchCommand m_UpWinchCommand = new UpWinchCommand(m_armSubsystem);
-  private final DownWinchCommand m_DownWinchCommand = new DownWinchCommand(m_armSubsystem);
-
-  private final BalanceCommand m_balancecommand;
-  private final DriveStraightCommand m_drivestraightcommand;
-  private DriveCommand teleopDriveCmd;
-
-  private DrivetrainSubsystem drivetrainSubsystem;
-
-  private final ZeroCommand m_zeroCommand;
-
-  private final DunkCommand m_dunkCommand;
-
-  
-  private Joystick rightJoystick;
-  private Joystick leftJoystick;
-
-  private final NavXGyroSubsystem navxGyroSubsystem = new NavXGyroSubsystem();
-
-  private XboxController xboxController;
-
-  public double getRightY() {
-    return Math.abs(rightJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getY() : 0;
-  }
-
-  public double getRightZ() {
-    return Math.abs(rightJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -rightJoystick.getZ() : 0;
-  }
-
-  public double getLeftY() {
-      return Math.abs(leftJoystick.getY()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getY() : 0;
-  }
-
-  public double getLeftZ() {
-    return Math.abs(leftJoystick.getZ()) > ControllerConstants.kDeadZoneRadius ? -leftJoystick.getZ() : 0;
-  }
-
-  public double getXboxRightY() {
-    return Math.abs(xboxController.getRightY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getRightY() : 0;
-  }
-
-  public double getXboxLeftY() {
-    return Math.abs(xboxController.getLeftY()) > ControllerConstants.kXboxDeadZoneRadius ? -xboxController.getLeftY() : 0;
-  }
-
-  private double getThrottle() {
-      return this.rightJoystick.getRawButton(ControllerConstants.kThrottleButton) ? ControllerConstants.kSlowThrottle : ControllerConstants.kMaxThrottle;
-  }
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
-
-    this.drivetrainSubsystem = new DrivetrainSubsystem();
-
-    this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
-    this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
-    this.xboxController = new XboxController(ControllerConstants.kXboxControllerPort);
-    
-    this.teleopDriveCmd = new DriveCommand(this.drivetrainSubsystem, this::getRightY, this::getLeftY, this::getThrottle, this.m_blinkinSubsystem);
-    this.drivetrainSubsystem.setDefaultCommand(this.teleopDriveCmd);
-    this.m_zeroCommand = new ZeroCommand(m_armSubsystem);
-    this.m_dunkCommand = new DunkCommand(m_armSubsystem);
-    this.m_manualPositionCommand = new ArmCommand(m_armSubsystem, this.getXboxLeftY());
-
-    this.m_balancecommand = new BalanceCommand(navxGyroSubsystem, drivetrainSubsystem);
-    this.m_drivestraightcommand = new DriveStraightCommand(navxGyroSubsystem, drivetrainSubsystem, m_blinkinSubsystem, this::getLeftY,this::getRightY, this::getThrottle);
-    // this.colorSensorSubsystem.setDefaultCommand(colorSensorCommand);   <--- Causes an error right now
-
     // Configure the button bindings
     configureButtonBindings();
+
+    // Configure default commands
+    m_robotDrive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                true, true),
+            m_robotDrive));
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
+   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
+   * subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
+   * passing it to a
+   * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    //JoystickButton lightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kBalanceButton);
-    //lightButton.whileTrue(this.m_balancecommand);
-
-    // Arm Setting Button Bindings
-
-    // if (xboxController.getBButton()) this.m_armStoreCommand.execute();
-    // if (xboxController.getAButton()) this.m_armLowCommand.execute();
-    // if (xboxController.getXButton()) this.m_armMediumCommand.execute();
-    // if (xboxController.getYButton()) this.m_armHighCommand.execute();
-
-    JoystickButton storeButton = new JoystickButton(this.xboxController, XboxController.Button.kB.value);
-    storeButton.toggleOnTrue(m_armStoreCommand);
-    JoystickButton lowButton = new JoystickButton(this.xboxController, XboxController.Button.kA.value);
-    lowButton.toggleOnTrue(m_armLowCommand);
-    JoystickButton mediumButton = new JoystickButton(this.xboxController, XboxController.Button.kX.value);
-    mediumButton.toggleOnTrue(m_armMediumCommand);
-    JoystickButton highButton = new JoystickButton(this.xboxController, XboxController.Button.kY.value);
-    highButton.toggleOnTrue(m_armHighCommand);
-
-    JoystickButton ArmMoveUp = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveUp);
-    ArmMoveUp.whileTrue(this.m_ArmMoveUpCommand);
-
-    JoystickButton ArmMoveDown = new JoystickButton(this.leftJoystick, ControllerConstants.kArmMoveDown);
-    ArmMoveDown.whileTrue(this.m_ArmMoveDownCommand);
-
-    // if (xboxController.getBackButton()) this.m_zeroCommand.execute();
-    JoystickButton zeroButton = new JoystickButton(this.xboxController, XboxController.Button.kBack.value);
-    zeroButton.whileTrue(m_zeroCommand);
-
-    // if (xboxController.getAButton()) this.m_dunkCommand.execute();
-    JoystickButton dunkButton = new JoystickButton(this.xboxController, XboxController.Button.kStart.value);
-    dunkButton.whileTrue(m_dunkCommand);
-
-    // if (xboxController.getRightBumper()) this.m_grabberCommandForward.execute();
-    JoystickButton grabForwardButton = new JoystickButton(this.xboxController, XboxController.Button.kLeftBumper.value);
-    grabForwardButton.whileTrue(m_grabberCommandForward);
-    // if (xboxController.getLeftBumper()) this.m_grabberCommandBackward.execute();
-    JoystickButton grabBackButton = new JoystickButton(this.xboxController, XboxController.Button.kRightBumper.value);
-    grabBackButton.whileTrue(m_grabberCommandBackward);
-
-    JoystickButton raiseWinchButton = new JoystickButton(this.leftJoystick, ControllerConstants.kRaiseWinchButton);
-    raiseWinchButton.whileTrue(m_UpWinchCommand);
-
-    JoystickButton lowerWinchButton = new JoystickButton(this.leftJoystick, ControllerConstants.kLowerWinchButton);
-    lowerWinchButton.whileTrue(m_DownWinchCommand);
-
-    JoystickButton balanceButton = new JoystickButton(this.rightJoystick, ControllerConstants.kBalanceButton);
-    balanceButton.whileTrue(this.m_balancecommand);
-
-    JoystickButton driveStraightButton = new JoystickButton(this.leftJoystick, ControllerConstants.kDriveStraightButton);
-    driveStraightButton.whileTrue(this.m_drivestraightcommand);
-    driveStraightButton.whileFalse(this.teleopDriveCmd);
-   
-    
+    new JoystickButton(m_driverController, Button.kR1.value)
+        .whileTrue(new RunCommand(
+            () -> m_robotDrive.setX(),
+            m_robotDrive));
   }
 
   /**
@@ -203,7 +80,43 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    // Create config for trajectory
+    TrajectoryConfig config = new TrajectoryConfig(
+        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics);
+
+    // An example trajectory to follow. All units in meters.
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+        config);
+
+    var thetaController = new ProfiledPIDController(
+        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+        exampleTrajectory,
+        m_robotDrive::getPose, // Functional interface to feed supplier
+        DriveConstants.kDriveKinematics,
+
+        // Position controllers
+        new PIDController(AutoConstants.kPXController, 0, 0),
+        new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController,
+        m_robotDrive::setModuleStates,
+        m_robotDrive);
+
+    // Reset odometry to the starting pose of the trajectory.
+    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
 }

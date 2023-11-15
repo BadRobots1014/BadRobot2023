@@ -4,162 +4,139 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.I2C;
+import com.revrobotics.CANSparkMax.IdleMode;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class DriveConstants {
+    // Driving Parameters - Note that these are not the maximum capable speeds of
+    // the robot, rather the allowed maximum speeds
+    public static final double kMaxSpeedMetersPerSecond = 4.8;
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
-    public final class ControllerConstants {
+    public static final double kDirectionSlewRate = 1.2; // radians per second
+    public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
+    public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
-        // For Joystick
-        public final static int kRightJoystickPort = 0;
-        public final static int kLeftJoystickPort = 1;
+    // Chassis configuration
+    public static final double kTrackWidth = Units.inchesToMeters(26.5);
+    // Distance between centers of right and left wheels on robot
+    public static final double kWheelBase = Units.inchesToMeters(26.5);
+    // Distance between front and back wheels on robot
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-        public final static double kDeadZoneRadius = .1;
+    // Angular offsets of the modules relative to the chassis in radians
+    public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
+    public static final double kFrontRightChassisAngularOffset = 0;
+    public static final double kBackLeftChassisAngularOffset = Math.PI;
+    public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
-        public final static double kMaxThrottle = 1.0;
-        public final static double kSlowThrottle = 0.5;
-        
-        public final static int kThrottleButton = 2;
-        public final static int kBalanceButton = 1; //Second joystick
+    // SPARK MAX CAN IDs
+    public static final int kFrontLeftDrivingCanId = 11;
+    public static final int kRearLeftDrivingCanId = 13;
+    public static final int kFrontRightDrivingCanId = 15;
+    public static final int kRearRightDrivingCanId = 17;
 
-        // public final static int kArmHighButton = 3;//left joystick middle top button
-        // public final static int kArmMediumButton = 5;//left joystick top right button
-        // public final static int kArmLowButton = 2;//left joystick middle bottom button
-        // public final static int kArmStoreButton = 4;//left joystick top left button
-        // public final static int kDunkTrigger = 1;//left trigger joystick
-        public final static int kArmMoveUp = 11;
-        public final static int kArmMoveDown = 10;
-        public final static int kArmZeroButton = 7;
+    public static final int kFrontLeftTurningCanId = 10;
+    public static final int kRearLeftTurningCanId = 12;
+    public static final int kFrontRightTurningCanId = 14;
+    public static final int kRearRightTurningCanId = 16;
 
-        public static final int kRaiseWinchButton = 3;
-        public static final int kLowerWinchButton = 2;
+    public static final boolean kGyroReversed = false;
+  }
 
-        // public final static int kGrabberFButton = 3; //right joystick middle top button
-        // public final static int kGrabberRButton = 2; //right joystick middle bottom button
+  public static final class ModuleConstants {
+    // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
+    // This changes the drive speed of the module (a pinion gear with more teeth will result in a
+    // robot that drives faster).
+    public static final int kDrivingMotorPinionTeeth = 14;
 
-        public final static int kDriveStraightButton = 1;//Right joystick trigger
-        
-        // For Xbox
-        public final static int kXboxControllerPort = 2;
-        public final static double kXboxDeadZoneRadius = .1;
-        
+    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    // the steering motor in the MAXSwerve Module.
+    public static final boolean kTurningEncoderInverted = true;
 
-        //Xbox buttons in RobotContainer
-        
-    }
-    public final class ArmConstants{
+    // Calculations required for driving motor conversion factors and feed forward
+    public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
+    public static final double kWheelDiameterMeters = 0.0762;
+    public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
+    public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
+    public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
+        / kDrivingMotorReduction;
 
-        //Max + min positions
-        public final static double kMaxHeight = 35;
-        public final static double kMinHeight = 0;
+    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
+        / kDrivingMotorReduction; // meters
+    public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
+        / kDrivingMotorReduction) / 60.0; // meters per second
 
-        //set preset arm positions
-        public final static double kArmHighPos = 27;
-        public final static String kArmHigh = "HIGH";
+    public static final double kTurningEncoderPositionFactor = (2 * Math.PI); // radians
+    public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
 
-        public final static double kArmMediumPos = 16;
-        public final static String kArmMedium = "MEDIUM";
-        
-        public final static double kArmLowPos = 5;
-        public final static String kArmLow = "LOW";
+    public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
+    public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
-        public final static double kArmStoredPos = 0;
-        public final static String kArmStored = "STORED";
+    public static final double kDrivingP = 0.04;
+    public static final double kDrivingI = 0;
+    public static final double kDrivingD = 0;
+    public static final double kDrivingFF = 1 / kDriveWheelFreeSpeedRps;
+    public static final double kDrivingMinOutput = -1;
+    public static final double kDrivingMaxOutput = 1;
 
-        // Grabber Running Modes
-        public final static String kManualRunForward = "Manual Run Forward";
-        public final static String kManualRunBackward = "Manual Run Backward";
-        public final static String kPresetRunForward = "Preset Run Forward";
-        public final static String kPresetRunBackward = "Preset Run Backward";
-        public final static String kBrake = "Brake";
+    public static final double kTurningP = 1;
+    public static final double kTurningI = 0;
+    public static final double kTurningD = 0;
+    public static final double kTurningFF = 0;
+    public static final double kTurningMinOutput = -1;
+    public static final double kTurningMaxOutput = 1;
 
-        // Grabber power constants
-        public final static double kGrabberPowerF = 0.25;
-        public final static double kGrabberPowerR = -0.25;
+    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
+    public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
-        // Grabber State Constants
-        public final static double kGrabberAmpMax = 35; //Approximately how min number of amps motor reads out when it fills
-        public final static String kGrabberFilled = "Grabber is Filled";
-        public final static String kGrabberEmpty = "Grabber is Empty";
+    public static final int kDrivingMotorCurrentLimit = 50; // amps
+    public static final int kTurningMotorCurrentLimit = 20; // amps
+  }
 
-        // motor ports
-        public final static int kGrabberPort = 7; 
-        public final static int kExtenderPort = 5; 
-        public final static int kWinchPort = 6;
+  public static final class OIConstants {
+    public static final int kDriverControllerPort = 0;
+    public static final double kDriveDeadband = 0.05;
+  }
 
-        //Winch
-        public final static double kWinchUpSpeed = .3;
-        public final static double kWinchDownSpeed = -.5;
+  public static final class AutoConstants {
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    }
+    public static final double kPXController = 1;
+    public static final double kPYController = 1;
+    public static final double kPThetaController = 1;
 
-    public final class DriveConstants {
+    // Constraint for the motion profiled robot angle controller
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+  }
 
-        public final static int kRightAPort = 1;
-        public final static int kRightBPort = 2;
-        public final static int kLeftAPort = 3;
-        public final static int kLeftBPort = 4;
-
-    }
-
-    public final class BlinkinConstants {
-
-        public final static int kBlinkinPort = 0;
-
-    }
-
-    public final static class SensorConstants {
-
-
-        public final static I2C.Port kColorSensorPort = I2C.Port.kMXP;
-    }
-
-    public final static class MovementConstants {
-
-        public final static String kStationary = "Stationary";
-        public final static String kForward = "Forward";
-        public final static String kBackward = "Backward";
-        public final static String kTurningCounterclockwise = "Turning Counterclockwise";
-        public final static String kTurningClockwise = "Turning Clockwise";
-        public final static String kSpinningInPlace = "Spinning in place";
-        public final static String kGetDirectionEdgeCase = "getDirection edge case";
-
-    }
-
-    public final static class BlinkinPatternConstants {
-
-        public final static double solidRed = 0.61; 
-        public final static double solidBlue = 0.87; 
-        public final static double solidGreen = 0.77;
-        public final static double solidOrange = 0.65;
-        public final static double breatheColor1 = 0.09; //Color1 and 2 have to be physically set. Color1 is green
-        public final static double breatheColor2 = 0.29; //Color2 is orange
-        public final static double solidWhite = 0.93; 
-        public final static double breatheRed = -0.17;
-        public final static double breatheBlue = -0.15;
-        public final static double confetti = -0.87;
-        public final static double blinkingRed = -0.25; //Backward on the driveStraightCommand
-        public final static double blinkingBlue = -0.23; //Forward on the driveStraightCommand
-        public final static double solidBlack = 0.99; // Primarily For Errors, when something goes boom with the lights
-    }
-
-    public final static class GyroConstants {
-
-        public final static double kBalanceThreshold = 5; //In degrees off of upright
-        public final static double kOffsetThreshold = 0.25;
-        public final static double kBalanceSpeed = 0.027;
-        public final static double kOffsetSpeed = 0.027;
-        
-
-
-    }
-
+  public static final class NeoMotorConstants {
+    public static final double kFreeSpeedRpm = 5676;
+  }
 }
