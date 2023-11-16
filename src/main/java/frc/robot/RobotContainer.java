@@ -106,9 +106,10 @@ public class RobotContainer {
     spinUpButton.whileTrue(this.shootCommand);
     spinUpButton.whileTrue(this.spinUpBlinkinCommand);
 
+    double runTime = 2;
     JoystickButton shootButton = new JoystickButton(this.leftJoystick, ControllerConstants.kShootButton);
-    shootButton.whileTrue(this.flipperCommand);
-    shootButton.whileTrue(this.shootBlinkinCommand);
+    shootButton.onTrue(this.flipperCommand.withTimeout(runTime).andThen(this.flipperBackCommand.withTimeout(runTime)));
+    shootButton.onTrue(this.shootBlinkinCommand.withTimeout(runTime));
 
     JoystickButton pullBackButton = new JoystickButton(this.leftJoystick, ControllerConstants.kShootBackButton);
     pullBackButton.whileTrue(this.flipperBackCommand);
