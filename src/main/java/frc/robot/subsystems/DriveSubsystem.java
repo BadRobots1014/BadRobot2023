@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -16,7 +18,10 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
+
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
@@ -105,6 +110,16 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
+
+  private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+            // Front left
+            new Translation2d(DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0),
+            // Front right
+            new Translation2d(DriveConstants.kTrackWidth / 2.0, -DriveConstants.kWheelBase / 2.0),
+            // Back left
+            new Translation2d(-DriveConstants.kTrackWidth / 2.0, DriveConstants.kWheelBase / 2.0),
+            // Back right
+            new Translation2d(-DriveConstants.kTrackWidth / 2.0, -DriveConstants.kWheelBase / 2.0));
 
   /**
    * Method to drive the robot using joystick info.
@@ -240,4 +255,31 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+        return new SequentialCommandGroup(
+                new InstantCommand(() -> {
+                    // Reset odometry for the first path you run during auto
+                    if (isFirstPath) {
+                        this.resetOdometry(traj.getInitialHolonomicPose());
+                    }
+                }),
+                new PPSwerveControllerCommand(
+                        traj,
+                        this::getPose, // Pose supplier
+                        this.kinematics, // SwerveDriveKinematics
+                        new PIDController(DriveConstants.kPXController, 0, 0), // X controller. Tune these values for your
+                                                                          // robot. Leaving them 0 will only use
+                                                                          // feedforwards.
+                        new PIDController(DriveConstants.kPXYController, 0, 0), // Y controller (usually the same values as X
+                                                                           // controller)
+                        new PIDController(DriveConstants.kPThetaController, 0, 0), // Rotation controller. Tune these values
+                                                                              // for your robot. Leaving them 0 will
+                                                                              // only use feedforwards.
+                        this::drive, // Module states consumer
+                        true, // Should the path be automatically mirrored depending on alliance color.
+                              // Optional, defaults to true
+                        this // Requires this drive subsystem
+                ));
+    }
 }
