@@ -20,9 +20,6 @@ import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.*;
 
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -256,30 +253,4 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> {
-                    // Reset odometry for the first path you run during auto
-                    if (isFirstPath) {
-                        this.resetOdometry(traj.getInitialHolonomicPose());
-                    }
-                }),
-                new PPSwerveControllerCommand(
-                        traj,
-                        this::getPose, // Pose supplier
-                        this.kinematics, // SwerveDriveKinematics
-                        new PIDController(DriveConstants.kPXController, 0, 0), // X controller. Tune these values for your
-                                                                          // robot. Leaving them 0 will only use
-                                                                          // feedforwards.
-                        new PIDController(DriveConstants.kPXYController, 0, 0), // Y controller (usually the same values as X
-                                                                           // controller)
-                        new PIDController(DriveConstants.kPThetaController, 0, 0), // Rotation controller. Tune these values
-                                                                              // for your robot. Leaving them 0 will
-                                                                              // only use feedforwards.
-                        this::drive, // Module states consumer
-                        true, // Should the path be automatically mirrored depending on alliance color.
-                              // Optional, defaults to true
-                        this // Requires this drive subsystem
-                ));
-    }
 }
