@@ -31,6 +31,22 @@ public class NavXGyroSubsystem extends SubsystemBase {
     return navx.getRoll();
   }
 
+  public double getRate() {
+    return navx.getRate();
+  }
+
+  public double getVelocityX() {
+    return navx.getVelocityX();
+  }
+
+  public double getVelocityY() {
+    return navx.getVelocityY();
+  }
+
+  public double getVelocityZ() {
+    return navx.getVelocityZ();
+  }
+
   public void reset() {
     navx.reset();
   }

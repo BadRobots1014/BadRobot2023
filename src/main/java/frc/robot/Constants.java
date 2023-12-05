@@ -64,9 +64,7 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    public static final double kPXController = 0.077777;//need to change for comp bot
-    public static final double kPYController = 0.077777;
-    public static final double kPXYController = 0.077777;
+    public static final double kPXYController = 0.077777;//need to change for comp bot
     public static final double kPThetaController = 0.77777;
   }
 
