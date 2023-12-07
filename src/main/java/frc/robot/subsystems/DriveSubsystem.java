@@ -92,7 +92,6 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-    m_driveTab.add((Sendable) m_odometry);
   }
 
   /**

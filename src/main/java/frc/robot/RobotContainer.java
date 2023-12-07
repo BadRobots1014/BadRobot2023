@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 
@@ -32,6 +33,7 @@ public class RobotContainer {
   //Paths
   private PathPlannerTrajectory m_autoTraj;
   private PathPlannerPath m_autoPath;
+  private PathPlannerAuto m_auto;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -41,7 +43,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     //Setup paths
-    m_autoPath = PathPlannerPath.fromPathFile("Test");
+    m_autoPath = PathPlannerPath.fromPathFile("New Path");
     m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getChassisSpeeds());
 
     // Configure default commands
@@ -79,7 +81,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    return m_robotDrive.followTrajectoryCommand(m_autoTraj, m_autoPath, true);
+    m_auto = new PathPlannerAuto("New Auto");
+    return m_auto;
+    // return m_robotDrive.followTrajectoryCommand(m_autoTraj, m_autoPath, true);
   }
 }
