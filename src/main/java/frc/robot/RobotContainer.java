@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
@@ -43,6 +44,7 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   //Paths
+  String m_pathFile = "pathplanner/Path.path";
   private PathPlannerTrajectory m_autoTraj;
   private PathPlannerPath m_autoPath;
 
@@ -52,6 +54,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    //Setup paths
+    m_autoPath = PathPlannerPath.fromPathFile(m_pathFile);
+    m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getChassisSpeeds());
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
