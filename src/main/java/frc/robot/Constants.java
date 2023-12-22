@@ -52,15 +52,20 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = -3 * Math.PI / 4;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 11;
-    public static final int kRearLeftDrivingCanId = 13;
-    public static final int kFrontRightDrivingCanId = 15;
-    public static final int kRearRightDrivingCanId = 17;
+    public static final int kFrontRightDrivingCanId = 11;
+    public static final int kRearRightDrivingCanId = 21;
+    public static final int kRearLeftDrivingCanId = 31;
+    public static final int kFrontLeftDrivingCanId = 41;
 
-    public static final int kFrontLeftTurningCanId = 10;
-    public static final int kRearLeftTurningCanId = 12;
-    public static final int kFrontRightTurningCanId = 14;
-    public static final int kRearRightTurningCanId = 16;
+    public static final int kFrontRightTurningCanId = 12;
+    public static final int kRearRightTurningCanId = 22;
+    public static final int kRearLeftTurningCanId = 32;
+    public static final int kFrontLeftTurningCanId = 42;
+
+    public static final int kFrontRightEncoderCanId = 13;
+    public static final int kRearRightEncoderCanId = 23;
+    public static final int kRearLeftEncoderCanId = 33;
+    public static final int kFrontLeftEncoderCanId = 43;
 
     public static final boolean kGyroReversed = false;
 
