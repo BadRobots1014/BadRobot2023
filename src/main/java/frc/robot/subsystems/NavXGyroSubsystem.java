@@ -49,5 +49,6 @@ public class NavXGyroSubsystem extends SubsystemBase {
 
   public void reset() {
     navx.reset();
+    navx.resetDisplacement();
   }
 }

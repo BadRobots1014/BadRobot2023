@@ -8,8 +8,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -22,7 +24,8 @@ public class MAXSwerveModule {
   private final CANSparkMax m_turningSparkMax;
 
   private final RelativeEncoder m_drivingEncoder;
-  private final CANCoder m_turningEncoder;
+  private final RelativeEncoder m_turningEncoder;
+  private final CANCoder m_cancoder;
 
   private final SparkMaxPIDController m_drivingPIDController;
   private final SparkMaxPIDController m_turningPIDController;
@@ -39,7 +42,7 @@ public class MAXSwerveModule {
   public MAXSwerveModule(int drivingCANId, int turningCANId, int encoderCANId, double chassisAngularOffset) {
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
-    m_turningEncoder = new CANCoder(encoderCANId);
+    m_cancoder = new CANCoder(encoderCANId);
 
     // Factory reset, so we get the SPARKS MAX to a known state before configuring
     // them. This is useful in case a SPARK MAX is swapped out.
@@ -48,17 +51,18 @@ public class MAXSwerveModule {
 
     // Setup encoders and PID controllers for the driving and turning SPARKS MAX.
     m_drivingEncoder = m_drivingSparkMax.getEncoder();
+    m_turningEncoder = m_turningSparkMax.getEncoder();
     m_drivingPIDController = m_drivingSparkMax.getPIDController();
     m_turningPIDController = m_turningSparkMax.getPIDController();
     m_drivingPIDController.setFeedbackDevice(m_drivingEncoder);
-    // m_turningPIDController.setFeedbackDevice(m_turningEncoder);
+    m_turningPIDController.setFeedbackDevice(m_turningEncoder);
 
     //CANCoder setup
     CANCoderConfiguration config = new CANCoderConfiguration();
     config.sensorDirection = ModuleConstants.kTurningEncoderInverted;
     config.sensorCoefficient = config.sensorCoefficient * 180/Math.PI;
     config.unitString = "rad";
-    m_turningEncoder.configAllSettings(config);
+    m_cancoder.configAllSettings(config);
 
     // Apply position and velocity conversion factors for the driving encoder. The
     // native units for position and velocity are rotations and RPM, respectively,
@@ -69,9 +73,12 @@ public class MAXSwerveModule {
     // Apply position and velocity conversion factors for the turning encoder. We
     // want these in radians and radians per second to use with WPILib's swerve
     // APIs.
+    m_turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositionFactor);
+    m_turningEncoder.setVelocityConversionFactor(ModuleConstants.kTurningEncoderVelocityFactor);
 
     // Invert the turning encoder, since the output shaft rotates in the opposite direction of
     // the steering motor in the MAXSwerve Module.
+    m_turningSparkMax.setInverted(ModuleConstants.kTurningEncoderInverted);
 
     // Enable PID wrap around for the turning motor. This will allow the PID
     // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
@@ -112,6 +119,7 @@ public class MAXSwerveModule {
     m_chassisAngularOffset = chassisAngularOffset;
     m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
     m_drivingEncoder.setPosition(0);
+    m_turningEncoder.setPosition(m_cancoder.getPosition());
   }
 
   /**
@@ -164,5 +172,6 @@ public class MAXSwerveModule {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
+    m_turningEncoder.setPosition(m_cancoder.getAbsolutePosition() / ModuleConstants.kTurningEncoderPositionFactor * (2 * Math.PI));
   }
 }

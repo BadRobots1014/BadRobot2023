@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.NavXGyroSubsystem;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -27,7 +26,6 @@ import frc.robot.subsystems.NavXGyroSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final NavXGyroSubsystem m_gyroSubsystem = new NavXGyroSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // The driver's controller
@@ -62,6 +60,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
+        // new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
   }
 
   /**
