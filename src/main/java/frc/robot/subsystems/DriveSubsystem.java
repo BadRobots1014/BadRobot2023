@@ -21,6 +21,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.*;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 import com.pathplanner.lib.commands.FollowPathHolonomic;
@@ -273,6 +274,11 @@ public class DriveSubsystem extends SubsystemBase {
     return new ChassisSpeeds(m_gyro.getVelocityX(), m_gyro.getVelocityY(), getTurnRate());
   }
 
+  public Rotation2d getRotation2d()
+  {
+    return Rotation2d.fromDegrees(m_gyro.getYaw());
+  }
+
   public Consumer<ChassisSpeeds> eatSpeeds(ChassisSpeeds arg0) {
     return null;
   }
@@ -300,6 +306,13 @@ public class DriveSubsystem extends SubsystemBase {
                     DriveConstants.kTrackWidth / 2,
                     0.02,
                     new ReplanningConfig(),
+                    new BooleanSupplier() {
+                      @Override
+                      public boolean getAsBoolean() {
+                          // TODO Auto-generated method stub
+                          return false;
+                      }
+                    },
                     this
                     
                     // this.kinematics, // SwerveDriveKinematics

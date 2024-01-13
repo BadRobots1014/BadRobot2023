@@ -47,7 +47,7 @@ public class RobotContainer {
 
     //Setup paths
     m_autoPath = PathPlannerPath.fromPathFile("New Path");
-    m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getChassisSpeeds());
+    m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getChassisSpeeds(), m_robotDrive.getRotation2d());
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(

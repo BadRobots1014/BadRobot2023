@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants.ModuleConstants;
@@ -25,7 +27,7 @@ public class MAXSwerveModule {
 
   private final RelativeEncoder m_drivingEncoder;
   private final RelativeEncoder m_turningEncoder;
-  private final CANCoder m_cancoder;
+  private final CANcoder m_cancoder;
 
   private final SparkMaxPIDController m_drivingPIDController;
   private final SparkMaxPIDController m_turningPIDController;
@@ -44,7 +46,7 @@ public class MAXSwerveModule {
   public MAXSwerveModule(int drivingCANId, int turningCANId, int encoderCANId, double chassisAngularOffset) {
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
-    m_cancoder = new CANCoder(encoderCANId);
+    m_cancoder = new CANcoder(encoderCANId);
 
     // Factory reset, so we get the SPARKS MAX to a known state before configuring
     // them. This is useful in case a SPARK MAX is swapped out.
@@ -60,11 +62,10 @@ public class MAXSwerveModule {
     m_turningPIDController.setFeedbackDevice(m_turningEncoder);
 
     //CANCoder setup
-    CANCoderConfiguration config = new CANCoderConfiguration();
-    config.sensorDirection = ModuleConstants.kTurningEncoderInverted;
-    config.sensorCoefficient = config.sensorCoefficient * 180/Math.PI;
-    config.unitString = "rad";
-    m_cancoder.configAllSettings(config);
+    CANcoderConfiguration config = new CANcoderConfiguration();
+    config.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+    //config.MagnetSensor.SensorDirection = ModuleConstants.kTurningEncoderInverted;
+    //m_cancoder.(config);
 
     // Apply position and velocity conversion factors for the driving encoder. The
     // native units for position and velocity are rotations and RPM, respectively,
@@ -121,7 +122,7 @@ public class MAXSwerveModule {
     m_chassisAngularOffset = chassisAngularOffset;
     m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
     m_drivingEncoder.setPosition(0);
-    m_turningEncoder.setPosition(m_cancoder.getPosition());
+    m_turningEncoder.setPosition(m_cancoder.getPosition().getValue());
 
     m_tab.add("Angle " + encoderCANId, getPosition().angle.getRadians());
     m_tab.add("Distance " + encoderCANId, getPosition().distanceMeters);
@@ -177,6 +178,6 @@ public class MAXSwerveModule {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
-    m_turningEncoder.setPosition(m_cancoder.getAbsolutePosition() / ModuleConstants.kTurningEncoderPositionFactor * (2 * Math.PI));
+    m_turningEncoder.setPosition(m_cancoder.getAbsolutePosition().getValue() / ModuleConstants.kTurningEncoderPositionFactor * (2 * Math.PI));
   }
 }
