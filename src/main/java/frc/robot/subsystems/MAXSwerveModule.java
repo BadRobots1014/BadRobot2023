@@ -123,8 +123,9 @@ public class MAXSwerveModule {
     m_drivingEncoder.setPosition(0);
     m_turningEncoder.setPosition(m_cancoder.getPosition().getValue());
 
-    m_tab.add("Angle " + encoderCANId, getPosition().angle.getRadians());
-    m_tab.add("Distance " + encoderCANId, getPosition().distanceMeters);
+    m_tab.add("Angle " + turningCANId, getPosition().angle.getRadians());
+    m_tab.add("Distance " + drivingCANId, getPosition().distanceMeters);
+    m_tab.add("CANCoder " + encoderCANId, m_cancoder.getPosition().getValue());
   }
 
   /**
@@ -136,7 +137,7 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModuleState(m_drivingEncoder.getVelocity(),
-        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+        new Rotation2d(m_cancoder.getPosition().getValue() - m_chassisAngularOffset));
   }
 
   /**
