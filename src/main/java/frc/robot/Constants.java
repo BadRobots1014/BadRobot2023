@@ -28,8 +28,8 @@ public final class Constants {
   public static final class TestConstants {
     //These are for testing individual motors.
     public static final boolean kTestMode = true;
-    public static final double kTestMotorID = 0;
-    public static final double kTestMotorSpeed = 0;
+    public static final double kTestMotorID = 11;
+    public static final double kTestMotorSpeed = 1;
   }
 
   public static final class DriveConstants {
