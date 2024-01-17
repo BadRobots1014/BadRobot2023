@@ -27,7 +27,7 @@ public final class Constants {
 
   public static final class TestConstants {
     //These are for testing individual motors.
-    public static final boolean kTestMode = true;
+    public static final boolean kTestMode = false;
     public static final double kTestMotorID = 11;
     public static final double kTestMotorSpeed = 1;
   }
@@ -116,7 +116,7 @@ public final class Constants {
     public static final double kTurningP = 0.005;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
-    public static final double kTurningFF = 0;
+    public static final double kTurningFF = 0.2;
     public static final double kTurningMinOutput = -1;
     public static final double kTurningMaxOutput = 1;
 
