@@ -13,7 +13,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Angle;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -30,6 +34,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 public class DriveSubsystem extends SubsystemBase {
+
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -70,6 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
   //Shuffleboard
   private ShuffleboardTab m_driveTab;
 
+  public XboxController Controller;
+
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
@@ -83,6 +90,23 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    m_driveTab = Shuffleboard.getTab("drive");
+    m_driveTab.addDouble("frontRightAngle", () -> m_frontRight.getState().angle.getDegrees());
+    m_driveTab.addDouble("frontLeftAngle", () -> m_frontLeft.getState().angle.getDegrees());
+    m_driveTab.addDouble("rearRightAngle", () -> m_rearRight.getState().angle.getDegrees());
+    m_driveTab.addDouble("rearLeftAngle", () -> m_rearLeft.getState().angle.getDegrees());
+
+    m_driveTab.addDouble("frontRightSpeed", () -> m_frontRight.getState().speedMetersPerSecond);
+    m_driveTab.addDouble("frontLeftSpeed", () -> m_frontLeft.getState().speedMetersPerSecond);
+    m_driveTab.addDouble("rearRightSpeed", () -> m_rearRight.getState().speedMetersPerSecond);
+    m_driveTab.addDouble("rearLeftSpeed", () -> m_rearLeft.getState().speedMetersPerSecond);
+
+    m_driveTab.addDouble("controllerLeftX", () -> Controller.getLeftX());
+    m_driveTab.addDouble("controllerLeftY", () -> Controller.getLeftY());
+
+    m_driveTab.addDouble("controllerRightX", () -> Controller.getRightX());
+    m_driveTab.addDouble("controllerRightY", () -> Controller.getRightY());
+
   }
 
   @Override
@@ -224,13 +248,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
-<<<<<<< Updated upstream
-  public void testMotor(double id, double speed) {
-
-  }
-
-=======
->>>>>>> Stashed changes
   /**
    * Sets the swerve ModuleStates.
    *
@@ -327,6 +344,28 @@ public class DriveSubsystem extends SubsystemBase {
                     //       // Optional, defaults to true
                     // this // Requires this drive subsystem
             ));
-}
+  }
+
+  public void testMotor()
+  {
+    double rx = Controller.getRightX();
+    double ry = Controller.getRightY();
+
+    MAXSwerveModule module;
+
+    if (rx > .4 && ry < -.4)
+      module = m_frontRight;
+    else if (rx < -.4 && ry < -.4)
+      module = m_frontLeft;
+    else if (rx > .4 && ry > .4)
+      module = m_rearRight;
+    else if (rx < -.4 && ry > .4)
+      module = m_rearLeft;
+    else {return;}
+    
+    SwerveModuleState state = module.getState();
+
+    module.setDesiredState(new SwerveModuleState(Controller.getLeftY(), Rotation2d.fromRotations(.5 * Controller.getLeftX())));
+  }//state.angle.getDegrees() + Controller.getLeftX() * 10
 
 }

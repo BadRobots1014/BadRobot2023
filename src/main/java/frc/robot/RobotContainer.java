@@ -4,24 +4,21 @@
 
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
-
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.TestConstants;
+import frc.robot.commands.LockDriveAngleCommand;
+import frc.robot.commands.TestMotorCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
 /*
@@ -44,9 +41,8 @@ public class RobotContainer {
   private PathPlannerPath m_autoPath;
   private PathPlannerAuto m_auto;
 
-  //TEST
-  private double m_testMotorId = 0;
-  private double m_testMotorSpeed = 0;
+  LockDriveAngleCommand m_LockDriveAngle = new LockDriveAngleCommand(m_robotDrive);
+  TestMotorCommand m_TestMotorCommand = new TestMotorCommand(m_robotDrive);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -59,9 +55,9 @@ public class RobotContainer {
     m_autoPath = PathPlannerPath.fromPathFile("New Path");
     m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getChassisSpeeds(), m_robotDrive.getRotation2d());
 
+    m_robotDrive.Controller = m_driverController;
     // Configure default commands
-    if (!TestConstants.kTestMode) {
-      m_robotDrive.setDefaultCommand(
+    m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
@@ -71,10 +67,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
-    }
-    else {
-      m_robotDrive.setDefaultCommand(new RunCommand(() -> m_robotDrive.testMotor(TestConstants.kTestMotorID, TestConstants.kTestMotorSpeed), m_robotDrive));
-    }
+        // new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
   }
 
   /**
@@ -91,6 +84,14 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+
+    new JoystickButton(m_driverController, DriveConstants.kLockAngleButton.value)
+      .whileTrue(m_LockDriveAngle);
+
+    new JoystickButton(m_driverController, DriveConstants.kTestMotorButton.value)
+    .whileTrue(m_TestMotorCommand);
+
+    m_driverController.getBButtonPressed();
   }
 
   /**

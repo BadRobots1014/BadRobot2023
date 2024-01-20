@@ -4,12 +4,14 @@
 
 package frc.robot;
 
-// import com.revrobotics.CANSparkMax.IdleMode;
+
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.XboxController.Button;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -24,17 +26,13 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-  public static final class TestConstants {
-    //These are for testing individual motors.
-    public static final boolean kTestMode = false;
-    public static final double kTestMotorID = 11;
-    public static final double kTestMotorSpeed = 1;
-  }
-
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
+    public static final double kJoystickDeadzone = 0.1;
+    public static final Button kLockAngleButton = Button.kX;
+    public static final Button kTestMotorButton = Button.kLeftBumper;
+
     public static final double kMaxSpeedMetersPerSecond = 3.8;
     public static final double kMaxAngularSpeed = 1 * Math.PI; // radians per second
 
@@ -116,12 +114,12 @@ public final class Constants {
     public static final double kTurningP = 0.005;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
-    public static final double kTurningFF = 0.2;
+    public static final double kTurningFF = 0;
     public static final double kTurningMinOutput = -1;
     public static final double kTurningMaxOutput = 1;
 
-    // public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
-    // public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
+    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
+    public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
     public static final int kDrivingMotorCurrentLimit = 50; // amps
     public static final int kTurningMotorCurrentLimit = 20; // amps
