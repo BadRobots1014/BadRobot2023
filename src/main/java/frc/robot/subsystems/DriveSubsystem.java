@@ -224,10 +224,13 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
+<<<<<<< Updated upstream
   public void testMotor(double id, double speed) {
 
   }
 
+=======
+>>>>>>> Stashed changes
   /**
    * Sets the swerve ModuleStates.
    *

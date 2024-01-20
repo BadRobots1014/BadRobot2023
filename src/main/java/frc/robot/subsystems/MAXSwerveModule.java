@@ -11,10 +11,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import com.revrobotics.CANSparkMax;
+<<<<<<< Updated upstream
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
+=======
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
+>>>>>>> Stashed changes
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.RelativeEncoder;
 
@@ -28,8 +36,13 @@ public class MAXSwerveModule {
   private final RelativeEncoder m_turningEncoder;
   private final CANcoder m_cancoder;
 
+<<<<<<< Updated upstream
   private final SparkPIDController m_drivingPIDController;
   private final SparkPIDController m_turningPIDController;
+=======
+  private final SparkMaxPIDController m_drivingPIDController;
+  private final SparkMaxPIDController m_turningPIDController;
+>>>>>>> Stashed changes
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
@@ -123,9 +136,14 @@ public class MAXSwerveModule {
     m_drivingEncoder.setPosition(0);
     m_turningEncoder.setPosition(m_cancoder.getPosition().getValue());
 
+<<<<<<< Updated upstream
     m_tab.add("Angle " + turningCANId, getPosition().angle.getRadians());
     m_tab.add("Distance " + drivingCANId, getPosition().distanceMeters);
     m_tab.add("CANCoder " + encoderCANId, m_cancoder.getPosition().getValue());
+=======
+    m_tab.add("Angle " + encoderCANId, getPosition().angle.getRadians());
+    m_tab.add("Distance " + encoderCANId, getPosition().distanceMeters);
+>>>>>>> Stashed changes
   }
 
   /**
@@ -137,7 +155,11 @@ public class MAXSwerveModule {
     // Apply chassis angular offset to the encoder position to get the position
     // relative to the chassis.
     return new SwerveModuleState(m_drivingEncoder.getVelocity(),
+<<<<<<< Updated upstream
         new Rotation2d(m_cancoder.getPosition().getValue() - m_chassisAngularOffset));
+=======
+        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+>>>>>>> Stashed changes
   }
 
   /**
@@ -150,7 +172,11 @@ public class MAXSwerveModule {
     // relative to the chassis.
     return new SwerveModulePosition(
         m_drivingEncoder.getPosition(),
+<<<<<<< Updated upstream
         new Rotation2d(m_cancoder.getPosition().getValue() - m_chassisAngularOffset));
+=======
+        new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+>>>>>>> Stashed changes
   }
 
   /**
@@ -166,7 +192,11 @@ public class MAXSwerveModule {
 
     // Optimize the reference state to avoid spinning further than 90 degrees.
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
+<<<<<<< Updated upstream
         new Rotation2d(m_cancoder.getPosition().getValue()));
+=======
+        new Rotation2d(m_turningEncoder.getPosition()));
+>>>>>>> Stashed changes
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
