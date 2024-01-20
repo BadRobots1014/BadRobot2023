@@ -101,8 +101,8 @@ public final class Constants {
 
     public static final long kBootupDelay = 1000; //milliseconds of delay to allow the navx to start up
 
-    public static final double kXSlewRateLimit = 2; //TODO adjust slew limits
-    public static final double kYSlewRateLimit = 2;
+    public static final double kXSlewRateLimit = 1.2; //TODO adjust slew limits
+    public static final double kYSlewRateLimit = 1.2;
     public static final double kTurnSlewRateLimit = 2;
 
     public static final double kTeleMaxRadiansPerSec = Math.PI; //TODO adjust max teleop speeds
@@ -118,10 +118,10 @@ public final class Constants {
     public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
-    public static final double kModuleDeadband = 0.001;
-    public static final double kTurningP = 0.5;
-    public static final double kTurningI = 0;
-    public static final double kTurningD = 0;
+    public static final double kModuleDeadband = 0.01;
+    public static final double kTurningP = 0.005;
+    public static final double kTurningI = .1;
+    public static final double kTurningD = .1;
 
   }
 

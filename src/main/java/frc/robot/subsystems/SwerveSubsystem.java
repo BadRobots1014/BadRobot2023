@@ -96,6 +96,7 @@ public class SwerveSubsystem extends SubsystemBase{
      * @param desiredStates The states the modules should move toward. In order, front left, front right, back left, back right.
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
+        System.out.println(desiredStates[0]);
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
         frontLeft.setDesiredState(desiredStates[0]);
         frontRight.setDesiredState(desiredStates[1]);
