@@ -1,7 +1,11 @@
 package frc.robot.util;
 
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CANcoderConfigurator;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -23,21 +27,24 @@ public class SwerveModule {
 
     private final PIDController turningPidController;
 
-    private final CANCoder absoluteEncoder;
+    private final CANcoder absoluteEncoder;
     private final boolean absoluteEncoderReversed;
     private final double absoluteEncoderOffsetRad;
-    private final double absoluteEncoderOffsetDeg;
+    private final double absoluteEncoderOffsetRot;
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed, int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed) {
         
         //Absolute encoder setup
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
-        this.absoluteEncoderOffsetDeg = this.absoluteEncoderOffsetRad * (180 / Math.PI); 
+        this.absoluteEncoderOffsetRot = this.absoluteEncoderOffsetRad / (2 * Math.PI);
         this.absoluteEncoderReversed = absoluteEncoderReversed;
-        absoluteEncoder = new CANCoder(absoluteEncoderId);
-        absoluteEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        absoluteEncoder.configMagnetOffset(this.absoluteEncoderOffsetDeg);
-        absoluteEncoder.configSensorDirection(this.absoluteEncoderReversed);
+        absoluteEncoder = new CANcoder(absoluteEncoderId);
+        CANcoderConfigurator configer = absoluteEncoder.getConfigurator();
+        MagnetSensorConfigs config = new MagnetSensorConfigs();
+        config.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        config.MagnetOffset = absoluteEncoderOffsetRot;
+        config.SensorDirection = absoluteEncoderReversed ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
+        configer.apply(config);
 
         //Motor setup
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
@@ -88,8 +95,8 @@ public class SwerveModule {
     public double getTurningPosition() {return turningEncoder.getPosition();} //Returns position of turning encoder in radians
     public double getDriveVelocity() {return driveEncoder.getVelocity();} //Returns velocity of drive encoder in meters per second
     public double getTurningVelocity() {return turningEncoder.getVelocity();} //Returns velocity of drive encoder in radians per second
-    public double getAbsoluteEncoderDeg() {return absoluteEncoder.getPosition();} //Returns position of absolute encoder in degrees
-    public double getAbsoluteEncoderRad() {return getAbsoluteEncoderDeg() * (Math.PI / 180);} //Returns position of absolute encoder in radians
+    public double getAbsoluteEncoderRot() {return absoluteEncoder.getAbsolutePosition().getValue();} //Returns position of absolute encoder in degrees
+    public double getAbsoluteEncoderRad() {return getAbsoluteEncoderRot() * 2*Math.PI;} //Returns position of absolute encoder in radians
     public SwerveModuleState getState() {return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));} //Returns the above info in the form of a SwerveModuleState
 
 }
