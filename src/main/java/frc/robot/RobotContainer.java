@@ -20,9 +20,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.TestConstants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.ZeroHeadingCommand;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,7 +35,7 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final SwerveSubsystem m_robotDrive = new SwerveSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -52,29 +55,21 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    m_robotDrive.setDefaultCommand(new SwerveDriveCommand(
+      m_robotDrive,
+      () -> m_driverController.getLeftX(),
+      () -> m_driverController.getLeftY(),
+      () -> m_driverController.getRightX(),
+      () -> DriveConstants.kFieldOriented
+    ));
+
     // Configure the button bindings
     configureButtonBindings();
 
     //Setup paths
     m_autoPath = PathPlannerPath.fromPathFile("New Path");
-    m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getChassisSpeeds(), m_robotDrive.getRotation2d());
-
-    // Configure default commands
-    if (!TestConstants.kTestMode) {
-      m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true),
-            m_robotDrive));
-    }
-    else {
-      m_robotDrive.setDefaultCommand(new RunCommand(() -> m_robotDrive.testMotor(TestConstants.kTestMotorID, TestConstants.kTestMotorSpeed), m_robotDrive));
-    }
+    // m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getModuleStates(), m_robotDrive.getRotation2d());
   }
 
   /**
@@ -87,10 +82,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kR1.value)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
+    new JoystickButton(m_driverController, XboxController.Button.kStart.value).whileTrue(new ZeroHeadingCommand(m_robotDrive));
   }
 
   /**
