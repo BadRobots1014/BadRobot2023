@@ -119,15 +119,15 @@ public final class Constants {
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     public static final double kModuleDeadband = 0.01;
-    public static final double kTurningP = 0.005;
-    public static final double kTurningI = .1;
-    public static final double kTurningD = .1;
+    public static final double kTurningP = 0.0;
+    public static final double kTurningI = 0;
+    public static final double kTurningD = 0;
 
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.05;
+    public static final double kDriveDeadband = 0.00;
   }
 
   public static final class AutoConstants {

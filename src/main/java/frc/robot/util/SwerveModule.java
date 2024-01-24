@@ -1,6 +1,5 @@
 package frc.robot.util;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -36,6 +35,7 @@ public class SwerveModule {
     private final double absoluteEncoderOffsetRot;
 
     private ShuffleboardTab m_tab;
+    private SwerveModuleState m_lastState = new SwerveModuleState();
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed, int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed) {
         
@@ -73,6 +73,9 @@ public class SwerveModule {
 
         //Setup Shuffleboard
         m_tab = Shuffleboard.getTab(driveMotorId + " Module");
+        m_tab.addDouble("Last angle", this::getLastStateAngle);
+        m_tab.addDouble("Last speed", this::getLastStateSpeed);
+        m_tab.addDouble("Encoder angle", this::getAbsoluteEncoderRad);
 
         //Reset the encoders on start
         resetEncoders();
@@ -90,9 +93,14 @@ public class SwerveModule {
             return;
         }
         state = SwerveModuleState.optimize(state, getState().angle);
+        m_lastState = state;
         driveMotor.set(state.speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond);
         turningMotor.set(turningPidController.calculate(getAbsoluteEncoderRad(), state.angle.getRadians()));
     }
+
+    public SwerveModuleState getLastState() {return m_lastState;}
+    public double getLastStateAngle() {return m_lastState.angle.getRadians();}
+    public double getLastStateSpeed() {return m_lastState.speedMetersPerSecond;}
 
     public void stop() {
         driveMotor.set(0);
@@ -105,6 +113,7 @@ public class SwerveModule {
     public double getTurningVelocity() {return turningEncoder.getVelocity();} //Returns velocity of drive encoder in radians per second
     public double getAbsoluteEncoderRot() {return absoluteEncoder.getAbsolutePosition().getValue();} //Returns position of absolute encoder in degrees
     public double getAbsoluteEncoderRad() {return getAbsoluteEncoderRot() * 2*Math.PI;} //Returns position of absolute encoder in radians
+    public double getAbsoluteEncoderDeg() {return getAbsoluteEncoderRot() * 360;} //Returns position of absolute encoder in degrees
     public SwerveModuleState getState() {return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));} //Returns the above info in the form of a SwerveModuleState
 
 }
