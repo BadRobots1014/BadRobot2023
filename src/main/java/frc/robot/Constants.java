@@ -4,12 +4,14 @@
 
 package frc.robot;
 
-// import com.revrobotics.CANSparkMax.IdleMode;
+
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.XboxController.Button;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -24,21 +26,21 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-  public static final class TestConstants {
-    //These are for testing individual motors.
-    public static final boolean kTestMode = false;
-    public static final double kTestMotorID = 11;
-    public static final double kTestMotorSpeed = 1;
-  }
-
   public static final class DriveConstants {
-
-    public static final boolean kFieldOriented = true;
-
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 3.8; 
+    public static final boolean kFieldOriented = true;
+    public static final double kXSlewRateLimit = 2.2;
+    public static final double kYSlewRateLimit = 2.2;
+    public static final double kTurnSlewRateLimit = 2.2;
+    public static final double kTeleMaxMetersPerSec = 10;
+    
+
+    public static final double kJoystickDeadzone = 0.1;
+    public static final Button kLockAngleButton = Button.kX;
+    public static final Button kTestMotorButton = Button.kLeftBumper;
+
+    public static final double kMaxSpeedMetersPerSecond = 3.8;
     public static final double kMaxAngularSpeed = 1 * Math.PI; // radians per second
 
     public static final double kDirectionSlewRate = 1.2; // radians per second
@@ -82,52 +84,86 @@ public final class Constants {
 
     public static final double kPXYController = 0.077777;//need to change for comp bot
     public static final double kPThetaController = 0.77777;
-
-    public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kFrontLeftAbsoluteEncoderReversed = false;
-
-    public static final boolean kFrontRightDriveEncoderReversed = false;
-    public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kFrontRightAbsoluteEncoderReversed = false;
-
+    public static final boolean kBackRightAbsoluteEncoderReversed = false;
+    public static final boolean kBackRightTurningEncoderReversed = false;
+    public static final boolean kBackRightDriveEncoderReversed = false;
     public static final boolean kBackLeftDriveEncoderReversed = false;
     public static final boolean kBackLeftTurningEncoderReversed = false;
     public static final boolean kBackLeftAbsoluteEncoderReversed = false;
+    public static final boolean kFrontRightAbsoluteEncoderReversed = true;
+    public static final boolean kFrontRightTurningEncoderReversed = true;
+    public static final boolean kFrontRightDriveEncoderReversed = true;
+    public static final boolean kFrontLeftDriveEncoderReversed = true;
+    public static final boolean kFrontLeftTurningEncoderReversed = true;
+    public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
+    public static final long kBootupDelay = 1000;
+    public static final double kTeleMaxRadiansPerSec = 40.0;
+  }
 
-    public static final boolean kBackRightDriveEncoderReversed = false;
-    public static final boolean kBackRightTurningEncoderReversed = false;
-    public static final boolean kBackRightAbsoluteEncoderReversed = false;
-
-    public static final long kBootupDelay = 1000; //milliseconds of delay to allow the navx to start up
-
-    public static final double kXSlewRateLimit = 1.2; //TODO adjust slew limits
-    public static final double kYSlewRateLimit = 1.2;
-    public static final double kTurnSlewRateLimit = 2;
-
-    public static final double kTeleMaxRadiansPerSec = Math.PI; //TODO adjust max teleop speeds
-    public static final double kTeleMaxMetersPerSec = 2.8;
+  public static final class CLimberConstants {
+    public static final double NavXClimberDeadzone = 5;
+    public static final double ClimbSpeed = .5;
   }
 
   public static final class ModuleConstants {
+    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    // the steering motor in the MAXSwerve Module.
+    public static final boolean kTurningEncoderInverted = true;
 
+    // Calculations required for driving motor conversion factors and feed forward
+    public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = 0.0762;
-    public static final double kDriveMotorGearRatio = 8.14; //TODO Check gear ratio
-    public static final double kTurningMotorGearRatio = 12.8; //TODO Check gear ratio
-    public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
-    public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
-    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
-    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
-    public static final double kModuleDeadband = 0.01;
-    public static final double kTurningP = 0.0;
+    public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
+    public static final double kDrivingMotorReduction = 8.14;
+    public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
+        / kDrivingMotorReduction;
+
+    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
+        / kDrivingMotorReduction; // meters
+    public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
+        / kDrivingMotorReduction) / 60.0; // meters per second
+
+    public static final double kTurningEncoderPositionFactor = (300 * Math.PI) / 7; // radians
+    public static final double kTurningEncoderVelocityFactor = (300 * Math.PI) / 420; // radians per second
+
+    public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
+    public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
+
+    public static final double kDrivingP = 0.04;
+    public static final double kDrivingI = 0;
+    public static final double kDrivingD = 0;
+    public static final double kDrivingFF = 1 / kDriveWheelFreeSpeedRps;
+    public static final double kDrivingMinOutput = -1;
+    public static final double kDrivingMaxOutput = 1;
+
+    public static final double kTurningP = 0.005;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
+    public static final double kTurningFF = 0;
+    public static final double kTurningMinOutput = -1;
+    public static final double kTurningMaxOutput = 1;
 
+    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
+    public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
+
+    public static final int kDrivingMotorCurrentLimit = 50; // amps
+    public static final int kTurningMotorCurrentLimit = 20; // amps
+
+    public static final double kDriveEncoderRot2Meter = 0;
+
+    public static final double kDriveEncoderRPM2MeterPerSec = 0;
+
+    public static final double kTurningEncoderRot2Rad = 0;
+
+    public static final double kTurningEncoderRPM2RadPerSec = 0;
+
+    public static final double kModuleDeadband = 0;
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.00;
+    public static final double kDriveDeadband = 0.05;
   }
 
   public static final class AutoConstants {
