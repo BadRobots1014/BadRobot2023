@@ -85,11 +85,11 @@ public final class Constants {
 
     public static final boolean kFrontLeftDriveEncoderReversed = false;
     public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kFrontLeftAbsoluteEncoderReversed = false;
+    public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
 
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kFrontRightAbsoluteEncoderReversed = false;
+    public static final boolean kFrontRightAbsoluteEncoderReversed = true;
 
     public static final boolean kBackLeftDriveEncoderReversed = false;
     public static final boolean kBackLeftTurningEncoderReversed = false;
@@ -103,7 +103,7 @@ public final class Constants {
 
     public static final double kXSlewRateLimit = 2; //TODO adjust slew limits
     public static final double kYSlewRateLimit = 2;
-    public static final double kTurnSlewRateLimit = 4;
+    public static final double kTurnSlewRateLimit = 100;
 
     public static final double kTeleMaxRadiansPerSec = Math.PI; //TODO adjust max teleop speeds
     public static final double kTeleMaxMetersPerSec = 2.8;
@@ -120,8 +120,8 @@ public final class Constants {
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     public static final double kModuleDeadband = 0.01;
     public static final double kTurningP = 0.05;
-    public static final double kTurningI = 0;
-    public static final double kTurningD = 0;
+    public static final double kTurningI = 0.01;
+    public static final double kTurningD = 0.01;
 
   }
 
