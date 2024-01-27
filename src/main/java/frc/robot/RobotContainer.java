@@ -13,6 +13,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -52,6 +53,10 @@ public class RobotContainer {
   //TEST
   private double m_testMotorId = 0;
   private double m_testMotorSpeed = 0;
+  private ShuffleboardTab m_tab = Shuffleboard.getTab("Test");
+  private GenericEntry m_testX = m_tab.add("X", 0).getEntry();
+  private GenericEntry m_testY = m_tab.add("Y", 0).getEntry();
+  private GenericEntry m_testZ = m_tab.add("Z", 0).getEntry();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -67,10 +72,10 @@ public class RobotContainer {
     // ));
     m_robotDrive.setDefaultCommand(new SwerveDriveCommand(
       m_robotDrive,
-      m_supplyDouble(1),
-      m_supplyDouble(0),
-      m_supplyDouble(0),
-      m_supplyBool(true)
+      m_entryToSupplier(m_testX),
+      m_entryToSupplier(m_testY),
+      m_entryToSupplier(m_testZ),
+      m_supplyBool(false)
     ));
 
     // Configure the button bindings
@@ -85,8 +90,16 @@ public class RobotContainer {
     return new Supplier<Double>() {
       @Override
       public Double get() {
-          // TODO Auto-generated method stub
           return num;
+      }
+    };
+  }
+
+  private Supplier<Double> m_entryToSupplier(GenericEntry entry) {
+    return new Supplier<Double>() {
+      @Override
+      public Double get() {
+        return entry.getDouble(0);
       }
     };
   }
@@ -95,7 +108,6 @@ public class RobotContainer {
     return new Supplier<Boolean>() {
       @Override
       public Boolean get() {
-          // TODO Auto-generated method stub
           return bool;
       }
     };

@@ -57,10 +57,11 @@ public final class Constants {
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
     // Angular offsets of the modules relative to the chassis in radians
-    public static final double kFrontLeftChassisAngularOffset = -Math.PI / 4;
-    public static final double kFrontRightChassisAngularOffset = Math.PI / 4;
-    public static final double kBackLeftChassisAngularOffset = 3 * Math.PI / 4;
-    public static final double kBackRightChassisAngularOffset = -3 * Math.PI / 4;
+    public static final double kFrontRightChassisAngularOffset = Math.PI / 2
+    /*Additional correction because stupid module*/ - Math.PI / 4 - Math.PI / 8;
+    public static final double kBackRightChassisAngularOffset = 0;
+    public static final double kBackLeftChassisAngularOffset = Math.PI / 2;
+    public static final double kFrontLeftChassisAngularOffset = 0;
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = 11;
@@ -84,12 +85,12 @@ public final class Constants {
     public static final double kPThetaController = 0.77777;
 
     public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kFrontLeftTurningEncoderReversed = false;
+    public static final boolean kFrontLeftTurningEncoderReversed = true;
     public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
 
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kFrontRightAbsoluteEncoderReversed = true;
+    public static final boolean kFrontRightAbsoluteEncoderReversed = false;
 
     public static final boolean kBackLeftDriveEncoderReversed = false;
     public static final boolean kBackLeftTurningEncoderReversed = false;
@@ -120,8 +121,9 @@ public final class Constants {
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     public static final double kModuleDeadband = 0.01;
     public static final double kTurningP = 0.05;
-    public static final double kTurningI = 0.01;
-    public static final double kTurningD = 0.01;
+    public static final double kTurningI = 0.0;
+    public static final double kTurningD = 0.001;
+    public static final double kTurningFF = 0.005;
 
   }
 
