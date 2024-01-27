@@ -5,10 +5,10 @@
 package frc.robot.commands.blinkin;
 
 import frc.robot.subsystems.BlinkinSubsystem;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class ShootBlinkinCommand extends CommandBase {
+public class ShootBlinkinCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final BlinkinSubsystem m_subsystem;
 

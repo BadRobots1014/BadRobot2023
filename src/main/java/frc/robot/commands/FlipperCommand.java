@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlipperSubsystem;
 
 /** Controls the flipper thingy. */
-public class FlipperCommand extends CommandBase {
+public class FlipperCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final FlipperSubsystem m_subsystem;
   private final double m_power;
