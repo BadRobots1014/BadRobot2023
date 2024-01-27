@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -56,12 +58,19 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
+    // m_robotDrive.setDefaultCommand(new SwerveDriveCommand(
+    //   m_robotDrive,
+    //   () -> m_driverController.getLeftX(),
+    //   () -> m_driverController.getLeftY(),
+    //   () -> m_driverController.getRightX(),
+    //   () -> DriveConstants.kFieldOriented
+    // ));
     m_robotDrive.setDefaultCommand(new SwerveDriveCommand(
       m_robotDrive,
-      () -> m_driverController.getLeftX(),
-      () -> m_driverController.getLeftY(),
-      () -> m_driverController.getRightX(),
-      () -> DriveConstants.kFieldOriented
+      m_supplyDouble(1),
+      m_supplyDouble(0),
+      m_supplyDouble(0),
+      m_supplyBool(true)
     ));
 
     // Configure the button bindings
@@ -70,6 +79,26 @@ public class RobotContainer {
     //Setup paths
     m_autoPath = PathPlannerPath.fromPathFile("New Path");
     // m_autoTraj = new PathPlannerTrajectory(m_autoPath, m_robotDrive.getModuleStates(), m_robotDrive.getRotation2d());
+  }
+
+  private Supplier<Double> m_supplyDouble(double num) {
+    return new Supplier<Double>() {
+      @Override
+      public Double get() {
+          // TODO Auto-generated method stub
+          return num;
+      }
+    };
+  }
+
+  private Supplier<Boolean> m_supplyBool(boolean bool) {
+    return new Supplier<Boolean>() {
+      @Override
+      public Boolean get() {
+          // TODO Auto-generated method stub
+          return bool;
+      }
+    };
   }
 
   /**
