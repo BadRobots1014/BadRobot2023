@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.TestConstants;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TestMotorCommand;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -35,12 +35,13 @@ import frc.robot.subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final SwerveSubsystem m_robotDrive = new SwerveSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   Joystick m_rightJoystick = new Joystick(0);
   Joystick m_leftJoystick = new Joystick(1);
+
+  private final SwerveSubsystem m_robotDrive = new SwerveSubsystem(m_driverController);
 
   //Paths
   private PathPlannerTrajectory m_autoTraj;
@@ -56,13 +57,15 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    m_robotDrive.setDefaultCommand(new SwerveDriveCommand(
+     /*m_robotDrive.setDefaultCommand(new SwerveDriveCommand(
       m_robotDrive,
-      () -> m_driverController.getLeftX(),
-      () -> m_driverController.getLeftY(),
-      () -> m_driverController.getRightX(),
+      this::getLeftX,
+      this::getLeftY,
+      this::getRightX,
       () -> DriveConstants.kFieldOriented
-    ));
+    ));*/
+
+    m_robotDrive.setDefaultCommand();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -83,6 +86,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, XboxController.Button.kStart.value).whileTrue(new ZeroHeadingCommand(m_robotDrive));
+    new JoystickButton(m_driverController, DriveConstants.kTestMotorButton.value).whileTrue(new TestMotorCommand(m_robotDrive));
   }
 
   /**
@@ -94,5 +98,26 @@ public class RobotContainer {
     m_auto = new PathPlannerAuto("New Auto");
     return m_auto;
     // return m_robotDrive.followTrajectoryCommand(m_autoTraj, m_autoPath, true);
+  }
+
+  double getRightX()
+  {
+    if (Math.abs(m_driverController.getRightX()) < Constants.DriveConstants.kJoystickDeadzone)
+      return 0;
+    return m_driverController.getRightX();
+  }
+
+  double getLeftX()
+  {
+    if (Math.abs(m_driverController.getLeftX()) < Constants.DriveConstants.kJoystickDeadzone)
+      return 0;
+    return m_driverController.getLeftX();
+  }
+
+  double getLeftY()
+  {
+    if (Math.abs(m_driverController.getLeftY()) < Constants.DriveConstants.kJoystickDeadzone)
+      return 0;
+    return m_driverController.getLeftY();
   }
 }

@@ -19,10 +19,6 @@ public class NavXGyroSubsystem extends SubsystemBase {
     m_tab.addNumber("Pitch", this::getPitch);
   }
 
-  public void periodic() {
-    // System.out.print("Yaw: " + getYaw() + "\n" + "Roll: " + getRoll() + "\n" + "Pitch: " + getPitch() + "\n\n");
-  }
-
   public double getYaw() {
     return navx.getYaw();
   }

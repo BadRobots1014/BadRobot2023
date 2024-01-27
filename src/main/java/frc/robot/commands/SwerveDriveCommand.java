@@ -60,8 +60,10 @@ public class SwerveDriveCommand extends Command{
         //Divide and conker
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
-        //Actually do the thing
+        //Actually do the thing*/
         swerveSubsystem.setModuleStates(moduleStates);
+
+        
     }
 
     @Override
