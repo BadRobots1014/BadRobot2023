@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class LimelightSubsystem {
-    private ShuffleboardTab m_limelightTab;
+    private ShuffleboardTab m_limelightTab = Shuffleboard.getTab("Limelight");;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");

@@ -22,7 +22,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FlipperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-
+import frc.robot.subsystems.LimelightSubsystem;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -48,7 +48,9 @@ public class RobotContainer {
   private FlipperCommand flipperBackCommand;
   private FlipperSubsystem flipperSubsystem;
 
+  private LimelightSubsystem limelightSubsystem;
   private BlinkinSubsystem blinkinSubsystem;
+
 
   private SpinUpBlinkinCommand spinUpBlinkinCommand;
   private ShootBlinkinCommand shootBlinkinCommand;
@@ -77,7 +79,7 @@ public class RobotContainer {
     this.flipperSubsystem = new FlipperSubsystem();
     this.flipperSubsystem.setDefaultCommand(flipperBackCommand);
     this.blinkinSubsystem = new BlinkinSubsystem();
-
+    this.limelightSubsystem = new LimelightSubsystem();
     this.rightJoystick = new Joystick(ControllerConstants.kRightJoystickPort);
     this.leftJoystick = new Joystick(ControllerConstants.kLeftJoystickPort);
     
