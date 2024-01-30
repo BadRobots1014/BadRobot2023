@@ -19,22 +19,13 @@ public class LimelightSubsystem extends SubsystemBase {
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     table.getEntry("pipeline").setNumber(2);
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    
-
-//read values periodically
-double x = tx.getDouble(0.0);
-double y = ty.getDouble(0.0);
-double area = ta.getDouble(0.0);
-
-//NetworkTableEntry AprilTagID = table.getEntry("tid");
-
-System.out.println("LIMELIGHT SUBSYSTEM");
-  m_tab.addNumber("AprilTag ID: " + this.toString(), this::getAprilTagID);
-  m_tab.addNumber("Tag tx", this::getTx);
-  m_tab.addNumber("Tag ty", this::getTy);
+    // NetworkTableEntry tx = table.getEntry("tx");
+    // NetworkTableEntry ty = table.getEntry("ty");
+    // NetworkTableEntry ta = table.getEntry("ta");
+    System.out.println("LIMELIGHT SUBSYSTEM");
+    m_tab.addNumber("AprilTag ID: ", this::getAprilTagID);
+    m_tab.addNumber("Tag tx", this::getTx);
+    m_tab.addNumber("Tag ty", this::getTy);
   
   }
 
