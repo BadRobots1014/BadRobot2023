@@ -20,9 +20,11 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    table.getEntry("pipeline").setNumber(2);
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
+    
 
 //read values periodically
 double x = tx.getDouble(0.0);
@@ -33,10 +35,6 @@ double area = ta.getDouble(0.0);
 
 System.out.println("LIMELIGHT SUBSYSTEM");
   m_tab.addNumber("AprilTag ID: ", this::getAprilTagID);
-
-
-    
-
   }
 
   public double getAprilTagID(){
@@ -44,6 +42,22 @@ System.out.println("LIMELIGHT SUBSYSTEM");
     double AprilTagID = tID.getDouble(0.0);
     return AprilTagID;
   }
+
+  public double getTx(){
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
+    return tx;
+  }
+
+  public double getTy(){
+    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0.0);
+    return ty;
+  }
+
+  public double getTa(){
+    double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
+    return ta;
+  }
+  
 
   @Override
   public void simulationPeriodic() {
