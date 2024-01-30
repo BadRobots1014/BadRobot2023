@@ -14,11 +14,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LimelightSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private final ShuffleboardTab m_tab = Shuffleboard.getTab("Limelight");
-  public LimelightSubsystem() {}
+  
+  public LimelightSubsystem() {
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     table.getEntry("pipeline").setNumber(2);
     NetworkTableEntry tx = table.getEntry("tx");
@@ -34,7 +32,16 @@ double area = ta.getDouble(0.0);
 //NetworkTableEntry AprilTagID = table.getEntry("tid");
 
 System.out.println("LIMELIGHT SUBSYSTEM");
-  m_tab.addNumber("AprilTag ID: ", this::getAprilTagID);
+  m_tab.addNumber("AprilTag ID: " + this.toString(), this::getAprilTagID);
+  m_tab.addNumber("Tag tx", this::getTx);
+  m_tab.addNumber("Tag ty", this::getTy);
+  
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+
   }
 
   public double getAprilTagID(){
